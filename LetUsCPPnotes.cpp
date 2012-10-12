@@ -1,0 +1,486 @@
++===============================================================================================+
+|Chapter3: Graduating to CPP																	|
++===============================================================================================+
+	<< insertion or put to operator(cout) 
+	>> extraction or get from operator(cin)
+	namespace is nothing but collection of identifiers(variables and some other types of names)
+	Ways to refer identifier belonging to some specefic namespace
+	A> namespace::identifier	
+	B> using namespace <name_of_namespace>;	
+	endl is a manipulator
+	iostream.h contains declarations needed by the cin and cout
+
+FUNCTION PROTOTYPE
+c++ is strong type checked lang i.e prototype of function must be known before calling
+
+FLEXIBLE DECLARATIONS
+declare variables at the time of using them, not neccessory to declare them at starting of code block.
+Eases the code reading as variables are declared where they are used.
+
+STRUCTURE ENUM and UNION SYNTAX
+could create obj of struct, enum and union with just corrosponding name.
+
+ANONYMOUS UNION and ENUM
+union { int a; char b;} enum{z=48, x, y}
+to qualify as a anonymous union you should not declare its object.As well as it should not have 
+name/tag so that possibility of creating object of it doesnt exists.
+Then you can use a and b in the main program, but both of them are at same memory, affecting each other
+if one of them is changed.
+
+TYPECASTING
+C++ doesnt do typecasting automaticaly like C. There are to methods of typecasting
+	A> intA = 8 * (int ) charB
+	B> intA = 8 * int (charB)
+
+VOID POINTER
+unlike C, u cannot assign void pointer to other type of pointer, u need to add explicite typecasting
+to convert void pointer to destination type.
+
+THE :: Operator
+:: is a scope resolution operator if applied to any variable gives its global variable of same name instead
+of local variable.
+	int a = 3;
+	main()
+	{
+		int a = 4;
+		a = ::a;
+	}
+
+REFERENCE
+reference is alias of a variable. There is stuble differance between pinter and reference
+Rules
+	A> reference must be always intialised
+	B> once initialised cannot refer to other variable
+	C> can create reference to pointer
+	  char *& rToCharPtr;
+	D> variable can have multiple references.
+	E> array of references is not possible unlike array of pointers
+References help to write readable code while achieving object of passing object by address.
+
+RETURING BY REFERENCE
+Do not return local variable by reference, as local variables are decalred on stack which may
+get overwritten after returning and reference may refer to variable in overwritten memory.
+
+CONST QUALIFIER
+Const qualifier helps to replace #define macros as well as to control the scope of variable.
+
+CONST REFERENCES
+Used to convert pass variables to fuction, but doesnt allow function to modify the variable value.
+you cannot initialise non const reference by const variable.
+	int i;
+	const int &r = i;
+This is legale but,
+	const int i;
+	int &r = i
+will give compilation error of type mismatch
+
+BOOL DATA TYPE
+This is new addition to C++
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
+|Chapter4: FUNCTIONS																			|
++===============================================================================================+
+1> FUNCTION PROTOTYPE
+	Must declare function before using as c++ is a strong type check languagae.
+
+2> FUNCTION OVERLOADING
+	Function with same name must differ atleast in type, number or order of the parameters they
+	accept
+
+3> DEFAULT ARGUMENTS TO FUNCTION
+	Default argumnets must be the trailing one.
+	Useful in 2 cases:
+	A> Function almost always have same values.
+	B> Suppose we add a new parameter to the function and extend functions capability and dont want
+	to change older calls to the function, then older calls may use default values.
+
+	Default values could be const, global variable or a function call.
+
+4> Operator overloading
+	Teaches normal c++ operators how to act on userdefined data types.
+	A> ., ::, : cant be overloaded
+	B> can not modify behaviour of operators with basic instrinsic datatypes(will make program unreadable)
+	C> precedance is same as for instrinsic datatypes.
+
+5> Inline functions
+	Each time function call is made time is spent of passing values, passing control, passing return value
+	and getting back the control from where function had called. To pass this we use inline function, function
+    call is replaced by the function code. 
+	 It depends upon compiler to make inline function really inline as when we say function is inline it just 
+	request. If function is too large compiler will treat that function as a normal rather than inline function.
+	No criteria has been defined by c++ standards to make function inline and gives freedom to compiler writers
+	to decide the criteria.
+
+
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
+|Chapter5: CLASSES																				|
++===============================================================================================+
+Intro:
+	C++ extends structures by allowing function in structures.
+	Object is an instance of an class and process of creation of object is called instantiation.
+
+	Data hiding: Data is conceled within class and cannot be accesed by the function outside of the
+	class. This prevents leagal user from commiting programming mistakes.
+	
+	. is a class member acess operator.
+
+1> CLASSES and CONSTRUCTORS
+	Construcotor is a function executed everytime when object is created.
+	Construcor has same name as of class signfies that it is construtor to the compiler.
+	No  return type is construtor as it is only called when object is created, and returning 
+	value doesnt make sense.
+	Compiler provids default zero argument construtor even when we dont define any argument constructor.
+	If we define a one or more argument constructor then its must to define a 0 argument constructor.
+
+2> DESTRUCTOR
+	Destructor is a special function called when object is destroyed.
+	Destructors do not have return type also they dont take any argument as there is only one way to
+	destroy any object.
+
+3> OVERLOADED OPERATORS
+	<no special description>
+
+4> this POINTER
+	"this" is a pointer(contains address) to the object of which it is member.
+	Used when
+	A> Member function has a formal parameter having same name as a data member.
+	B> To return object as a referance from the function of the class of which type object is.
+
+5> UNARY OPERATOR OVERLOADING
+	Return the object by referance so the epressions like following wont give any compilaton problem
+	declaration : One& operator ++();
+	Use			: newObj = ++oldObj;
+	Postfix
+	declaration : One& operator ++(int);
+	Use			: newObj = oldObj++;
+
+6> new AND delete OPERATORS
+	new and delete are the operators used to allocate(from freestore) and deallocate the memory assigned to the pointers.
+	Use:
+		int *pInt = new int a;
+		int *pIntArry = new int [10];
+		int **ppIntArray = new int [10][10]; // illeagal, compiler error
+		int (*ppIntArray)[10] = new int [10][10]; // illeagal, compiler error
+
+		delete pInt;
+		delete	[] pIntArry;
+	(If u delere pIntArry by just 
+	 delete	pIntArry
+	 then it will either delete only 1st mememer of array or corrupt the memory(heap))
+
+7> OBJECT SIZE
+	sizeof  will return size of the object of class.
+	Member fuctions are common among all objects of the classes so when object is created they are
+	not allocated memory.
+	struct and class are same, only differance is default member in a class default members 
+	are private in class while they are public in struct.
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
+|Chapter7: Miscelleneous																		|
++===============================================================================================+
+1> STATIC DATA MEMBERS
+	Used to share common information among objects of class.
+	Defined outside of the class as class is just blueprint of object and doesnt set aside any memory.
+	memory for static members is allocated only once.
+
+2> STATIC MEMBER FUNCTION 
+	Used to manipulate static data only.
+
+	Could be called like <class_name>::<static_function>, which is the correct way, as we call these
+	functions to get common info about all the objects of the class.
+	
+3> CONST MEMBER FUNCTION
+	These will never modify any data member of the class.
+
+4> CONST MEMBER FUNCTION ARGUMENTS
+	Genrerally functions which pass variable by reference should pass it as const so that original
+	value does not get modified by programming mistake.
+
+5> CONST OBJECTS
+	Only const member functions could be called with the const objects, as they guarntee that they
+	will not modify any of data member.
+	Only constructor and destructor allows to modify the data members of const functions.
+
+6> OVERLOADED ASSIGMENT OPERATOR and COPY CONSTRUCTOR
+	c1 = c2;	// default provided assignment operator
+	<class name>	c3 = c2;	// default copy construtor
+	if u want to perform more complex actions while using assignment operator or copy construtor just override them.
+	Overloaded = operator
+	1> takes reference of the object as argument so time is not wasted in copying object
+	2> returns reference of the calling object using this pointer so that time is not wasted in returing value also
+		= operator chained like c4 = c3 = c2 = c1 etc.
+		syntax:         one& one::operator =(one&)
+
+	Copy  constructor
+	1> takes reference of the object as argument so time is not wasted in copying object, also if u pass it by
+	value it will create infinite chain of the copy constructors. Generally compiler gives error if you dont pass value 
+	by reference.
+
+	2> Doesnt return anything as it is constructor
+		syntax:         one::one(one&)
+
+7> DATA CONVERSION:
+	BASIC to USER_DEFINED
+	if u say
+		one obj = 1;// will search for one::one(int)
+	if u say 
+		one obj;
+		obj = 1; // will search for one::operator =(int)
+	Also in 2nd expmple it is possible, if u dont provide any overidden = operator, compiler will
+	search for construtor taking int as argument and will create temporary object and then it uses
+		one& operator =(one ) (and not one& operator =(one &)) to copy temporary object.
+	here if both are provided operator =(int) is preffered.
+
+
+	USER_DEFINED to BASIC
+	To convert 
+		int a; one obj;
+	   	a = obj; 
+	compiler will search for overloaded = operator, when it finds that int class doesnt contain
+	int operator =(one &); it will search for "int" cast operator in userdefined class. So we define 
+	int cast operator in user defined class.
+
+
+	IN SOURCE CLASS
+	define a cast operator
+
+	IN DEST CLASS
+	define a one argument constructor
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
+|Chapter9: Inheritance																			|
++===============================================================================================+
+	The derived class can inherite all the capabilities of base class as well as can add new capabilities.
+	This increases code reusability.
+	Protected members behave like private members till child class is derived.
+	Private members of base class are not accessible in derived class
+	Compiler executes constructor function of base class and then of derived class.
+	Derived class could add its own function which override base class functions.
+	
+	PUBLIC INHERITANCE:
+		public and protected members of base become public and protected members of the derived class.
+		private members of base class are not accessible in derived class.
+
+
+	PRIVATE INHERITANCE:
+		public and protected members of base become private members of the derived class.
+		private members of base class are not accessible in derived class.
+
+	PROTECTED INHERITANCE:
+		public and protected members of base become protected members of the derived class.
+		private members of base class are not accessible in derived class.
+
+		default access specifier while inheriting class is private.
+
+	MULTIPLE LEVEL INHERITANCE
+		When there is vertical level of inheritance i.e base class used to derive is already derived from
+		other class, is called multiple level inheritance.
+
+	MULTIPLE INHERITANCE.
+		When derived class is derived from more than two base classes.
+		syntax:  class derived: public base1, private base2, base3
+		third class base3 is inherited privatly as it is default one.
+
+		If base classes contain function with same name, compiler tried to inherite both of these functions 
+		which creates ambiguity. Then to resolve the ambiguity just declare which function among two to use
+		by saying			base_class_name :: function_name; in the class definition.
+
+		Constructors: In case of multiple inheritance. constructors of the base called are called first in
+					the order used in the class declaration. There calls are not depend upon order in constructor
+					definition.
+						Constructor definition
+						derived(a,b,c,d,e,f):base1(a,b), base2(c,d), base3(e,f);
+
+					
+		Destructors in the class are called exactly in the reverse order of constructors.
+		Why constructors are called in order of class declaration because, if we define two constructor who call 
+		base class construtor in two differant orders(depending upon order in constructor declaration) but we
+		can call destructor only in one way. As it is neccessory to call destructor in only one way, the order
+		will not be exactly reverse of constructor if constructors are called in two ways.
+
+	FUNCTIONS THAT DO NOT GET INHERITED
+		Zero argument constructor, a destructor, an assignment operator and a copy constructor do not get
+		inherited. However if we dont define these, compiler adds them by default in the derived class.
+
+
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
+|Chapter10 Virtual functions																	|
++===============================================================================================+
+Virtual fuctions are called with the pointer to the function.
+Virtual functions are called with the pointer to
+
+
+	
+=================================================================================================
+=================================================================================================
+
+
++===============================================================================================+
+|Chapter12: Advance Features																	|
++===============================================================================================+
+COMPOSTION OF CLASSES
+	It is useful when classes act like datatype.
+
+FREIND FUNCTIONS
+	Friend functions are the function which are allowed to access and manipulate private data members 
+	of the class outside of the class. Its used when you need to define a function which manipulates/access
+	private data members of the two distinct classes.
+	class two;	//declaration which is must before prototyping frnd funciton in class one
+	class one{
+		public:
+			friend void accessBoth(one, two);
+	}
+
+	class two{
+		public:
+			friend void accessBoth(one, two);
+	}
+
+OVERLOADED << and >> 
+	class one{
+			int i;
+		public:
+			friend ostream& operator << (ostream& , one&)
+	}
+	ostream& operator << (ostream& o, one& x)
+	{
+		o << x.i;
+	}
+	
+here statement 
+	one obj
+	cout << obj; // this is not converted into cout.operator <<(obj) since operator is not member of the ostream class
+
+FRIEND FUNCTION USAGE
+	a> To access private data members from non-member functions
+	b> To increase versality of overloaded operators.
+		Class one{
+			public:
+				one(int i);
+				one operator *(one);
+		}
+		one obj; 
+		obj = obj * 2;// this will call one arg constructor and the overloaded * operator 
+		obj = 2 * obj;// as we cant overload int class we use friend function in the class one
+					  // friend one operator *(int i, one o); this will do the job
+
+FRIEND CLASS
+	All functions of the class become friends.
+
+	Altough friend function violate the law that functions outside class cant access private data members.
+	This is why cpp is not pure OO language. Since we cant make function friend till we have source code of class
+	it doesnt violate class intergrity.
+
+CONTAINERS and SMART POINTERS
+
+
+POINTERS to MEMBERS.
+
+explicit:
+	To prevent implicit conversion simple solution is dont define conversion operator, but since there may
+	be a constructor defined which could carry out this implicitly. To prevent such conversion we declare
+	constructor as a explicit. so until and unless explicitly conversion is specified, conversion is not
+	carried out.
+
+mutable:
+	Despite of object being constat you may want some of the data members to be changed. Declare such members as
+	a mutable. mutable are allowed to manipulate in the const members functions, the only functions could be called
+	by const objects after constructor and destructors.
+	
+namespace:
+	1> definition is same as of class, except last semicolon
+	2>  
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
+|Chapter13: Template																			|
++===============================================================================================+
+	Template is the mechanism which make possible to use one function or class to handle many 
+	different data types. When used with functions its called function template and when used with
+	the class its called class template.
+
+	
+Function Template
+	When we write a different functions such as sort, swap, min, max for different data types
+	A> we have to rewrite code
+	B> More disk space for program
+	C> if any bug, error found in one we have to replicate it in all functions
+
+	to bypass this we write only one template function, which handles all the data types
+	ex MinOfTwo:
+
+	template <class T>
+	T MinOfTwo(T a, T b)
+	{
+		T c ;
+		c = (a < b )? a : b;
+		return c;
+	}
+
+	We can use this function even for user-defined data types, just dont forget to override the < operator
+	in the class.
+	Inheritance and composition provides way to reuse the objects code while template provide way to
+	reuse the source code. Standard type conversion are not allowed in the template functions. Compiler first
+	looks for the existing instances and if that instance is not found exact new instance is created.
+	Whenever compiler comes accross template function is called for a new data type, it creates new copy
+	function for that datatype.
+
+	If u want template function behave in other way for some data type then manually override that function.
+	
+	multiple argument template:
+	template <class a, class b class c>
+	void fun(T a, T b, T c)
+
+	Macro Vs Template: Its same as inline functions Vs Macro
+	A> no type checking of arguments 
+	B> if post incremented variable is passed then its replicated in whole macro
+	C> no return type specification
+
+Template Class: 
+	Single class whos specification would work for all data types, including userdefined data types.
+	Ex LL, stack.
+
+	1> template arguments can take default argumensts
+	template <class T, int max = 10>
+	class stack{
+			T a[max];
+		public:
+	};
+
+	2> function outside of class with return type
+	stack<T> stack<T>::fun(stack a)
+
+	3> Can inherite new template from an existing one.
+	template <class T>
+	class newsample:public sample <T>
+
+	4> If some of the functionality of a template does not depend upon type, it can be put in common base.
+
+	5> Template shoud be used while creating typesafe class which could  operate on data of any type.
+
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
+|Chapter3: Graduating to CPP									|
++===============================================================================================+
+
+
+	
+=================================================================================================
+=================================================================================================
+
+
