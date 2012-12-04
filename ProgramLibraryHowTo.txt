@@ -1,0 +1,55 @@
+/*
+ *	Author: Rahul Patil
+ *  <rahul.deshmukhpatil@gmail.com>
+ */
+
+/*
+ * following are the notes from the link called http://www.tldp.org/HOWTO/Program-Library-HOWTO/
+ * Please refer for the whole detailed document
+ */
+
++===============================================================================================+
+|Chapter1: INTRODUCTION																			|
++===============================================================================================+
+
++===============================================================================================+
+|Chapter2: STATIC LIB																			|
++===============================================================================================+
+
+
++===============================================================================================+
+|Chapter3: SHARED LIBRARY																		|
++===============================================================================================+
+	shared lib usage:
+1> programs could be linked to older lib
+2> could override lib or function in lib
+3> do this while progrms are runing and using existing lib
+
+Naming
+1> so_name : 
+	- this is link to the real name, see later
+	- lib<name_of_lib>.so._period_._version_no_
+	- eg: libreadline.0.2
+	- version no is somthing that changes with interface of lib
+
+2> real_name:
+	- file that acatually contains the code of lib
+	- so_name._period_._minor_no._release_no_._period_
+	- last two, release and period are optional
+
+- You install lib in one of the specefic directories
+- Then run ldconfig, which creates a symbolic link to the real_name as well setup /etc/ld.so.cache
+- ldconfig doesnot setup linker name
+- linker name is just symbolic link to the latest lib name
+
+3.2 Hw libraries are used:
+- all exe with ELF format first call loader /lib/ld-linux.so.X.
+- this loader load all required shared lib
+- Required shared libs are searched in the directories whos list is mentioned in /etc/ld.so.conf
+- include <file_name> in /etc/ld.so.conf will append list in file_name to search directoris list
+- If u want to override any specefic lib function, then mention the lib name (.o files) which contain
+	source code of overided fucntions in the /etc/ld.so.preload
+- Above method may give some clumsy errors, So follow http://www.ibm.com/developerworks/linux/library/l-glibc/index.html 
+  to override the functions in builtin lib in reallife.
+
+
