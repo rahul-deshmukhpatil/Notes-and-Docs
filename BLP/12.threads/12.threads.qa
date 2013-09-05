@@ -1,0 +1,17 @@
+1> What does exactly means file descriptora and signal handlers are shared in threads?
+
+2> How does process timestamp is devided into threads?
+
+3> How to call pthread_join to wait for any thread?
+
+4> How to pass var arg functions to the new thread?
+
+5> Why does compiler doesnot give any warning for thread function, does not returning any value, when pthread_exit is used?
+
+6> Why and how to share semaphore between process?
+
+7> Does if thread is waiting on sem_wait, and another thread calls sem_post, control is tranffered to thread waiting? or it waits till the other thread is scheduled? 
+
+8> Which thread is scheduled imediatly after calling pthread_create()?
+
+ 

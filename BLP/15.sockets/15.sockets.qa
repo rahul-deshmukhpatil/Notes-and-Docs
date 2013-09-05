@@ -1,0 +1,19 @@
+1> Where names sockets are created? curr dir? or common area?
+	current
+2> Where unnamed sockets are created? /var/tmp? what is name of files belonging to these sockets?
+
+3> Whas is AF in AF_UNIX?
+	it is Address Family, that is Domain.
+
+4> What does mean by "establish and maintain connection" in case of TCP socket?
+
+5> What does UDP sockets are enexpensive in terms of resources?
+
+6> Is it speed difference in TCP and UDP packets?
+
+7> What is use AF_IPX domain?
+
+8> What does mean by stream(TCP) and service (DGRAM)?
+
+9> If client is waiting on connect and handled signal comes, it will fail  call. But it wil not abort connection attemp and client must check asynchronsly if connection was successful. What does this means?
+

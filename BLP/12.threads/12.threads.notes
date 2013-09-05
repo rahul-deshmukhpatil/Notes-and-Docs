@@ -1,0 +1,90 @@
+1> Threads
+	- object of activity within the program
+	- strads of execution
+	- sequence of control flow within program
+
+
+	Fork:
+		- makes copy of program from where its called
+		
+	- global var, file descriptors, signal handlers are shared
+
+	
+	- Initial Linux support to thread was provided in 1996, had descripencies between POSIX and implemention spl regarding the singnals,
+	- NGPT : new gen posix threads and NPTL: native posix thread lib, were the projects fr kernel changes required to completely support POSIX in kernel.
+	- NGPT in 2002 backed NPTL for unified effort to support POSIX.
+	
+
+2> Advantages n Disadvantages
+
+	A1: programs could appear to be doing 2 things simultenously
+	A2: i/p => calc => o/p type could be designed in better manner with 3 threads assigned to each activity.
+	A3: better performance with each thread running on diff core
+	A4: Much less work is to be done while swithching between threads. More co-orination and more easily is possbile between threads than the two process
+
+	D1: desing is dificult
+	D2: hard to debug
+	D3: problem must be converted into design of two threads could be processed simultenously.
+
+
+3> First thread Program
+	Reentrant code: code which could be called by several threads simulteneously, and still works correctly. Does not contain global varible.
+
+	A> _REENTRENT: defining this does 3 things
+		1> causes prototypes fr normal fucntions to be change to reentrent safe equivalent with _r suffix
+		2> some macros in stdio.h are converted into reentrent safe fuctions.
+		3> errno.h  call to varible to err is changed to funciton errno which returns true errno for that thread.
+	B> pthread.h : contains POSIX supported declaration of the thread creation functions
+	C> lpthread: contains the definations
+
+
+	#include <pthread.h>
+	int pthread_create(pthread_t *thread, pthread_attr_t *attr, void
+	*(*start_routine)(void *), void *arg);
+ 
+	A> creates the thread.
+	B> returns 0 if no err or returns error number,
+	
+	#include <pthread.h>
+	void pthread_exit(void *retval);
+	performed while returning from new thread
+	
+	#include <pthread.h>
+	int pthread_join(pthread_t th, void **thread_return);
+	wait till thread th returns. return value is captured into thread_return 	
+	
+
+4> Synchronisation:
+	Semaphore:
+	- special type of variable, which could be incremented or decremented but to which atomic "test and set" access is guarnteed if two threads try to acess it in case of multithreaded environment.
+	
+	- have two implementaions : pthread and v5, both hav different syntax but same functionality
+	- could take any value from 0 to n, but generally binary semaphore is used which just has value 0 or 1
+	include <semaphore.h>
+	int sem_init(sem_t *sem, int pshared, unsigned int value);
+	
+	-pshared is 1 ameans semaphore is shared between processes and linux doesnt support it.
+		if you pass pshared as 1, sem_init will fail.
+
+
+	int sem_wait(sem_t * sem); // decrement semaphore by 1 if its > 0, if already 0 then it waits till it is > 0
+	int sem_post(sem_t * sem); // increment semaphore by 1 if its < value, if already == value waits till it is < value
+ 
+	sem_trywait // non blocking partner of sem_wait
+
+	int sem_destroy(sem_t * sem); // you will get error if try to destroy semaphore already in use by other thread.
+
+
+	Mutex: Mutual exclusion. lock the code protected by mutex.
+
+	#include <pthread.h>
+	int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *mutexattr);
+	int pthread_mutex_lock(pthread_mutex_t *mutex));
+	int pthread_mutex_unlock(pthread_mutex_t *mutex);
+	int pthread_mutex_destroy(pthread_mutex_t *mutex);
+	
+
+	- By default mutex type is fast, which means if it is locked by any thread then nobody can use it until its unlocked. If same thread tries to lock it twice, its potentially cuases deadlock. Other type allows to lock the mutex if its already locked by same thread and same number of times lock has been called unlock gets called.
+
+
+	
