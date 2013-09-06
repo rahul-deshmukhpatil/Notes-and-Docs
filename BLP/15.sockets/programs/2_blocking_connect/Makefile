@@ -10,7 +10,7 @@ CLIENT_SOURCE = client_socket.c
 
 .DEFAULT_GOAL := all
 
-.cpp.o:
+.c .o:
 	${CC} -O3 -g ${CFLAGS} $< -o $@ 
 server: ${SERVER_OBJECTS}
 	${CC} -o $@ ${SERVER_OBJECTS} ${LIBS}
