@@ -34,6 +34,32 @@ Process Mangament
 	-	process when completes the execution placed into zombie state, until parent calls wait or waitpid();
 	-	wait, waitpid, wait3 and wait4 and c lib functions which internally calls wait.
 	
+Process Descriptor and Task Struct
+	-	Task list is circular list of process(task) descriptors(task_array in OS which use static array to store it).
+	-	task_struct is 1.7k struct which contains every possible info required to execute the process.
+	
+Allocating the Process Descriptor
+	-	They are allocated in kernel memory via slab allocater which uses object resue and cache coloring.
+	-	Previous to 2.6 kernel, tast_struct was lying at the end of kernel stack of process.
+	-	Which was to make essy to calculte pointer to the task struct.
+	-	But now its in thread_info struct which contains pointer to task_struct of the process.
+
+Storing process descriptors
+	-	Each process is identified by pid(at userspace level), a member into task_struct of type pid_t(process identification number)
+	-	This is unique, at default max value is 32768 for compatibility with older linux/unix versions.
+	-	This max value could be changed by modifying file /proc/sys/kernel/pid_max or sysctl -w kernel.pid_max=<NUMBER>
+	-	At kernel level, process are referred by pointer to task_struct.
+	-	Finding current process task_struct is crucial operation.	
+	-	'current' is macros which gives pointer to current task_struct
+	-	'current_thread_info' gives pointer to the current process thread_info residing at the base of kernel stack.
+	-	on x86 arch where few registers are present, its implemented as(considering the	8kb kernel stack) 
+		mov	eax, 8192 	;make last 13 bits 0
+		andl esp, eax	;make last 13 digits of stack pointer 0 to point base/end.
+	-	Architerctures with rich regesters store pointer to current process into the specail register for it.
+	
+		
+				
+
 
 	
 				
