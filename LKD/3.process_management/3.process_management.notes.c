@@ -57,7 +57,39 @@ Storing process descriptors
 		andl esp, eax	;make last 13 digits of stack pointer 0 to point base/end.
 	-	Architerctures with rich regesters store pointer to current process into the specail register for it.
 	
-		
+Process states:
+	-	Process state is stored in 'state' variable of task_struct.
+	A> TASK_RUNNABLE:
+	-	Either it is task running or task in the runnable queue.
+	
+	B> TASK_INTRRUPTABLE
+	-	task is waiting for something to happen, disk I/O or lock. After which it will be runnable.
+	-	If task in TASK_INTRRUPTABLE recieves a signal it becomes runnable.
+	
+	C> TASK_UNINTRRUPTABLE	
+	-	Similar to TASK_INTRRUPTABLE just that task doesnt wakeup upon recieving any signal.
+	-	Used where task must wait to happen some event without intrruption.
+	-	Blocking event is expected to happen quickly.
+	-	Because these processes doesnt respond to the signal they are less often used.
+
+	D>	TASK_ZOMBIE
+	-	Task is terminated but parent has not called wait4().
+	-	Process descriptor of the child process is not deallocated till parent inquires through wait();
+
+	E>	TASK_STOPPED
+	-	Task is not running, neither it is eligible to run.
+	-	Task is put into TASK_STOPPED when it recieves signal like SIGSTOP, SIGTTIN, SIGTSTP or any signal while debugging.
+	 
+
+Manipulating the Current Process State:
+	
+	A> set_task_state(task, state) { task->state = state;}
+	-	used to set state of `task` to `state`.
+	-	It also provides memory barrier to ordersing on the other process(This is only needed on SMP process)
+	-	set_current_state(state); <=> set_task_state(current, state)
+	
+	
+
 				
 
 
