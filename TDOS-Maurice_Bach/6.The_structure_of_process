@@ -27,4 +27,37 @@ Process states
 	h> process created using fork.
 	i> process termiated from exit.
 
+	Process has hardly control over its state transitions.
+	-	process could call fork to create new process but it depends where kernel puts new process
+		a> ready to run
+		b> ready to run-swapped
+	-	process may exit without explicitly invoking 'exit()' call due to some external events
+	-	process in userspace cannot preempt the running process in kernel mode
+	-	process may enter into kernel mode, but will return to userspace only after completion of system call
+	-	process table is something which each process has and fields of it are accessed by kernel.
+	-	u-area fields are accessed by kernel only of running process. so u-area is created while only creating process.
+			U-area is used when process switches context
+			a> from ready to run in mem to kernel running
+			b> from preempted to user running	
+			c> to swap in-out the pages to-from secondary memory
+	- process table contains the member which tells size of process so kernel can allocate the mem to process.
+	- Each process has UID which determines owner of process and in-turn which process can send signal to another.
+	- PID tells relationship process with another and setup while process in created mode in fork() call.
+	- Event descriptor for sleep(), its use is sleep() algorithm. 
+	- Schduling parameters
+	- Signal field to list all pending signals
+	- Timers to account the kernel utilization of the process, scheduling process.
+	- user-set timer field is used to send alarm signal to process.
+	- user area contains the pointer to process table entry for process.
+	- array which tell how to react to the singals.
+	- real and effective userID for diffrent privileges.
+	- error field record error in systemcall
+	- return field contains return value of system call
+	- I/O fields contains size and pointer to area of I/O.
+	- open files list.
+	- pwd and current root describe file system env of process
+	- limit field to limit size of process and size of files process creates
+	- Permission mode masks  mode setting on file process creates.
+
+	
 	
