@@ -1,0 +1,30 @@
+6.1>state Model of process
+	Process table entry
+	u-Area	
+
+6.2> Memory mgmt, how os-hardware co-oprate for virtual memory.
+
+6.3> Context of process, algorithms to manipulate context of process.
+
+6.4> How kernel saves context of process during interrupt, sys call, context switch and how it resumes the process suspended earlier.
+
+6.5> sys calls algorithms used to manipulate the address space of the process.
+
+6.6> sys calls used to putting process into sleep and waking it up.
+ 
+
+6.1 Process states, table entry and u-area
+===============================================================================
+
+Process states
+	a> user running.
+	b> kernel running.
+	c> process ready to run.
+	d> process blocked in kernel/sleep.
+	e> sleeped swapped out by swapper (process 0).
+	f> ready to run swapped out.
+	g> process switching from kernel to user mode.
+	h> process created using fork.
+	i> process termiated from exit.
+
+	
