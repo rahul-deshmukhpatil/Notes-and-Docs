@@ -16,6 +16,7 @@ c++ is strong type checked lang i.e prototype of function must be known before c
 FLEXIBLE DECLARATIONS
 declare variables at the time of using them, not neccessory to declare them at starting of code block.
 Eases the code reading as variables are declared where they are used.
+As well you do not need to initialize variables if control does not reach there use point.
 
 STRUCTURE ENUM and UNION SYNTAX
 could create obj of struct, enum and union with just corrosponding name.
@@ -84,6 +85,7 @@ This is new addition to C++
 +===============================================================================================+
 1> FUNCTION PROTOTYPE
 	Must declare function before using as c++ is a strong type check languagae.
+	Declaration as well has scope.
 
 2> FUNCTION OVERLOADING
 	Function with same name must differ atleast in type, number or order of the parameters they
@@ -106,7 +108,7 @@ This is new addition to C++
 
 5> Inline functions
 	Each time function call is made time is spent of passing values, passing control, passing return value
-	and getting back the control from where function had called. To pass this we use inline function, function
+	and getting back the control from where function had called. To bypass this we use inline function, function
     call is replaced by the function code. 
 	 It depends upon compiler to make inline function really inline as when we say function is inline it just 
 	request. If function is too large compiler will treat that function as a normal rather than inline function.
@@ -132,24 +134,26 @@ Intro:
 1> CLASSES and CONSTRUCTORS
 	Construcotor is a function executed everytime when object is created.
 	Construcor has same name as of class signfies that it is construtor to the compiler.
-	No  return type is construtor as it is only called when object is created, and returning 
+	No  return type is construtor as it is only called AUTOMATICALLY when object is created, and returning 
 	value doesnt make sense.
 	Compiler provids default zero argument construtor even when we dont define any argument constructor.
 	If we define a one or more argument constructor then its must to define a 0 argument constructor.
 
 2> DESTRUCTOR
 	Destructor is a special function called when object is destroyed.
-	Destructors do not have return type also they dont take any argument as there is only one way to
+	Destructors do not have return type also they dont take any argument as philosophy says there is only one way to
 	destroy any object.
 
 3> OVERLOADED OPERATORS
-	<no special description>
+	They enable use to use +, - , && like operators, which could be used with inbuilt data types, 
+	with the user defined datatypes like struct and classes. 
 
 4> this POINTER
-	"this" is a pointer(contains address) to the object of which it is member.
+	this pointer comes into scenario when we call any class member function.
+	"this" is a pointer(contains address) to the object of which function is member.
 	Used when
 	A> Member function has a formal parameter having same name as a data member.
-	B> To return object as a referance from the function of the class of which type object is.
+	B> To return self reference/value of the object for which member function is called.
 
 5> UNARY OPERATOR OVERLOADING
 	Return the object by referance so the epressions like following wont give any compilaton problem
@@ -164,21 +168,27 @@ Intro:
 	Use:
 		int *pInt = new int a;
 		int *pIntArry = new int [10];
+
+		// you cannot directly assign double dimentional memory using new.
 		int **ppIntArray = new int [10][10]; // illeagal, compiler error
 		int (*ppIntArray)[10] = new int [10][10]; // illeagal, compiler error
 
 		delete pInt;
 		delete	[] pIntArry;
 	(If u delere pIntArry by just 
-	 delete	pIntArry
+	 delete	pIntArry;
 	 then it will either delete only 1st mememer of array or corrupt the memory(heap))
 
 7> OBJECT SIZE
 	sizeof  will return size of the object of class.
 	Member fuctions are common among all objects of the classes so when object is created they are
 	not allocated memory.
-	struct and class are same, only differance is default member in a class default members 
-	are private in class while they are public in struct.
+	struct and class are same, only differance is 
+	1> default members	are private in class while they are public in struct.
+	2> While inheriting if access specifier is not provided to base class,
+		then if derived class is declared struct then base class is inherited publically.
+		While if derived class is declared class then base class inherited privatly.
+	
 =================================================================================================
 =================================================================================================
 
