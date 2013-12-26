@@ -193,6 +193,75 @@ Intro:
 =================================================================================================
 
 +===============================================================================================+
+|Chapter6: C++ Free Store																								|
++===============================================================================================+
+
+1> new:
+	. Allocates memory from the free store(heap)
+	. Calls the constructor of an object
+	. Returns pointer of type class * and not void * 
+	. Could be override in the class 
+	
+	delete:
+	. frees memory pointed by the pointer.
+	. calls the destructor of an object to which pointer is pointing
+	. could be override in the class. but 
+	. never delete pointer twice.
+
+2> Free store exaustion:
+	. when maximum memory is already allocated, new returns NULL.
+	. To handler this scenario, c++ internally maintains a function pointer _new_handler.
+	. new_handler could be set using set_new_handler(void (*fp)());
+	  where fp could be pointing to any memWarning function.
+	. ideally memWarning should free some memory so new could return some memory and program continue. 
+
+3> Custom new and delete 
+	. It is possible to overide new and delete globally.
+	void *new(int size)
+	{	 
+		void *mem = malloc(size);
+		if(!mem)
+			_new_handler();
+		return mem;
+	}
+
+	void delete(void *mem)
+	{
+		free(mem);
+	}
+
+4> new and delete in class 
+	. overided new and delete are always static.
+	class x
+	{
+		public:
+			void * new(int size);
+			void delete();
+	};
+	
+	. this pointer is not valid in new. Obj is still to be created.
+	. delete could not be overloaded, there is only one way to destroy object
+	. never mix free-delete, new-malloc,  becauase they have different wrapper funtions
+		which manipulate data about allocated mem.
+
+	Sequence:
+		a> new
+		b> constructor
+		c> destructor
+		d> delete
+
+5> Objects at predetermined location
+	. new(ptr) class_name(); will create object of class_name at ptr location.
+	. you will have to use placement destructor to delete same object 
+		ptr->~class_name.
+	. object created at predetemined location must be delete by placement destructor and vice-versa.
+	. Use of placement new, could help in scenario when hardware talks with software via mem-location.
+	. As well it is faster than conventional new and delete.
+	
+=================================================================================================
+=================================================================================================
+
++===============================================================================================+
 |Chapter7: Miscelleneous																		|
 +===============================================================================================+
 1> STATIC DATA MEMBERS
