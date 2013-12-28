@@ -265,7 +265,7 @@ Intro:
 |Chapter7: Miscelleneous																		|
 +===============================================================================================+
 1> STATIC DATA MEMBERS
-	Used to share common information among objects of class.
+	Used to share common information among objects of same class.
 	Defined outside of the class as class is just blueprint of object and doesnt set aside any memory.
 	memory for static members is allocated only once.
 
@@ -277,6 +277,7 @@ Intro:
 	
 3> CONST MEMBER FUNCTION
 	These will never modify any data member of the class.
+	These could be only called by costant objects.
 
 4> CONST MEMBER FUNCTION ARGUMENTS
 	Genrerally functions which pass variable by reference should pass it as const so that original
@@ -290,12 +291,12 @@ Intro:
 6> OVERLOADED ASSIGMENT OPERATOR and COPY CONSTRUCTOR
 	c1 = c2;	// default provided assignment operator
 	<class name>	c3 = c2;	// default copy construtor
-	if u want to perform more complex actions while using assignment operator or copy construtor just override them.
+	if you want to perform more complex actions while using assignment operator or copy construtor just override them.
 	Overloaded = operator
-	1> takes reference of the object as argument so time is not wasted in copying object
+	1> takes reference of the object(declare it as const) as argument so time is not wasted in copying object
 	2> returns reference of the calling object using this pointer so that time is not wasted in returing value also
 		= operator chained like c4 = c3 = c2 = c1 etc.
-		syntax:         one& one::operator =(one&)
+		syntax:         one& one::operator =(const one&)
 
 	Copy  constructor
 	1> takes reference of the object as argument so time is not wasted in copying object, also if u pass it by
@@ -314,7 +315,7 @@ Intro:
 		obj = 1; // will search for one::operator =(int)
 	Also in 2nd expmple it is possible, if u dont provide any overidden = operator, compiler will
 	search for construtor taking int as argument and will create temporary object and then it uses
-		one& operator =(one ) (and not one& operator =(one &)) to copy temporary object.
+		one& operator =(one &) (and not one& operator =(one)) to copy temporary object.
 	here if both are provided operator =(int) is preffered.
 
 
