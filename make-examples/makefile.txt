@@ -1,0 +1,31 @@
+Makefile:
+	If is set of rules used to upadate existing and creat new files or run some commands depending upon last modification time of the source files.
+	General make file syntax looks like
+
+target : prerequisite
+	recipe
+
+	prerequisite could be nothing. While target could be name of action(phony action) rather than output file.
+	recipe is rule for updation.
+
+	recipe could be one of more, specified on same line with ';' or multiple lines  with '\ ' at the end
+	.RECIPEPREFIX is character that must appear before each recipe.
+	Default make file is makefile or Makefile , you could specify with -f option
+
+2.3 How to process a default Goal:
+
+	Make file starts with first goal in file, which could be overided with option on command line or .DEFAULT_GOAL variable.
+	Make file only updates target with recipe rule, when source file is recent than object file. To build target all its prerequisites must be updated.
+
+2.4 Variables:
+	you could forget files to add and remove from all places in all recipes. To simplify we could collect all files under one variable.
+	objects = a.o b.o \
+		c.o
+	target : $(objects)	
+			edit -o edit $(objects)
+	
+2.5 Implicit Rules:
+	Make file has some implicit rules
+	a.o: a.h will compile a.c to result into a.o, with cc. So even if u do not provide any recipe it has basic recipe of cc -c a.o a.c
+
+
