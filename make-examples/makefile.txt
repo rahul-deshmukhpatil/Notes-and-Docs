@@ -29,3 +29,19 @@ target : prerequisite
 	a.o: a.h will compile a.c to result into a.o, with cc. So even if u do not provide any recipe it has basic recipe of cc -c a.o a.c
 
 
+3.1 Makefile contents
+	a> explicit rules to make target
+	b> implicit rules to make target files having certain type
+	c> directives: 
+			to compile certain part depending upon some condition
+			include some file
+			Defining a variable from a verbatim string containing multiple lines
+	d> variables
+	e> comments with #
+
+3.2 Spliting line wiht \, white spaces before \ and at the begening of new line are convertd into single space if it is not POSIX makefile(.POSIX).
+
+3.3 Makefile name:
+	default name for make file is makefile, Makefile and GNUmakefile. Makefile is preferred because it appears first.
+	You could specify other makefile name by -f or --file commandline option, then default makefiles are ignored.
+
