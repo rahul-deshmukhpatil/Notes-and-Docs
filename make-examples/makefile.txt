@@ -41,7 +41,25 @@ target : prerequisite
 
 3.2 Spliting line wiht \, white spaces before \ and at the begening of new line are convertd into single space if it is not POSIX makefile(.POSIX).
 
-3.3 Makefile name:
+    Makefile name:
 	default name for make file is makefile, Makefile and GNUmakefile. Makefile is preferred because it appears first.
 	You could specify other makefile name by -f or --file commandline option, then default makefiles are ignored.
+
+3.3 Including other files
+	Other make files could be included in make files
+	a> when you have common enviromental variables for multiple make files, create a makefile with env varibles and include it in all makefiles
+	b> when you want pre-requisites names in one make file, rather than traditional method of appending prerequisite rules at the end of main makefile
+
+	It could be done with
+	include fileToBeIncluded
+	e.g include foo *.mk 
+	a> *.mk will expand
+	b> it searches for included files in
+		- current dir
+		- dir provided with -I or --include-dir as option to make
+		- some dirs /usr/include/ /usr/gnu/include /usr/local/include
+		
+	if some included makefile is not present only warning message is generated.
+	to avoide this warning use -include or sinclude instead of include
+	
 
