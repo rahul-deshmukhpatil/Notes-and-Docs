@@ -9,7 +9,9 @@
 2. Prefer const, enum , inline over	#define macro variables
 		a. macros do not have scope, they are global till #undef is done
 		b. no return type checking
- 		c. macros are not logged in symbol tables, hard to debug
+ 		c. macros are not logged in symbol tables, hard to debug if macro is in
+			3rd party lib as you will see value of macro in compiler error which
+			does not make sense.
 		d. macros do not make sense when arguments passed is complex expression
 
 		c++ requires definition of anything that you use. But class static
@@ -61,4 +63,22 @@
 			to get/set these static variables. But any local/global non-const static varible
 			is suseptible to bug, in case of multiple threads. Only solution is to manually
 			invoke the reference(to static members) in single threaded startup. 
-		
+
+5. C++ silent function additions	
+		a.	If default constructor, copy constructor, operator=, destructor are not provided
+			explicitly then they are added when compiler finds need to add them. Destructor
+			added by compiler is non-virtual if in base class(if present) it is not virtual.
+			In default constructor compiler calls constructors of the base classes and the
+			non static member data objects in the order they are declared. For integral types 
+			compiler does the bitwise copying. 
+				If class has a reference variable or const variables, as these variables could
+			be initialized only in the initialization list, compiler refuses to provide the
+			copy constructor or operator=.
+
+6. Explicitly disallow use of compiler generated functions you do not want
+		a.	Some obejcts are uniq and you do not want the copying of them by the implicit
+			copy constructor or operator=, then make it private. But this will allow 
+			member functions or friend functions to call them. And generate the link time
+			error. So make it private in the base class Uncopyable, which will generate the
+			compile time error.
+		 		
