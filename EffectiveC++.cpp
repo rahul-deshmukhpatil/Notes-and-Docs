@@ -81,4 +81,76 @@
 			member functions or friend functions to call them. And generate the link time
 			error. So make it private in the base class Uncopyable, which will generate the
 			compile time error.
-		 		
+
+7. Declare destructor virtual in polymorphic class
+		a.	Use virtual destructors only in
+			I> polymorphic classes, which are inherited
+			II> Or if any other fuction is virtual, which is basically sign on inheritance later.
+	
+		b.	STL classes mostly do not have the virtual destructors, So do not inherite them
+			and try to destroy polymorphically.
+		
+		c.	Do not use virtual destructor in the classes which are just meant to be inherited
+			and do not contain any object of other than integral type, as data member.
+			eg Uncopyable/noncopyable. 
+
+8. Prevent exception from leaving destructors
+		a.	Whenever exception is raised the objects on the stack are unwinded by calling the
+			destructors. If such unwinding destructors raises any excpetion further, this 
+			leads to the undefined behaviour(if not crash), which is very hard to detect.
+			c++ does not like exceptions that emit the destructor.
+		
+		b.	There could be situation where destructor must have to call fuction that raises 
+			the exception. There are two ways to mitigate this
+			I>	Abort in the catch clock of such exception in destructor. This will prevent
+				the undefined behaviour later.
+			II>	Swallow the excption raised by just logging the excpetion. This is bad idea,
+				but will let you run the program.
+
+		c.	In above case you may provide functionality to call the function explicitly as 
+			which is being called from destructor. As well back up call to such function 
+			will suffice in case of clients of such function do not call "the function"
+			eg.
+				class DBConn {
+						bool closed;
+					public:
+						close() throw DBConnEx 
+						{ 
+							db.close();
+							closed=true;
+						}
+						~DBConn 
+						{
+							if(!closed)
+							{
+								try
+								{
+									db.close();
+								}
+								catch
+								{
+									//swallow by logging exception raised
+									//or call std::abort to terminate
+								}
+							}
+						}		
+				} 	
+
+9.	Calling virtual functions from constructor or destructor
+	you should not call virtual function from the constructor or destructor	
+		a.	Because it will call only base class function irrespective of
+			what is actual type of object being constructed or destructed.
+			so result will be against programmers intitution.
+
+		b.	Even run time type identification, dynamic_cast and typeid
+			does not work in constructor and in destructor.
+
+		c.	If virtual function being called from base class ctor or dtor
+			is pure in base class, it will result in runtime abort.
+
+		d.	To prevent this calling of virtual function, pass the result
+			of virtual function as a parameter to the base class ctor.
+
+10.	Assignment operators returns *this.
+		a.	All assignment operators =, +=, *=, ... irrespective of the source type
+			they accept as a parameter should return the *this. 
