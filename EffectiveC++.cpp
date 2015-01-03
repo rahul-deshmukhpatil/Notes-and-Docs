@@ -297,6 +297,22 @@
 			so intialize the smart pointer first and then pass it to function call. This will not make
 			compiler to reorder.
 
+18.	Make interfaces easy to use and hard to exploite/abuse.
+		a.	Make it hard to pass the wrong value, by using the static functions returning correct values.
+		b.	shared_ptr is as twice the size of the normal pointer. Handles the metadata dynamically.
+			It also supports the synchronization for count increment in case of the multithreaded app.	
+			this multithread support of shared_ptr can be turned off with the preprocessor.
+		c.	Ways to prevent errors include
+			I. 	define new type
+			II. Constrain the values of new type.
+			III.restrict operations on new type
+			IV.	eliminate client from resouce managment. Return shared_ptrs.
+		d.	Shared pointer supports the deleter facility , which can be used to prevent the cross-DLL
+			problem.
+
+19.	Treat class design as type design.
+		Read book. did not get the point
+
 20.	Prefer pass by const reference over pass by value.
 		a.	Pass by value calls the constructor, which may inturn call several constructors and memory
 			allocations in case of deepy copy.
