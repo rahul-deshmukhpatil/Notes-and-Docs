@@ -13,6 +13,7 @@
 			3rd party lib as you will see value of macro in compiler error which
 			does not make sense.
 		d. macros do not make sense when arguments passed is complex expression
+		e. step deugging is not possible in case of macro code snippet
 
 		c++ requires definition of anything that you use. But class static
 		const member of integral could be used with just declration,as long as
@@ -42,12 +43,13 @@
 		a.	Everything must be initialized with the constructors initialization list
 			in ordered manner so that client/programmer are not confused.
 			compiler initialize
-			I> parent class, in order of their declaration of inheriatance
+			I> parent base classes, in order of their declaration of inheriatance
 			II> data members in order of declaration.
 			irrespective of their order in initialization list, so we should try to
 			maintain same order as of compiler. Because this might introduce bugs
 			if programmers thinks order of initialization is same as in initialization 
-			list.
+			list. They are initialized in same order in case of inbuilt copy constructor
+			or copy assigment operator.
 	 
 		b.	Make sure everything is initialised in all constructors.
 			here code duplication will come in scenario could be avoided with the
@@ -77,10 +79,17 @@
 
 6. Explicitly disallow use of compiler generated functions you do not want
 		a.	Some obejcts are uniq and you do not want the copying of them by the implicit
-			copy constructor or operator=, then make it private. But this will allow 
-			member functions or friend functions to call them. And generate the link time
-			error. So make it private in the base class Uncopyable, which will generate the
+			copy constructor or operator=, then make it private. 
+			But this will allow 
+				I. member functions or friend functions to call them. 
+				II. And generate the link time error. 
+			So make it private in the base class Uncopyable, which will generate the
 			compile time error.
+				class Uncopyable {
+					private:
+						Uncopyable(const Uncopyable &);
+						Uncopyable& operator=(const Uncopyable &);
+				};
 
 7. Declare destructor virtual in polymorphic class
 		a.	Use virtual destructors only in
@@ -96,7 +105,7 @@
 
 8. Prevent exception from leaving destructors
 		a.	Whenever exception is raised the objects on the stack are unwinded by calling the
-			destructors. If such unwinding destructors raises any excpetion further, this 
+			destructors. If destructor called during unwinding stack raises any excpetion further, this 
 			leads to the undefined behaviour(if not crash), which is very hard to detect.
 			c++ does not like exceptions that emit the destructor.
 		
@@ -153,4 +162,154 @@
 
 10.	Assignment operators returns *this.
 		a.	All assignment operators =, +=, *=, ... irrespective of the source type
-			they accept as a parameter should return the *this. 
+			they accept as a parameter should return the *this. So that coudld be used 
+			in cascaded = expressions. 
+
+11.	Handle operator= correctly.
+		a.	May check if self assignment is being done and you do not delete any part
+			if destination object without successfully initializing to part in source.
+		
+			TextBlock& operator=(TextBlock &rhs)
+			{
+				// Below check condition depends upon how frequently you call
+				// the operator= and how heavy the new assignment is 
+				if(this == &rhs) return *this;
+			
+				char *oldPb = pb; 	// made a copy of pb
+				pb = new char[10];	// allocated new pb, this may throw exception
+									// but pb in that case will return old value
+				delete oldPb;
+				return *this;
+			}
+
+12. Copy all parts of an object
+		a.	When we override the assignment and copy constructors, upon adding new data member 
+			to the class we often forget to initialize it in the constructor. Do not let that	
+			happen.
+		
+		b.	See if class is inherited, base class copy constructor is being called correctly
+			from inherited class copy constructors initialization list. try to copy the data
+			members as well in the initialization list as said for all other constructors 
+			initialization.
+	
+		c.	In case of assigment operator, see if all base class = operators are being called
+			correctly.
+
+		d.	If some code is common among the assignment operator and copy constructor, put it
+			in a third function, called init, rather than calling copy constructor or assigment
+			operator from each other.
+
+		e.	Assigment operator and copy constructors looks almost same in case of using, syntax, but
+			they are quiet different in functionality intended from them.
+
+ 
+=================================================================================================
+| 	RESOURCE MANAGEMENT 																		|
+=================================================================================================
+			
+13.	Use objects to manage resources.
+		a.	if you handle manual allocation and deletion then you are inviting memory leaks.
+			You do not just leak memory but could leak resources as well, ie locks, file handles.
+			this might result in endingup with free resources.
+
+		b.	Resouce Mangaging classes have two principles	
+			I.	Aquire/create resource object and tranfer to managing object.
+			II.	Use destructor of the resource managing object to release/delete resource
+	
+		c.	STL containers expects normal copying behaviour in copying operation. std::auto_ptr
+			makes the source object raw resource pointer NULL while copying to destination. Hence
+			STL containers of the std::auto_ptr are not allowed.
+	
+		d.	RCSP(reference counting smart pointers), can not break cycle of references unlike
+			garbage collectors in the java.
+	
+		e.	std::shared_ptr and std::auto_ptr use delete (and not delete []) in the destructors
+			so it is not possible to use arrays of the shared_ptr and auto_ptr.
+		
+		f.	In C++, vector and string, always could replace [] in C. so try to use these c++ stls. 
+			
+
+14.	Think carefully about copying behaviour in resouce managing object.
+		a.	Prohabit copying of the resource managing objects:
+			Locks used for synchronization, there is hardly any logical scenario where you want to
+			copy the objects. So make it uncopyable.
+		
+		b.	Manage count of pointers to resource.
+			Free resource only when last pointer goes out of scope. You may use std::shared_ptr()
+			in your custom implementation. But std::auto_ptr always calls the delete on the resource
+			object at the time of being destructed. Fortuantley tr1::shared_ptr we could have second
+			paratmeter deleter whihc could point to the unlock function in case of the lock.
+			eg.
+				class Lock {
+						std::tr1::shared_ptr<Mutex> mPtr;
+					public:
+						explicit Lock(Mutex *ptr)
+						:mPtr(ptr, unlock)
+						{
+							lock(mptr.get());
+						}
+				};
+
+		c.	Copy the underlying resource.
+			While copying the resource managing object, ensure that you are doing deep copy and resource
+			as well is getting copied so that when you delete the resource managing object all copies
+			are deleted in a safe manner.
+			Transfer the ownership, while copying, like in std::auto_ptr if that is the requirement.
+		
+15. Provide the access to the raw resources in resource managing objects.
+		a.	Both std::auto_ptr and std::shared_ptr provide the function get(), to access the raw pointer
+			of the resource they are holding. They as well provide the implicit conversion via operator*
+			and operator-> as expected from smart pointers. Giving access to raw poiter of resource might
+			be sometimes need but it might create copy of the raw pointers, which could remain for the
+			dangling access.
+		b.	So your interfaces must be easy to use, but hard to exploit to break(use incorrectly).
+			
+			 
+16.	Use the same form of delete as in new.
+
+		a.	If you are using just new then use delete
+			if you are using new [], then you must use delete[].
+			if delete [] is used in first case then it might result into undefined behaviour.
+			if delete is used in later case, you might endup with memory leakage, depending
+			upon how meta data for the memory manamgent is saved.
+		
+		b.	you must used same for of new to initialize the member objects in a class, because
+			there is only one destructor and only one statement having delete is going to delete
+			the member.
+
+		c.	Do not use typedefs having arrays in them. Whatever arrays could do, could be done
+			with the vectors and string.
+
+17.	Store Smartpointers in stanalone statements.
+		a.	We may initialize the smart pointer in a complex statements.
+			eg. function call having smart pointer as argument and other arguments are calculated
+				by other functions. 
+			Compiler might reorder the complex statements function calls, so raw pointer in smart
+			pointer will be allocated via new, but will not passed to smart pointer constructor if
+			any other function throws exception.
+			function(std::shard_ptr<int>(new int), calculate())
+			compiler might reorder the statement parts
+			a> new int
+			b> calculate()			//this throws exception
+			c> std::smart_ptr<int>	//this constructor will  not be called so not freeing int allocated
+									//above
+			
+			so intialize the smart pointer first and then pass it to function call. This will not make
+			compiler to reorder.
+
+20.	Prefer pass by const reference over pass by value.
+		a.	Pass by value calls the constructor, which may inturn call several constructors and memory
+			allocations in case of deepy copy.
+
+		b.	In derived class pass by value to base class type accepting function, objects are sliced 
+			off(no more virtual functions call work as you expect)
+
+		c.	For builtin data types use the pass by value, as reference takes as much space as pointer.
+			It is pass by value efficient here.
+		
+		d.	You may tempt to use the passs by value for other user defined functions having less size
+			but implementions of such classes(user defined or stls) is subject to change and it might
+			take different size in future.
+
+		e.	Use pass by value for user defined type, stl iterators, function objects ie functors.
+
