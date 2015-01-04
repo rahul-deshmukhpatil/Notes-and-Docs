@@ -370,5 +370,24 @@
 		h.	pointer to function, work on globally instantiated inline functions.
 		i.	Do not inline the template functions, until you really mean.
 		j.	if definition of inline function changes in a library, then client code using this
-			libarary and the inline function must be recomiled.
+			libarary and the inline function must be recompiled in client library. To recompile in client
+			libarary inline function must be in the header files which are provided with the release.
+
+31.	Minimize compilation dependencies in between files.
+		a.	you can have seperate header files for declaration and definition.
+		b.	function definitions returning/passing argument by value do not need definition.
+		c.	make header files self sufficient, if not possible, depend upon the class declartions
+			and not definitions.
+		d.	c++ has keyword 'export' which saperated template declaration from definition.
+		e.	pImpl idom: class had single member pointer to the real implementation.
+		f.	abstract interface: Abstract parent class created with pure virtual function, which
+			is overrided by real implementation. Abstract class provides factory function 'create'
+			which returns the shared_ptr to derived class dynamically created object.
+		g.	Interface/handle methods:
+				-	costs speed as involvs virtual functions in case of interface.
+				-	extra function call in case of handle method.
+				-	costs extra pointer size to dynamically allocated derived object.
+				-	dynamic allocation time overhead.
+		h.	Use interface and handle classes at the time of development, till the classes get
+			matured and strong coupling is found.
 			
