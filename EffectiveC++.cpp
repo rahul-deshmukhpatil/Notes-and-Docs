@@ -357,7 +357,14 @@
 		e.	Encapusulation is inversly proportional to the amount of broeken code.
 		f.	Once you declare the data public/protected and clients start using it, its hard to change the code
 			as clients have preasumed the free access to public members and to protected in case of derived class.
-					
+
+23.	Prefer non-member, non-friend functions 
+		a.	More the data could be accessed via functions less is encapsulation.
+			This is true for member functions as well.
+		b.	Functions are not part of the class, changing them would not require to recompile the code of class.
+		c.	All such utility functions using the class functions could be put in saperate files.
+		
+
 30.	Know the ins and outs of inlining
 		a.	Inline is smarter only if function code of calling and retruning is more than the function body.
 		b.	Function inlining is request.
