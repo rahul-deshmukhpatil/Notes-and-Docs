@@ -358,4 +358,17 @@
 		f.	Once you declare the data public/protected and clients start using it, its hard to change the code
 			as clients have preasumed the free access to public members and to protected in case of derived class.
 					
-	
+30.	Know the ins and outs of inlining
+		a.	Inline is smarter only if function code of calling and retruning is more than the function body.
+		b.	Function inlining is request.
+		c.	All functions declared inside class definition are inlined. This include friend functions.
+		d.	Even empty derived class constuctor has inlined base class constructor code. 	
+		e.	Inlining could result in more object code and instruction cache miss.
+		e.	Virtual functions defy inlining.
+		f.	in c++, inlining is compile time acitvity.
+		g.	if address of inline function is taken, that function is globally instantiated.
+		h.	pointer to function, work on globally instantiated inline functions.
+		i.	Do not inline the template functions, until you really mean.
+		j.	if definition of inline function changes in a library, then client code using this
+			libarary and the inline function must be recomiled.
+			
