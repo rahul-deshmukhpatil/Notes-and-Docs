@@ -329,3 +329,33 @@
 
 		e.	Use pass by value for user defined type, stl iterators, function objects ie functors.
 
+21.	Do not return reference when you must return the object.
+		a.	In case of the operator overloading of '+', '-', '*', ... you must return the actual newly
+			constructed objects.
+			you can not return the below:
+			I	reference to locally built object in operator implementation:
+					As the local objects get destroyed after function finish the implementation.
+			II	pointer to locally build object: this return type is incompatible with expected declaration.
+			III Deference pointer to locally newed object:	
+					- clients of the function will have to take care of freeing the resultant object.
+					- in case of x = y = z; // memory leakage will happen in newed memory while y = z
+			IV	reference to local static objects: 
+					- synchronization in multithreaded env.
+					- if (operator==(operator*(x,y),operator(z,w)); // compares same static object in operator ==.
+		
+22.	Declare data members to be private.
+		a.	You can have read/write access control and log over the members.
+		b.	You can change the implementation of members to functions.
+		c.	clients do not have to remember if to put () to access the member, its always that they will have to put.
+		d.	Hiding data members give the implementations flexibility.
+			-	in changing member name
+			-	replacing data member with function computation
+			-	synchronization around data member, specially static
+			-	read/write access preverntion implementation
+			-	having pre/post conditions on the member data set/get
+			-	ability to freely change your code.
+		e.	Encapusulation is inversly proportional to the amount of broeken code.
+		f.	Once you declare the data public/protected and clients start using it, its hard to change the code
+			as clients have preasumed the free access to public members and to protected in case of derived class.
+					
+	
