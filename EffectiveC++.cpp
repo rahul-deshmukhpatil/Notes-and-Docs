@@ -397,4 +397,25 @@
 				-	dynamic allocation time overhead.
 		h.	Use interface and handle classes at the time of development, till the classes get
 			matured and strong coupling is found.
-			
+		
+32.	Make sure that public inheritance is "is-a" relationship
+		a.	public inheritance is defined by is-a relationship.
+			But be careful, penguin is a bird, but bird can not fly.
+			it is no more square.
+		b.	Best design depends upon both, what is does now and what it can do in future.
+		c.	Public inheritance asserts that everything that applies to base class applies
+			to derived.	
+			Square(derived) is a rectangle(base), but once you change width of rectangle(which is square),
+
+33.	Avoid hiding the inherted names
+		a.	If base class has overloaded methods and in derived class if you override only some of them
+			other methods are hidden. Use 'using' to avoid this hiding of overloaded methods in derived class.
+
+34.	Differentiate between inheritance of interface and inheritance of implementation.
+		a.	Pure Virtual functions: only interface is inherited. No implementation.
+			Though pure virtual functions can have definitions, which could be called via a explicit
+			ptrDerived->base::PureVirtfunction() syntax.
+		b.	Simple/Impure Virtual function: used to inherite the interface and implementation.
+			Use the default implementation or specialize if needed.
+		c.	Non virtual function: Derived class inherit the interface as well as implementation.
+
