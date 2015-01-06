@@ -419,3 +419,22 @@
 			Use the default implementation or specialize if needed.
 		c.	Non virtual function: Derived class inherit the interface as well as implementation.
 
+36.	Never redefine the non-virtual inherited function:
+		a.	if non virtual function mf() is inherited in class D.
+			then calls to b->mf() and d->mf() will result in calling different functions.
+			Since D is-a B, but behaviour on calling mf() is different.
+
+37.	Never redefine default parameters of the virtual functions.
+		a.	Virtual functions are dynamically bound, but the default parameters they
+			accept are statically bound.
+		b.	This is done for efficiency that default values are statically bound. If done
+			dynamically it would have been complex.
+		c.	Code duplication is worse, code duplication with dependencies is even worst.
+			Use Non-Virtual public interface calling private non accesible private virtual
+			functions as a remedy.
+		
+38.	Model "has-a" or "is-implemented-in-terms" of through composition.
+		a.	Composition has lots of names: layering, containment, aggregation and embedding.
+		b.	has-a : application domain. Vechicle has engine.
+		c.	is-implemented-in-terms: implementation domain. Set is implemented in terms of list.
+		
