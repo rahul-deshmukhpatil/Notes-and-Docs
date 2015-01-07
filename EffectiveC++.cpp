@@ -438,3 +438,16 @@
 		b.	has-a : application domain. Vechicle has engine.
 		c.	is-implemented-in-terms: implementation domain. Set is implemented in terms of list.
 		
+38.	Use private inheritance judiciously.
+		a.	Compilers do not convert privatly derived objects to the type of base class implicitly.
+		b.	Private inheritance is-implemented-in-terms of. Composition and private interface are
+			alternative to each other.
+		c.	Private inheritance is implementation technique, it means implementation should be only
+			inherited and interface should be ignored.
+		d.	Private inheritance means nothing during design, only during inheritance.
+		e.	Use composition whenever you can and use private inheritance whenever you must.
+		f.	Empty Base Optimization: Inherited part of empty base class has size 0 as total object size
+				grows more than 0. 
+		g.	Empty base classes are used for typedefs, static-data, enums, non-virtual functions.
+		f.	Private inheritance must be used when classes do not have is-a relationship and derived 
+			class wants to use the protected members of base class or want to redefine the virtual functions.
