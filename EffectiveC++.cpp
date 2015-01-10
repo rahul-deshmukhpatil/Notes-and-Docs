@@ -438,7 +438,7 @@
 		b.	has-a : application domain. Vechicle has engine.
 		c.	is-implemented-in-terms: implementation domain. Set is implemented in terms of list.
 		
-38.	Use private inheritance judiciously.
+39.	Use private inheritance judiciously.
 		a.	Compilers do not convert privatly derived objects to the type of base class implicitly.
 		b.	Private inheritance is-implemented-in-terms of. Composition and private interface are
 			alternative to each other.
@@ -451,3 +451,13 @@
 		g.	Empty base classes are used for typedefs, static-data, enums, non-virtual functions.
 		f.	Private inheritance must be used when classes do not have is-a relationship and derived 
 			class wants to use the protected members of base class or want to redefine the virtual functions.
+
+40.	Use multiple inheritance judiciously.
+		a.	C++ first tries to identify the best function match. Later it tries to check the accessibilty.
+		b.	Virtually derived class objects are larger in size, slower in member access.
+		c.	Rules for virtual base class initialization are complex. Most derived class is responsible	
+			for direct and indirect virtual base class.
+		d.	Try to avoid the virtual base classes.
+		e.	If neccessory to have virtual base class, just have functions, typedefs , enums in them.
+		f.	In case of multiple inheritance, Use public inheritance for interface and private inheritance
+			for the implementation.
