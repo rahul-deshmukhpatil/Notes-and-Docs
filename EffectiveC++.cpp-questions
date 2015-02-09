@@ -1,0 +1,16 @@
+Q.2: Prefer const, enums and inlines to #define macros. 
+
+	Class specefic static const variables discussion, 2nd last paragraph on page 14.
+	you are saying:
+		"Because the initial value of class constants is provided where the const is declared"
+	I think you mean:
+		"Because the initial value of class static constants is provided where the const is declared"
+
+	Non static constants data members are initialized via initalization list. 
+
+	It is worth to mention specefically that macros do not allow to step debug in the gdb, one of the best advantage
+	inline functions have over macro computation. Though you have already mentioned that nothing goes to symbol
+	table from the macro definition.
+	
+	
+	
