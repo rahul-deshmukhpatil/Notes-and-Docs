@@ -48,10 +48,10 @@ of local variable.
 	}
 
 REFERENCE
-reference is alias of a variable. There is stuble differance between pinter and reference
+reference is alias of a variable. There is stuble differance between pointer and reference
 Rules
 	A> reference must be always intialised
-	B> once initialised cannot refer to other variable
+	B> once initialised cannot refer to other variable i.e. they act very closly constant pointers
 	C> can create reference to pointer
 	  char *& rToCharPtr;
 	D> variable can have multiple references.
@@ -89,7 +89,7 @@ This is new addition to C++
 
 2> FUNCTION OVERLOADING
 	Function with same name must differ atleast in type, number or order of the parameters they
-	accept
+	accept. Even const and non-const functions versions are overloaded
 
 3> DEFAULT ARGUMENTS TO FUNCTION
 	Default argumnets must be the trailing one.
@@ -114,6 +114,8 @@ This is new addition to C++
 	request. If function is too large compiler will treat that function as a normal rather than inline function.
 	No criteria has been defined by c++ standards to make function inline and gives freedom to compiler writers
 	to decide the criteria.
+		There is no connection between function being inline and static. Or function templates should be inline.
+	Though recursive inline calls could be really replaced by actual recurisive function code till certain depth.
 
 
 =================================================================================================
@@ -212,17 +214,40 @@ Intro:
 	. when maximum memory is already allocated, new returns NULL.
 	. To handler this scenario, c++ internally maintains a function pointer _new_handler.
 	. new_handler could be set using set_new_handler(void (*fp)());
-	  where fp could be pointing to any memWarning function.
+	  where fp could be pointing to any memWarning/mem freeing function function.
 	. ideally memWarning should free some memory so new could return some memory and program continue. 
+		As well if can not free memory, should call set_new_handler to point to another mem freeing function
+		otherwise current newhandler is called infinitely.
 
 3> Custom new and delete 
 	. It is possible to overide new and delete globally.
-	void *new(int size)
-	{	 
-		void *mem = malloc(size);
-		if(!mem)
-			_new_handler();
-		return mem;
+	
+	void* operator new(size_t size)
+	{
+		
+		while(true)
+		{   
+			void *mem = malloc(size);
+
+			if(mem != NULL)
+			{
+		   
+				cout << "allocating " << mem << " " << size << endl;
+				return mem;
+			}
+
+			std::new_handler nh = set_new_handler(0);
+			set_new_handler(nh);
+		   
+			if(nh)
+			{
+				(*nh)();
+			}
+			else
+			{
+				throw std::bad_alloc();
+			}
+		}   
 	}
 
 	void delete(void *mem)
@@ -252,6 +277,7 @@ Intro:
 
 5> Objects at predetermined location
 	. new(ptr) class_name(); will create object of class_name at ptr location.
+	. There is no concept of placement delete, that you will have to override :)  
 	. you will have to use placement destructor to delete same object 
 		ptr->~class_name.
 	. object created at predetemined location must be delete by placement destructor and vice-versa.
@@ -467,6 +493,11 @@ CONTAINERS and SMART POINTERS
 
 
 POINTERS to MEMBERS.
+	eg
+		typedef int (one::*oneFUNC)();
+		oneFUNC fn = &one::onefn;
+		one o;
+		(o.*fn)();
 
 explicit:
 	To prevent implicit conversion simple solution is dont define conversion operator, but since there may
@@ -481,7 +512,40 @@ mutable:
 	
 namespace:
 	1> definition is same as of class, except last semicolon
-	2>  
+	2> continue over multiple files
+	3> can have alternate name
+		namespace Mera {}
+		namespace Tera = Mera; 
+	4> Namespace definitions could be nested, but parent namespace must be at global scope
+
+typeid:
+	1> typeid of derived class is different from base
+	2> include typeinfo for  using typeid
+	3> typeid(obj).name prints the type of obj
+
+dynamic_cast:
+	1> source must not be void*
+	2> source must be polymorphic
+	3> source and destination could be out of hierarchy
+	4> have to put the if(ptrConvertedIntoDestination) before using the pointer
+	5> Normally used to convert base class * to derived class
+
+static_cast: 
+	1> performed at compile time
+	2> does well defined conversions i.e. between integral types of int,char, float
+	3> upcasting
+	4> void *ptr conversion, which can not be possible with dynamic_cast
+	5> Out of hierarchy conversions are not possible and gives compile time error
+	5> Normally used to covert derived class * to base class. 
+		But otherway conversion is as well possible without any compile time error, which is not correct.
+
+cost_cast:
+	1> convert const object into non-const type
+	
+reinterpret_cast
+	1> any abnormal, out of hierarchy conversion
+
+
 =================================================================================================
 =================================================================================================
 
@@ -494,7 +558,7 @@ namespace:
 
 	
 Function Template
-	When we write a different functions such as sort, swap, min, max for different data types
+	When we write a different functions such as sort, swap, advance, min, max for different data types
 	A> we have to rewrite code
 	B> More disk space for program
 	C> if any bug, error found in one we have to replicate it in all functions

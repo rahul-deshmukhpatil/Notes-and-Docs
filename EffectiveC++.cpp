@@ -14,16 +14,23 @@
 			does not make sense.
 		d. macros do not make sense when arguments passed is complex expression
 		e. step deugging is not possible in case of macro code snippet
+		f. always replace macros with the template inline or inline functions
 
 		c++ requires definition of anything that you use. But class static
-		const member of integral could be used with just declration,as long as
-		you do not take the address.
+		const member of integral type could be used with just declration,as long as
+		you do not take the address. For such class specefic static const members, initial
+		value is provided at the time of declaration and not at definition.
+		
+		Some sloppy compilers set aside memory for such class static constants. 
+		Try to use enums, if type of const is int.
+		
 
 3. Use const whenever possible;
 		a. with local auto variables
 		b. with function arguments
 		c. const functions of class
 		d. const with the stl iterators ie const_iterator 
+		e. const for the return types of functions returning by value. ie. *, +, - ...
 		otherwise for user defined type
 			while(a * b = c); where will be taken as while( (a * b) = c);
 			where programmer really meant is while( (a * b) == c) 
@@ -60,9 +67,11 @@
 		d.	static objects begin life when constructor invoked till program lasts.
 			local static begin life when first time function is called.
 			
-		e.	Class global static objects have very unreliable initialization order. So it is
+		e.	Class global static objects have very unreliable initialization order if they are defined
+			in different translation unit i.e. c++ file. So it is
 			better to make them local static members of the function and use that function
-			to get/set these static variables. But any local/global non-const static varible
+			to get/set these static variables via returning the reference to them. 
+			But any local/global non-const static varible
 			is suseptible to bug, in case of multiple threads. Only solution is to manually
 			invoke the reference(to static members) in single threaded startup. 
 
@@ -80,8 +89,7 @@
 6. Explicitly disallow use of compiler generated functions you do not want
 		a.	Some obejcts are uniq and you do not want the copying of them by the implicit
 			copy constructor or operator=, then make it private. 
-			But this will allow 
-				I. member functions or friend functions to call them. 
+			 	I. But this will allow member functions or friend functions to call them. 
 				II. And generate the link time error. 
 			So make it private in the base class Uncopyable, which will generate the
 			compile time error.
@@ -94,7 +102,7 @@
 7. Declare destructor virtual in polymorphic class
 		a.	Use virtual destructors only in
 			I> polymorphic classes, which are inherited
-			II> Or if any other fuction is virtual, which is basically sign on inheritance later.
+			II> Or if any other fuction is virtual, which is basically sign of inheritance later.
 	
 		b.	STL classes mostly do not have the virtual destructors, So do not inherite them
 			and try to destroy polymorphically.
@@ -195,6 +203,27 @@
 		c.	In case of assigment operator, see if all base class = operators are being called
 			correctly.
 
+		d.	The default copy constructor and operator= will invoke base class versions. But if 
+			you override them then, upon not providing call to base class copy constructor in the
+			initalization list, default constructor is called. In case of operator=, no base class
+			operator= is called if not explicitly specefied. 
+				In derived class function below are the implementations
+				class base {};
+				class derived
+				{
+					public:
+						derived(derived &rhs)
+						:base(rhs)
+						{
+						
+						}
+						derived& operator=(derived &rhs)
+						{
+							base::operator=(rhs);
+						}
+				}
+
+
 		d.	If some code is common among the assignment operator and copy constructor, put it
 			in a third function, called init, rather than calling copy constructor or assigment
 			operator from each other.
@@ -238,7 +267,7 @@
 			Free resource only when last pointer goes out of scope. You may use std::shared_ptr()
 			in your custom implementation. But std::auto_ptr always calls the delete on the resource
 			object at the time of being destructed. Fortuantley tr1::shared_ptr we could have second
-			paratmeter deleter whihc could point to the unlock function in case of the lock.
+			paratmeter deleter which could point to the unlock function in case of the lock.
 			eg.
 				class Lock {
 						std::tr1::shared_ptr<Mutex> mPtr;
@@ -273,7 +302,7 @@
 			if delete is used in later case, you might endup with memory leakage, depending
 			upon how meta data for the memory manamgent is saved.
 		
-		b.	you must used same for of new to initialize the member objects in a class, because
+		b.	you must used same form of new to initialize the member objects in a class, because
 			there is only one destructor and only one statement having delete is going to delete
 			the member.
 
@@ -323,7 +352,7 @@
 		c.	For builtin data types use the pass by value, as reference takes as much space as pointer.
 			It is pass by value efficient here.
 		
-		d.	You may tempt to use the passs by value for other user defined functions having less size
+		d.	You may tempt to use the pass by value for other user defined functions having less size
 			but implementions of such classes(user defined or stls) is subject to change and it might
 			take different size in future.
 
@@ -345,18 +374,19 @@
 		
 22.	Declare data members to be private.
 		a.	You can have read/write access control and log over the members.
-		b.	You can change the implementation of members to functions.
+		b.	You can change the implementation of members to functions with calculations.
 		c.	clients do not have to remember if to put () to access the member, its always that they will have to put.
 		d.	Hiding data members give the implementations flexibility.
 			-	in changing member name
 			-	replacing data member with function computation
 			-	synchronization around data member, specially static
-			-	read/write access preverntion implementation
+			-	read/write access prevention implementation
 			-	having pre/post conditions on the member data set/get
 			-	ability to freely change your code.
-		e.	Encapusulation is inversly proportional to the amount of broeken code.
+		e.	Encapusulation is inversly proportional to the amount of broken code.
 		f.	Once you declare the data public/protected and clients start using it, its hard to change the code
 			as clients have preasumed the free access to public members and to protected in case of derived class.
+			Basically making data members accessible out of class is exposing implementation.
 
 23.	Prefer non-member, non-friend functions 
 		a.	More the data could be accessed via functions less is encapsulation.
