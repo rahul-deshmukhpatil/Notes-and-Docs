@@ -1,0 +1,133 @@
+1. why inline functions are defined in only .h files
+	http://stackoverflow.com/questions/9338152/must-the-definition-of-a-c-inline-functions-be-in-the-same-file?rq=1
+
+	It's imperative that the function's definition (the part between the {...}) be placed in a header file, unless the function is used only in a single .cpp file.
+	In particular, if you put the inline function's definition into a .cpp file and you call it from some other .cpp file, you'll get an "unresolved external" error from the linker.
+	Some compilers have features for optimizing the whole program at once (Whole program optimization or Link time optimization). These compilers can inline a function even if it is defined in a different .cpp file.
+
+2. Inline functions cant contain recursion, go to loops etc?
+	http://stackoverflow.com/questions/16921953/inline-functions-cant-contain-recursion-go-to-loops-etc
+	Recursion is a different story. Obviously, it is not possible to completely inline all nested recursive calls if the depth of recursion is not known at compile time. Yet it is still possible to "unwrap" recursion to a specific limited depth. I.e. the compiler can inline the recursive calls, say, 5 levels deep and then proceed with a genuine (non-inlined) recursive call. This is not much different from the optimization technique known as "cycle unrolling". So, even recursive functions can be inlined. Some compilers can even let you control the depth of inline expansion for recursive functions.
+	he definition of an inline function needs to be present in every translation unit calling the function.
+So yes, you can call inline-functions in loops, there is nothing wrong with it.
+
+3. What is declspec
+	The canonical examples are __declspec(dllimport) and __declspec(dllexport), which instruct the linker to import and export (respectively) a symbol from or to a DLL.
+	(__declspec(..) just wraps up Microsoft's specific stuff - to achieve compatibility, one would usually wrap it away with macros)
+	how do you know wich dll dllimport is pointing at? you don't know from the code. The decision is made by the linker, who will pick the first .lib it finds that has a matching exported symbol
+
+		#if defined(_MSC_VER)
+			//  Microsoft 
+			#define EXPORT __declspec(dllexport)
+			#define IMPORT __declspec(dllimport)
+		#elif defined(_GCC)
+			//  GCC
+			#define EXPORT __attribute__((visibility("default")))
+			#define IMPORT
+		#else
+			//  do nothing and hope for the best?
+			#define EXPORT
+			#define IMPORT
+			#pragma warning Unknown dynamic link import/export semantics.
+		#endif
+
+4. what are pragma?
+	This is a preprocessor directive that can be used to turn on or off certain features. It is of two types #pragma startup, #pragma exit and pragma warn.
+	pragma startup allows us to specify functions called upon program startup.
+	pragma exit allows us to specify functions called upon program exit.
+	pragma warn tells the computer to suppress any warning or not.
+	many other #pragma style that can use to control compiler
+
+	I would generally try to avoid the use of #pragmas if possible, since they're extremely compiler-dependent and non-portable. If you want to use them in a portable fashion, you'll have to surround every pragma with a #if/#endif pair. GCC discourages the use of pragmas, and really only supports some of them for compatibility with other compilers; GCC has other ways of doing the same things that other compilers use pragmas for.
+	
+5. Disable pading and packing.
+	MSVC:
+	#pragma pack(push, 1) 
+	struct PackedStructure
+
+	GCC:
+	struct PackedStructure __attribute__((__packed__)) 
+
+6. Getting and Setting env variables in c code?
+	char *getenv(const char *name);
+    char *secure_getenv(const char *name);
+	int setenv(const char *name, const char *value, int overwrite);
+    int unsetenv(const char *name);
+
+7. Some common gcc options
+	 -pie
+           Produce a position independent executable on targets that support it.  For predictable results, you must also specify the same
+           set of options used for compilation (-fpie, -fPIE, or model suboptions) when you specify this linker option.
+	-rdynamic
+           Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not
+           only used ones, to the dynamic symbol table. This option is needed for some uses of "dlopen" or to allow obtaining backtraces
+           from within a program.
+	-static
+           On systems that support dynamic linking, this prevents linking with the shared libraries.  On other systems, this option has no
+           effect.
+	-shared
+           Produce a shared object which can then be linked with other objects to form an executable.  Not all systems support this option.
+           For predictable results, you must also specify the same set of options used for compilation (-fpic, -fPIC, or model suboptions)
+           when you specify this linker option.[1]
+	-Wl,option
+           Pass option as an option to the linker.  If option contains commas, it is split into multiple options at the commas.  You can
+           use this syntax to pass an argument to the option.  For example, -Wl,-Map,output.map passes -Map output.map to the linker.  When
+           using the GNU linker, you can also get the same effect with -Wl,-Map=output.map.
+	 -lobjc
+           You need this special case of the -l option in order to link an Objective-C or Objective-C++ program.
+
+
+8.	When are static C++ class members initialized?
+	http://stackoverflow.com/questions/1421671/when-are-static-c-class-members-initialized
+	The standard guarantees two things - that objects defined in the same translation unit (usually it means .cpp file) are initialized in order of their definitions (not declarations):
+	The other guaranteed thing is that initialization of static objects from a translation unit will be done before use of any object or function from this translation unit:
+	it is also guaranteed that they are initialized before main is entered
+
+
+
+9.	Difference between private, public, and protected inheritance?
+	http://stackoverflow.com/questions/860339/difference-between-private-public-and-protected-inheritance?lq=1
+	class Base {
+    public:
+        int publicMember;
+    protected:
+        int protectedMember;
+    private:
+        int privateMember;
+	};
+	Everything that is aware of Base is also aware that Base contains publicMember.
+	Only the children (and their children) are aware that Base contains protectedMember.
+	No one but Base is aware of privateMember.
+	next:
+	The same happens with public, private and protected inheritance. Let's consider a class Base and a class Child that inherits from Base.
+	If the inheritance is public, everything that is aware of Base and Child is also aware that Child inherits from Base.
+	If the inheritance is protected, only Child, and its children, are aware that they inherit from Base.
+	If the inheritance is private, no one other than Child is aware of the inheritance.
+
+10.	When to use the private and public inheritance?
+	http://stackoverflow.com/questions/20261690/what-is-the-practical-use-of-protected-inheritance
+	That you might not see reasons for private inheritance does not mean it's pointless. There are several cases where private inheritance has it's reasons. You are right in that at a first glance, private inheritance means has-a relationships just like aggregation, and that private inheritance has a (slightly) tighter coupling.
+
+	Reasons for favouring private inheritance over aggretations could be some of the following:
+
+	With private inheritance you inherit typedefs as well. In some cases (e.g. traits classes) inheriting privatly is just the alternative to re-typedef tons of typedefs in the base class.
+	In seldom cases you have to initialize a member before a "real" (i.e. public) base class. The only way to achieve that is by making that member a private base class inherited before the public base.
+	Some times you need access to protected members of a member. If you can't change the member class itself, you have to use private inheritance to get access to them.
+	If a member has no data members of its own, it still occupies space. Making it a private base class enables the empty base class optimization, diminuishing the size of your class' objects.
+	for even more points, see James' comments below
+	These reasons are obviously technical reasons, some might even say "hacks". However, such reasons exist, so private inheritance is not completely pointless. It is just not "pure OO style" - but C++ isn't a pure OO language either.
+
+	The reason for protected inheritance are quite simple once you understood the ones for private inheritance:
+
+	If you have reasons to inherit something privately and want to make those benefits (i.e. that would-be member of your class or the typedefs) accessible to derived classes, use protected inheritance. Obviously, private inheritance should be used scarcely, and protected inheritance even more so.
+
+	the base class provides a customizable implementation, using the template method pattern, and you have to override its virtual functions.
+
+
+11. Why is C++ not an Object Oriented language?
+	http://stackoverflow.com/questions/3498730/why-is-c-not-an-object-oriented-language
+	C++ is usually considered a "multi-paradigm" language. That is, you can use it for object-oriented, procedural, and even functional programming.
+
+Those who would deny that C++ is OO generally have beef with the fact that the primitive types are not objects themselves. By this standard, Java would also not be considered OO.
+
+It is certainly true that C++ isn't OO to the same extent as Smalltalk, Ruby, Self, etc. are, but it is definitely an effective OO language by most standards.
