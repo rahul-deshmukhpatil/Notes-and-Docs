@@ -393,8 +393,55 @@
 			This is true for member functions as well.
 		b.	Functions are not part of the class, changing them would not require to recompile the code of class.
 		c.	All such utility functions using the class functions could be put in saperate files.
-		
 
+24.	Declare non-member functions when type conversions should apply to all parameters.
+		a.	Whenever functions are related with class it does not mean they should be class member.
+		b.	Even it does not mean they should be friend. friend functions come with troubles as of real life friend.
+			They loose encapsulation.
+		c.	Use the non-member functions whenever accessing required class member data is possible via get/set functions
+			and constructors.
+
+25.	Consider support for non-throwing swap
+		a.	std::swap does not throw.
+		b.	std::swap used operator= of the class, and if operator= is doing deep copying which is expected
+			from it and other easy way of doing swap via pImp idom is possible, you should specialize the std::swap.
+		c.	Its ok to specialize the std:: contents. But is not ok to add any template class or function in the
+			std namespace.
+		d.	Highly efficient swap are always based on operations on builtin types ie. pointers and operations
+			on builtin types do not throw
+
+26.	Postphone variable definition as long as possible.
+		a.	Its easy to read the code if variable declared at the point of use.
+		b.	if control doesnot reach there, variable is not initialized.
+		c.	Its better probablity that variable will be in register/cache at the time of use if declared 
+			at the point of use.
+		d.	Do not declare variables inside loop.
+
+27.	Minimize casting.
+		a.	casting is not free. cast subverts the type system and put you into troubles.
+		b.	dynamic_cast: used for downcasting of polymorphic class, has significant disadvantage
+		c.	static_cast: implicit conversions from non-const to const. void pointer to some type. 
+		d.	upcasting doesnot need cast
+		e.	const_cast: non-const to const
+		f.	reinterpret_cast: hardly used. for only low level specific non-portable changes.
+		g.  type conversion introduces runtime latency, ie. conversion of int to double. They have
+			different implementation, so compiler puts assmebly instruction to convert them.
+		f.	Time taken by dynamic_cast increases with the degree of multiple and multilevel inheritance
+		h.	prefer c++ casting over old one. It is safer, noticiable , can grep. It does what it means and 
+			most of the times what it should.
+
+28.	Avoid returning handles to object internals.
+		a.	Do not return reference to private member via public member.
+		b.	It might happen that it will refer to dangling object if member object is replaced by other.	
+
+29.	Strive for exception safe code.
+		a.	Exception causes the memory lekage.
+		b. 	They cause corruption of data structure.
+		c.	So exception safe code is
+				basic guarantee: state of object may not be same, but object is not corrupt
+				strong:	either function succeds or excpetion is called.
+				no throw: if excpetion throws something, it is serious error and unexpected should be called.
+			
 30.	Know the ins and outs of inlining
 		a.	Inline is smarter only if function code of calling and retruning is more than the function body.
 		b.	Function inlining is request.

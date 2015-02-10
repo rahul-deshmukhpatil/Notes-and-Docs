@@ -126,8 +126,77 @@ So yes, you can call inline-functions in loops, there is nothing wrong with it.
 
 11. Why is C++ not an Object Oriented language?
 	http://stackoverflow.com/questions/3498730/why-is-c-not-an-object-oriented-language
-	C++ is usually considered a "multi-paradigm" language. That is, you can use it for object-oriented, procedural, and even functional programming.
+	C++ is usually considered a "multi-paradigm" language. That is, you can use it for object-oriented, procedural, and even functional programming.Those who would deny that C++ is OO generally have beef with the fact that the primitive types are not objects themselves. By this standard, Java would also not be considered OO.It is certainly true that C++ isn't OO to the same extent as Smalltalk, Ruby, Self, etc. are, but it is definitely an effective OO language by most standards.
 
-Those who would deny that C++ is OO generally have beef with the fact that the primitive types are not objects themselves. By this standard, Java would also not be considered OO.
+12. Overloading member access operators ->, .* (C++)
+	http://stackoverflow.com/questions/8777845/overloading-member-access-operators-c
+	->
 
-It is certainly true that C++ isn't OO to the same extent as Smalltalk, Ruby, Self, etc. are, but it is definitely an effective OO language by most standards.
+	This is the only really tricky one. It must be a nonstatic member function, and it takes no arguments. The return value is used to perform the member lookup. If the return value is another object of class type, not a pointer, then the subsequent member lookup is also handled by an operator-> function. This is called the "drill-down behavior." The language chains together the operator-> calls until the last one returns a pointer.
+
+	struct client
+		{ int a; };
+
+	struct proxy {
+		client *target;
+		client *operator->() const
+			{ return target; }
+	};
+
+	struct proxy2 {
+		proxy *target;
+		proxy &operator->() const
+			{ return * target; }
+	};
+
+	void f() {
+		client x = { 3 };
+		proxy y = { & x };
+		proxy2 z = { & y };
+
+		std::cout << x.a << y->a << z->a; // print "333"
+	}
+	->*
+
+	This one is only tricky in that there is nothing special about it. The non-overloaded version requires an object of pointer to class type on the left-hand side and an object of pointer to member type on the right. But when you overload it, you can take any arguments you like and return anything you want. It doesn't even have to be a nonstatic member.
+	In other words, this one is just a normal binary operator like +, -, and /. See also: Are free operator->* overloads evil?
+
+	.* and .
+
+	These cannot be overloaded. There is already a built-in meaning when the left-hand side is of class type. Perhaps it would make a little sense to be able to define them for a pointer on the left-hand side, but the language design committee decided that would be more confusing than useful.
+
+	Overloading ->, ->*, ., and .* can only fill in cases where an expression would be undefined, it can never change the meaning of an expression that would be valid with no overloading.
+
+13. Auto_ptr:
+		deprecated as of C++11,  unique_ptr is a new facility with a similar functionality, but with improved security (no fake copy assignments), added features (deleters) and support for arrays. 
+	This class template provides a limited garbage collection facility for pointers, by allowing pointers to have the elements they point to automatically destroyed when the auto_ptr object is itself destroyed.
+	No two auto_ptr objects should own the same element, since both would try to destruct them at some point. When an assignment operation takes place between two auto_ptr objects, ownership is transferred
+
+	get
+	Get pointer (public member function )
+	operator*
+	Dereference object (public member function )
+	operator->
+	Dereference object member (public member function )
+	operator=
+	Release and copy auto_ptr (public member function )
+	release
+	Release pointer (public member function )
+	reset
+	Deallocate object pointed and set new value (public member function )
+	(conversion operators)
+	Conversion operators (public member function )
+
+14. shared_ptr:
+	Objects of shared_ptr types have the ability of taking ownership of a pointer and share that ownership: once they take ownership, the group of owners of a pointer become responsible for its deletion when the last one of them releases that ownership.
+
+shared_ptr objects release ownership on the object they co-own as soon as they themselves are destroyed, or as soon as their value changes either by an assignment operation or by an explicit call to shared_ptr::reset. Once all shared_ptr objects that share ownership over a pointer have released this ownership, the managed object is deleted (normally by calling ::delete, but a different deleter may be specified on construction).
+
+shared_ptr objects can only share ownership by copying their value: If two shared_ptr are constructed (or made) from the same (non-shared_ptr) pointer, they will both be owning the pointer without sharing it, causing potential access problems when one of them releases it (deleting its managed object) and leaving the other pointing to an invalid location.
+
+Additionally, shared_ptr objects can share ownership over a pointer while at the same time pointing to another object. This ability is known as aliasing (see constructors), and is commonly used to point to member objects while owning the object they belong to. Because of this, a shared_ptr may relate to two pointers:
+
+15. weak_ptr
+	std::weak_ptr is a smart pointer that holds a non-owning ("weak") reference to an object that is managed by std::shared_ptr. It must be converted to std::shared_ptr in order to access the referenced object.
+std::weak_ptr models temporary ownership: when an object needs to be accessed only if it exists, and it may be deleted at any time by someone else, std::weak_ptr is used to track the object, and it is converted to std::shared_ptr to assume temporary ownership. If the original std::shared_ptr is destroyed at this time, the object's lifetime is extended until the temporary std::shared_ptr is destroyed as well.
+In addition, std::weak_ptr is used to break circular references of std::shared_ptr.

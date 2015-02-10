@@ -13,4 +13,4 @@ Q.2: Prefer const, enums and inlines to #define macros.
 	table from the macro definition.
 	
 	
-	
+Q.24: dynamic_cast is applicalbe for downcasting of the polymorphic base class pointers	
