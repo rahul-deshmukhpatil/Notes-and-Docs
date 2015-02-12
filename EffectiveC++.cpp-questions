@@ -11,6 +11,20 @@ Q.2: Prefer const, enums and inlines to #define macros.
 	It is worth to mention specefically that macros do not allow to step debug in the gdb, one of the best advantage
 	inline functions have over macro computation. Though you have already mentioned that nothing goes to symbol
 	table from the macro definition.
+
 	
 	
-Q.24: dynamic_cast is applicalbe for downcasting of the polymorphic base class pointers	
+Q.24: dynamic_cast is applicalbe for downcasting of the polymorphic base class pointers only.	
+
+Q.27: normal casting:with genearl implementaion base class part is put first in memory layout of object. but I think
+		that is implementation dependant. As well, mutpliple/multilevel hierarchy you can not just point assume that
+		base class you are inheriting starts are first bye only. You may reorder the inheritance base classes, which
+		might change the object layout.
+
+Q.32: Lot of authors says that public inheritance means public and protected members of base class become public
+		and protected members of the derived class.
+		Well, I object terminology "they become". It is more likely saying copy paste the base class public section
+		under public section of the derived one. But things do not work like that. public of base and derived could
+		have same functionName and memberDataName, here derived name hides the base class name. If base class members 
+		could have become part of derived, then same member data names would have caused "variable redefined" error.
+		

@@ -478,7 +478,7 @@
 32.	Make sure that public inheritance is "is-a" relationship
 		a.	public inheritance is defined by is-a relationship.
 			But be careful, penguin is a bird, but bird can not fly.
-			it is no more square.
+			Square is rectangle. But once width/height are changed it is no more square.
 		b.	Best design depends upon both, what is does now and what it can do in future.
 		c.	Public inheritance asserts that everything that applies to base class applies
 			to derived.	
@@ -487,6 +487,20 @@
 33.	Avoid hiding the inherted names
 		a.	If base class has overloaded methods and in derived class if you override only some of them
 			other methods are hidden. Use 'using' to avoid this hiding of overloaded methods in derived class.
+		b.	If derived class is inherited privatly and you want to use only specefic method from base class
+			with public access, then do the function forwarding.
+			class B {
+				public:
+					void fun() {}
+			};
+			
+			class D: private B {
+				public:
+					void fun()  
+					{
+						B::fun(); //function forwarding
+					}
+			};
 
 34.	Differentiate between inheritance of interface and inheritance of implementation.
 		a.	Pure Virtual functions: only interface is inherited. No implementation.
@@ -521,7 +535,7 @@
 			alternative to each other.
 		c.	Private inheritance is implementation technique, it means implementation should be only
 			inherited and interface should be ignored.
-		d.	Private inheritance means nothing during design, only during inheritance.
+		d.	Private inheritance means nothing during design, only during implementation.
 		e.	Use composition whenever you can and use private inheritance whenever you must.
 		f.	Empty Base Optimization: Inherited part of empty base class has size 0 as total object size
 				grows more than 0. 
