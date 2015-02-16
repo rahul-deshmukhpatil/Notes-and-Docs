@@ -1,0 +1,8 @@
+1> Fix
+2> C++, keywords, casting, inheritance.
+3> Gcc gdb
+4> Thread
+5> C++ STL data structs, algos, 
+6> map, vector, set, implementations
+7> diff between c++11 and other specifications 
+

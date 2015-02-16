@@ -1,0 +1,30 @@
+what is your experience.
+What kind of source revision systmes u have used?
+Any code/test automation framework you have used?
+What is bond? options?
+how to calculate the fair price?
+how to detect memory leak?
+which tools you have used for the latency check
+what are the special custom data structures? 
+Why pointer hashmap is special
+c++ windows...
+
+
+
+What kind of creative additions are done from our technical side?
+Do traders loose money?
+Do you get chance to talk with qunats who make strategies?
+Why you use windows?
+
+
+
+Manish Profile:
+Working in derivative technology group of CITI's market making division. Primarily responsible for developing software solution for exchange generated market data processing. Processed Market Data is consumed internally and is crucial component in Derivative Market Making platform. My responsibility includes interaction with exchange and vendors to understand Market Data rules and definitions, design and develop solutions to meet Traders' need, deploy and support. 
+Apart from MD, also part of Trading Applications Development Team where various controls and data flows are designed. These components ensure CITI fulfill its obligation as market maker while maximizing profits & reducing risks. It also provides scanning of market for opportunities and various knobs for traders to control execution. 
+Specialties: C++ , Data Structures, BOOST, Equities & Derivative Market Making, Algorithmic Trading, Market Data,
+
+Part of small core Trading Application Development Team who is owning vital parts of options market making system like engine to auto generate quotes, robot which look for opportunities in the market to grab, various panels which provide traders easy control over price, size, volatility and various other greeks. These apps are also responsible for various routine but very critical operations like open,close, halt behaviors etc Currently implementing functionality to improve existing start and end of day behavior of the system.
+
+Responsible for developing Low Latency APAC marketdata solution for CITI's options market making business, owning end to end responsibility to design, develop , deploy and support the solution. Successfully delivered two countries ( ~ 7 exchanges ) which has started contributing $s to CITI's revenue. My responsibility includes requirements gathering from business, interacting with exchanges/vendors and design the most optimal, cost effective and robust solution, participate in various exchange mandatory processes, deploy and provide L2 support. When not working on primary task, I am spending some time in researching latency and methodology issues and probable solutions.
+
+

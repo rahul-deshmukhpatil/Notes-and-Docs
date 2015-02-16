@@ -1,0 +1,12 @@
+1> How big setup you have in India? mainly Market Data team?
+2> Which market you support? Do you provide only managed service?
+3> What kind of integration bloomberg is doing with the RTS.
+4> How do you test and do performance checks? do u use valgrind and what other tools you guys use?
+5> Have some regression/test/latency servers running constantly in background?
+
+1> Not learning lot. Want to grow, but company is focussing on the brodening the client base rather than providing the better product.
+2> Guys have left, so almost like senior most person in India
+3> Well bloomberg and reauters are great companies to join as they are reffered by all.
+
+Did my college eduction from pune, junior college from Garware college, and Engineering from VIT, pune.
+Working in the industry for 4 years, first two years I have worked in mainly in linux kernel file systems and the GPU harware processing. For Last two years I am working with the SRLabs on the low latency market data product. I am one of the founding member of the India operation along with the couple of US team and work in a small team of 4-5 guy. Though I am a developer, along with my developemt/feature addition activities In my current job we have to fix the issues on daily basis and have to give technical support to the clients, I hv got some quality debugging skills and I prefer to debug the code by its analysis and logs rather than the stepping through gdb, as I think thats the fast method to understand the code and getting things done. I have spent 6 months at the morgon stanley london. There I was in the diverse role of developer, system admin, QA, automation engineer. Have experiene of handling production issues, handling clients, specifically mean production outages. Do take help from google and cpp refernce sites, stack overflow as well contribute to the wiki and stack overflow and wiki and I do have personal repository at github where I checkin my sample practice program and notes for reference. Like to be lazy as a programmer, and try to write lot of aliases and scripts which work for me. I have studied in residential schools and living outiside of home for last 15 yrs, so m quite flexible and mix up easily with team and like to travel, trek, sketching and music and partying.

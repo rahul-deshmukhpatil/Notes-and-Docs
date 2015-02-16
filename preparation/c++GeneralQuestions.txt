@@ -200,3 +200,30 @@ Additionally, shared_ptr objects can share ownership over a pointer while at the
 	std::weak_ptr is a smart pointer that holds a non-owning ("weak") reference to an object that is managed by std::shared_ptr. It must be converted to std::shared_ptr in order to access the referenced object.
 std::weak_ptr models temporary ownership: when an object needs to be accessed only if it exists, and it may be deleted at any time by someone else, std::weak_ptr is used to track the object, and it is converted to std::shared_ptr to assume temporary ownership. If the original std::shared_ptr is destroyed at this time, the object's lifetime is extended until the temporary std::shared_ptr is destroyed as well.
 In addition, std::weak_ptr is used to break circular references of std::shared_ptr.
+
+16. Why is std::map implemented as a red-black tree?
+http://stackoverflow.com/questions/5288320/why-is-stdmap-implemented-as-a-red-black-tree
+	It really depends on the usage. AVL tree has higher complexity of rebalancing. So if your application doesn't have too many insertion and deletion operations, but weights heavily on searching, then AVL tree probably is a good choice.
+	std::map uses Red-Black tree as it gets a reasonable trade-off between the complexity of node insertion/deletion and searching.
+
+17.	How is C++ std::vector implemented?
+	http://stackoverflow.com/questions/2096571/how-is-c-stdvector-implemented 
+	It's implemented by using an underlying array.
+	It's not possible to implement a std::vector<T> with a linked list because the standard guarantees the elements in the list will be held in contiguous memory.
+
+18.	What is the underlying data structure of a STL set in C++?
+	http://stackoverflow.com/questions/10375334/what-kind-of-tree-implementation-is-stl-set
+	The standard imposes no restrictions on the implementation (other than the complexity guarantees).
+	In other words, it's implementation-dependent. Typically, it's a red-black tree (see e.g. /usr/include/c++/x.y.z/bits/stl_tree.h, where x.y.z is your particular GCC version).
+
+19. How to allow the multiple inheritance where both the base classes are derived from another same parent class.
+	Derive both the base classes virtually  from parent class.
+	that will allow only one copy of parent class at any hierarchy.
+
+20. How to prevent the multiple inheritance from particular type of base classes
+		
+
+21.	How to prevent class from being inherited 
+	Make all constructors in the base class private
+
+	
