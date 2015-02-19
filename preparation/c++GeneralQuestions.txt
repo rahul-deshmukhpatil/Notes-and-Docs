@@ -226,4 +226,6 @@ http://stackoverflow.com/questions/5288320/why-is-stdmap-implemented-as-a-red-bl
 21.	How to prevent class from being inherited 
 	Make all constructors in the base class private
 
-	
+22.	In set, key itself is value, then how to modify the object and place it in the set again?
+
+23.	Are the STL data structures are multithread proof?
