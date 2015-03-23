@@ -1,0 +1,95 @@
+First, when you buy an option, you have a right but not an obligation to do something.
+Second, an option is merely a contract that deals with an underlying asset. For this reason, options are called derivatives, which means an
+option derives its value from something else.
+
+Calls and Puts
+The two types of options are calls and puts:
+	1. 
+	A call gives the holder the right to buy an asset at a certain price within a
+	specific period of time. Calls are similar to having a long position on a
+	stock. Buyers of calls hope that the stock will increase substantially before
+	the option expires.
+	2. 
+	A put gives the holder the right to sell an asset at a certain price within a
+	specific period of time. Puts are very similar to having a short position on a
+	stock. Buyers of puts hope that the price of the stock will fall before the
+	option expires.
+
+Participants in the Options Market
+There are four types of participants in options markets depending on the
+position they take:
+	Buyers of calls
+	Sellers of calls
+	Buyers of puts
+	Sellers of puts
+	
+	People who buy options are called holders and those who sell options are called
+	writers. furthermore, buyers are said to have long positions, and sellers are said
+	writers to have short positions.
+
+	Here is the important distinction between buyers and sellers:
+	Call holders and put holders (buyers) are not obligated to buy or
+	sell. They have the choice to exercise their rights if they choose.
+	Call writers and put writers (sellers), however, are obligated to
+	buy or sell. This means that a seller may be required to make good on a
+	promise to buy or sell.
+
+The price at which an underlying stock can be purchased or sold is called the
+strike price.
+price . This is the price a stock price must go above (for calls) or go below
+(for puts) before a position can be exercised for a profit. All of this must occur
+before the expiration date.
+
+An option that is traded on a national options exchange such as the Chicago
+Board Options Exchange (CBOE) is known as a listed option. These have fixed
+strike prices and expiration dates. Each listed option represents 100 shares of
+company stock (known as a contract contract).
+
+For call options, the option is said to be in-the-money if the share price is
+above the strike price. A put option is in-the-money when the share price is
+below the strike price. The amount by which an option is in-the-money is
+referred to as intrinsic value.
+
+The total cost (the price) of an option is called the premium
+premium. This price is determined by factors including the stock price, strike price, time remaining
+until expiration (time value) and volatility volatility. Because of all these factors,
+determining the premium of an option is complicated and beyond the scope of this tutorial.
+
+=============================================================
+	Options Basics: Why Use Options?
+=============================================================
+
+Speculation
+	Speculation is the territory in which the big money is made - and lost. The use
+	of options in this manner is the reason options have the reputation of being
+	risky. This is because when you buy an option, you have to be correct in
+	determining not only the direction of the stock's movement, but also the
+	magnitude and the timing of this movement. To succeed, you must correctly
+	predict whether a stock will go up or down, and you have to be right about how
+	much the price will change as well as the time frame it will take for all this to
+	happen. And don't forget commissions! ! The combinations of these factors
+	means the odds are stacked against you.
+
+	So why do people speculate with options if the odds are so skewed? Aside
+	from versatility, it's all about using leverage leverage. . When you are controlling 100
+	shares with one contract, it doesn't take much of a price movement to generate
+	substantial profits.
+
+Hedging
+	The other function of options is hedging
+	hedging. . Think of this as an insurance policy.
+	Just as you insure your house or car, options can be used to insure your
+	investments against a downturn. Critics of options say that if you are so unsure
+	of your stock pick that you need a hedge, you shouldn't make the investment.
+	On the other hand, there is no doubt that hedging strategies can be useful,
+	especially for large institutions. Even the individual investor can benefit.
+	Imagine that you wanted to take advantage of technology stocks and their	
+	upside, but say you also wanted to limit any losses. By using options,
+	you would be able to restrict your downside while enjoying the full
+	upside in a cost-effective way. (For more on this, see Married Puts: A
+	Protective Relationship and A Beginner's Guide To Hedging.)
+
+=============================================================================
+	Options Basics: How Options Work
+=============================================================================
+	
