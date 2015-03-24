@@ -78,11 +78,26 @@ Questions:
 	Example of code works well with functor objects and 
 		real c++ functions.
 
+
 ========================================================
+Item 1: Choose containers with care
+========================================================
+1> STL sequence containers: vector, string, deque and list
+2> STL assosciative containers: map, set, multimap, multiset
+3> Non standard sequence containers: rope, slist
+4> Non standard assosciative hashed containers:
+		hash_map, hash_set, hash_multimap, hash_multiset
+5> vector<char> replacement for string  
+6> vector<char> replacement for standard assosciative container
+7> standard non STL container: arrays, bitset, valarray, stack,
+								queue, priority_queue 
+
+
 
 ========================================================
 Terminologies
 ========================================================
+Introduction:
 1> Standard sequence containers
 2> Standard assosciative containers
 3> function call operator, functor 
