@@ -92,19 +92,78 @@ Item 1: Choose containers with care
 7> standard non STL container: arrays, bitset, valarray, stack,
 								queue, priority_queue 
 
-
-
-========================================================
 Terminologies
-========================================================
 Introduction:
 1> Standard sequence containers
 2> Standard assosciative containers
 3> function call operator, functor 
 4> functor class and functor objects
 5> Binder functions
-========================================================
 
+========================================================
+Item 2: Beware of container-independant code 
+========================================================
+	STL is generalisation
+		of arrays into containers
+		of functions into algorithms.
+	
+	Containers are not replacible
+	Each has some unique set of functions.
+	Even if function names are same, they accept parameters or return differently.	
+	Thier rules for invalidation of pointer, reference or iterationrs are different
+	Each one has different complexity for space and time.
+
+	To write container independant code use either typedefs or wrapper container classes
+
+	typedef vector<Widget> WidgetContainer;
+	
+	or
+	
+	class WidgetContainer
+	{
+		public:
+			insert(){}
+			size(){}
+	}
+
+	by this way atleast you could ensure that if not you, clients of class could write
+	some container independant code.
+
+Terminologies:
+	custom allocators
+	nth_element
+
+========================================================
+Item 3: Make copying cheap and correct for obj containers 
+========================================================
+	Containers do not store exact same objects what you pass to them,
+	Neither they return exact same object what they store.
+	They accept and return copies of objects via copy constructors.
+	So make sure that copy constrctors are cheap, otherwise insertion
+	and extraction of objects from containers would be bottleneck.
+
+	Do not store derived class objects into base object containers
+	as it will cause object slicing.
+
+	Arrays of objects will initialise all the objects in array at the
+	point of definition. if you use, vectors then this will not happen
+	as vector will be empty until and unless you put something in it.
+
+	Try to use containers of pointers to be correct, immune and prevent
+	from slicing.
+
+========================================================
+Item 4: Call empty instead of checking size() 
+========================================================
+	Size might iterate over the every element in the container if there
+	is not extra size field mainained by the implementation of the STL
+	Same container could have different implementation in diff STL implementation.
+	So changing STL implementation could cuase difference in performance if
+	you are using size()
+	
+	Empty will see if size is atleast greter than 0. Empty is supposed to
+	be constant time operation in every standard cotainer.
+	
 
 ========================================================
 Suggestions:
