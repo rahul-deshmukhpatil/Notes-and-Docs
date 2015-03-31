@@ -164,6 +164,76 @@ Item 4: Call empty instead of checking size()
 	Empty will see if size is atleast greter than 0. Empty is supposed to
 	be constant time operation in every standard cotainer.
 	
+========================================================
+Item 5: Use range member functions over thier single element counterparts 
+========================================================
+	One should use range member functions, which are available for
+	every STL container, over the single member functions which use
+	inserter, front_inserter, back_inserter
+		- Range member functions do not demand frequent allocations
+			Calculates how much memory its going to require in single step
+		- Range member functions do not do frequent copying/moving
+			It moves elements into final position in single step
+		- It avoid unneccessory inserter callbacks 
+			Could be inlined, but in case of list, frequent pointer reassignments
+			are inenvitable	
+		- In case of associative containers, theory says that range
+			members could have been optimized.
+
+	Range Construction:
+		container::container(InputIterator begin, InputIterator end);	
+	Range Insertion:
+		void container::insert(Iterator pos, InputIterator begin, InputIterator end);
+	Range Erase:
+		Sequence: 
+		Iterator container::erase(InputIterator begin, InputIterator end);
+		Associative:
+		void container::erase(InputIterator begin, InputIterator end);
+
+Questions:
+	See if range member functions are optimized in case of associative containers 
+		
+
+========================================================
+Item 6:	Be alert for C++ most vexing parse 
+========================================================
+	ifstream dataFile("sam.txt");
+	list<int> data(istream_iterator<int>(dataFile), istream_iterator<int>())
+	1> data is function and first parameter dataFile is of type istream_iterator<int>
+	2> second one is function pointer returning istream_iterator<int>
+
+	so always use
+	list<int> data((istream_iterator<int>(dataFile)), istream_iterator<int>())
+	1> now first parameter is lists constructor
+	some buggy compilers wont allow to compile above definition
+
+	so better way to define data is 
+	istream_iterator<int> dataBegin(dataFile);
+	istream_iterator<int> dataEnd();
+	list<int> data(dataBegin, dataEnd);
+
+========================================================
+Item 7: Do not forget to delete pointer in contianers while deleting container	
+========================================================
+	When container having pointers is deleted pointers inside it are not deleted
+	so you have to take care of deleting them
+	1> Delete explicitly them
+	2> Or use the shared_ptr, or any resource counting smart pointer containers
+		instead of plain pointers.
+
+	Dynamically allocated arrays are always inferior to the vectors and strings
+	
+
+========================================================
+Item 8: Never use auto_ptr containers 
+========================================================
+	1> While inserting and getting back the data from containers, copy
+		operations are performed.
+	2> When copy is performed on auto_ptr, the source pointer gets NULL
+	3> So if you perform sort on container of auto_ptr which calls compare
+		function inside it, which takes parameters by value, then the
+		container will contain NULL values.
+	
 
 ========================================================
 Suggestions:
