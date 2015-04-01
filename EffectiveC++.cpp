@@ -30,7 +30,7 @@
 		b. with function arguments
 		c. const functions of class
 		d. const with the stl iterators ie const_iterator 
-		e. const for the return types of functions returning by value. ie. *, +, - ...
+		e. const for the return types of functions returning by reference. ie. *, +, - ...
 		otherwise for user defined type
 			while(a * b = c); where will be taken as while( (a * b) = c);
 			where programmer really meant is while( (a * b) == c) 
@@ -64,7 +64,7 @@
 
 		c. 	const and references must be initized in initialization list.
 		
-		d.	static objects begin life when constructor invoked till program lasts.
+		d.	static objects begin life when constructor invoked and lasts till program lasts.
 			local static begin life when first time function is called.
 			
 		e.	Class global static objects have very unreliable initialization order if they are defined

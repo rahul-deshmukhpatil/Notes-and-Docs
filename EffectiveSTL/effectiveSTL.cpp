@@ -212,6 +212,10 @@ Item 6:	Be alert for C++ most vexing parse
 	istream_iterator<int> dataEnd();
 	list<int> data(dataBegin, dataEnd);
 
+Questions:
+	list<int> data((istream_iterator<int>(dataFile)), istream_iterator<int>())
+	what does second parameter do in the above function declaration?
+
 ========================================================
 Item 7: Do not forget to delete pointer in contianers while deleting container	
 ========================================================
@@ -236,10 +240,28 @@ Item 8: Never use auto_ptr containers
 	
 
 ========================================================
+Item 8: Never use auto_ptr containers 
+========================================================
+	1> While inserting and getting back the data from containers, copy
+		operations are performed.
+	2> When copy is performed on auto_ptr, the source pointer gets NULL
+	3> So if you perform sort on container of auto_ptr which calls compare
+		function inside it, which takes parameters by value, then the
+
+========================================================
+Item 9: Choose carefully among erasing options 
+========================================================
+	1> Erasing the member of containers might invalidate the iterator/s
+		depending upon type of container
+========================================================
 Suggestions:
 ========================================================
 	Page3: "An STL platform", this should be "A STL Platform"
 	Page3: end: what is undefined behaviours in STL?
 	page4: end: Example of code works well with functor objects 
 			and  c++ functions
+	page37: Item7: explain how does DeleteObject<Widget> calls functor
+	page43: How does erase-remove works. twice used c.end(), is bit confusing
+			What remove returns?
+	page44: not clear by meaning of c.remove_if(badValue)
 ========================================================
