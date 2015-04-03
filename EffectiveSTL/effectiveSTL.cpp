@@ -253,6 +253,17 @@ Item 9: Choose carefully among erasing options
 ========================================================
 	1> Erasing the member of containers might invalidate the iterator/s
 		depending upon type of container
+	2> If want to erase a particular element
+		seqContainer: use erase-remove
+		list		: remove 
+		associative containers: erase
+	3> Conditional erase
+		seqContainer: use erase-remove_if
+		list		: remove_if 
+		associative containers: walk over and erase with post incriment
+	4> Do something in loop:
+		seqContainer: use return value of erase
+		associative containers: walk over and erase with post incriment
 ========================================================
 Suggestions:
 ========================================================
