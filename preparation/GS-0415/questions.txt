@@ -1,0 +1,47 @@
+=======================================
+coding round
+
+
+=======================================
+first : Manager general
+What you work upon.
+why you are leaving.
+what challenging work you have done.
+What are challenges in your current job.
+Discussed the coding round questions
+
+=======================================
+second : Technical 
+Design a timer object class, which runs as saperate thread/process.
+if you pass some time intervals in seconds to the TimerThread, you
+should get the notifications and invoke the particular methods
+
+Remove the even elements from the vector.
+What are functors.
+
+=======================================
+third : Technical, puzzles
+
+1> from list of m elements, take last n elements and insert them in front 
+of the list.
+2> if four people are standing at the each corner of square.
+	they could run in any direction along square edge.
+	calculate the probability for them to collide.
+3> Given a cube of length 5, made up of small cubes of side 1.
+	Each side is painted.
+	1> find cubes whos no side is painted: 3^3 = 27
+	2> 1 side is painted = 3^3 *6 =  54
+	3> 2 sides are painted = 12 * 3 = 36.
+	4> 3 sides are painted = 8 = 8.
+
+	all sum is 125.
+
+4> if you are pointing in north, if you turn right twice, and then turn left
+	for 5 times, which direction you are pointing to.
+
+	add for right, negate for left. And do mod 4 to the ans.
+	and make those many turns, left or right, depending upon the sign after applying mod
+
+5>  Rs 500 question. 
+
+
