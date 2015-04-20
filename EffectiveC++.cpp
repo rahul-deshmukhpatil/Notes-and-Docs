@@ -57,10 +57,20 @@
 			if programmers thinks order of initialization is same as in initialization 
 			list. They are initialized in same order in case of inbuilt copy constructor
 			or copy assigment operator.
+
+			if user defined objects are initialised by assigment, cost for this is too high
+			Initilization list always calls default constructor, if not provided explicitly any
+			, plus you might have to call another constructor+ operator =, if source value 
+			being assigned is different	than destination user-defined class member data.
+
+			Exception to this rule is if data members order of initialization depends
+			or you want to avoid compiler warning when you use this pointer before {
+			of function start, in the intialization list.
 	 
 		b.	Make sure everything is initialised in all constructors.
 			here code duplication will come in scenario could be avoided with the
 			having common initialization function.
+			Initilize everything in initialization list.
 
 		c. 	const and references must be initized in initialization list.
 		
@@ -103,6 +113,7 @@
 		a.	Use virtual destructors only in
 			I> polymorphic classes, which are inherited
 			II> Or if any other fuction is virtual, which is basically sign of inheritance later.
+				Usually class at top hierarchy must be virtual, rather than some in middle order.
 	
 		b.	STL classes mostly do not have the virtual destructors, So do not inherite them
 			and try to destroy polymorphically.
@@ -403,7 +414,7 @@
 
 25.	Consider support for non-throwing swap
 		a.	std::swap does not throw.
-		b.	std::swap used operator= of the class, and if operator= is doing deep copying which is expected
+		b.	std::swap uses operator= of the class, and if operator= is doing deep copying which is expected
 			from it and other easy way of doing swap via pImp idom is possible, you should specialize the std::swap.
 		c.	Its ok to specialize the std:: contents. But is not ok to add any template class or function in the
 			std namespace.
@@ -415,11 +426,11 @@
 		b.	if control doesnot reach there, variable is not initialized.
 		c.	Its better probablity that variable will be in register/cache at the time of use if declared 
 			at the point of use.
-		d.	Do not declare variables inside loop.
+		d.	Exception: Do not declare variables inside loop.
 
 27.	Minimize casting.
 		a.	casting is not free. cast subverts the type system and put you into troubles.
-		b.	dynamic_cast: used for downcasting of polymorphic class, has significant disadvantage
+		b.	dynamic_cast: used for downcasting of polymorphic class, has significant run-time cost disadvantage
 		c.	static_cast: implicit conversions from non-const to const. void pointer to some type. 
 		d.	upcasting doesnot need cast
 		e.	const_cast: non-const to const
@@ -429,6 +440,8 @@
 		f.	Time taken by dynamic_cast increases with the degree of multiple and multilevel inheritance
 		h.	prefer c++ casting over old one. It is safer, noticiable , can grep. It does what it means and 
 			most of the times what it should.
+			if derived class is virtual and base class is not. Derived class may contian the vptr at the start
+			of object. Directly converting pointer using c type cast from derived to base class pointer wont work here
 
 28.	Avoid returning handles to object internals.
 		a.	Do not return reference to private member via public member.

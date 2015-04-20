@@ -293,6 +293,38 @@ How do I prevent the “static initialization order fiasco” for my static data
 What is the purpose of the explicit keyword?
 	The explicit keyword is an optional decoration for constructors and conversion operators to tell the compiler that a certain constructor or conversion operator may not be used to implicitly cast an expression to its class type.
 ===================================================================================
+What’s the deal with destructors?  
+	A destructor gives an object its last rites.
+
+What’s the order that local objects are destructed?  
+	In reverse order of construction: First constructed, last destructed.
+
+What’s the order that objects in an array are destructed?  
+	In reverse order of construction: First constructed, last destructed.
+
+Can I overload the destructor for my class?  
+	No.
+
+Should I explicitly call a destructor on a local variable?  
+	No!
+
+But can I explicitly call a destructor if I’ve allocated my object with new?  
+	Probably not.
+	Unless you used placement new, you should simply delete the object rather than explicitly calling the destructor. 
+
+What is “placement new” and why would I use it?  
+	There are many uses of placement new. The simplest use is to place an object at a particular location in memory. This is done by supplying the place as a pointer parameter to the new part of a new expression
+
+When I write a destructor, do I need to explicitly call the destructors for my member objects?
+	No. You never need to explicitly call a destructor. 
+
+When I write a derived class’s destructor, do I need to explicitly call the destructor for my base class?  
+	No. You never need to explicitly call a destructor
+
+Why can’t my derived class access private things from my base class?  
+	To protect you from future changes to the base class.
+
+===================================================================================
 
 Friend Functions
 https://isocpp.org/wiki/faq/friends
@@ -328,6 +360,34 @@ Should my class declare a member function or a friend function?
 	Sometimes friends are syntactically better,  good use of friend functions are the binary infix arithmetic operators. E.g., aComplex + aComplex should be defined as a friend rather than a member if you want to allow aFloat + aComplex as well (member functions don’t allow promotion of the left hand argument, since that would change the class of the object that is the recipient of the member function invocation).
 
 ===================================================================================
+Inheritance
+https://isocpp.org/wiki/faq/basics-of-inheritance
+
+I’ve been told to never use protected data, and instead to always use private data with protected access functions. Is that a good rule?
+	Here’s the way I say it: if I expect derived classes, I should ask this question: who will create them? If the people who will create them will be outside your team, or if there are a huge number of derived classes, then and only then is it worth creating a protected interface and using private data. If I expect the derived classes to be created by my own team and to be reasonable in number, it’s just not worth the trouble: use protected data. And hold your head up, don’t be ashamed: it’s the right thing to do!
+
+
+===================================================================================
+virtual functions
+https://isocpp.org/wiki/faq/virtual-functions
+
+
+What is a “virtual member function”?
+	Virtual member functions are key to the object-oriented paradigm, such as making it easy for old code to call new code.
+
+Why are member functions not virtual by default?
+	Because many classes are not designed to be used as base classes.
+	Virtual function introduces vptr in every object
+	Every virtual fun has to pay runtime cost for calling the function.
+
+How can C++ achieve dynamic binding yet also static typing?
+	Static typing means that the legality of a member function invocation is checked at the earliest possible moment: by the compiler at compile time.
+	Dynamic binding means that the address of the code in a member function invocation is determined at the last possible moment: based on the dynamic type of the object at run time.
+
+What is a pure virtual function?
+	A pure virtual function is a function that must be overridden in a derived class and need not be defined.
+	But could have definition.
+
 ===================================================================================
 Terminology
 	Named constructor

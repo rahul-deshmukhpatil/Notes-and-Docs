@@ -1,0 +1,40 @@
+Currently I am working with SRLabs, on a product called SMDS.
+Here I work on c++ linux technology along with xml and bash scrpting
+I have mainly worked on the european feeds line millenium exchanges
+LSE, TQ, Milan, Oslo, then NYSE euronext and nordic. fix fast feeds Xetra and swx
+ECN  feeds like BATS and CHIX. Here I handle long term and urgent assignments
+which envolves significant new developement work as well as work on existing code.
+I was working with morgan stanley at canary wharf london, for their european
+composite equity orderbook project on behalf of SRLabs. We provide them a customised
+product for thier use case.
+	SMDS the market data product is set of feed handler libararies and a server
+client mechanism to distribute the data to multiple applications running on same 
+server or in distributed environment. We are market data vendors and provide feed
+libaries to the clients and actual feeds run in thier data centers.
+In the long term, I want to be software architect.
+Previosuly I have worked on GPU hardware processing and Linux file systems.
+During my gradution days I have participated in many coding competions held at
+university level. Besides computer science I like geology.
+
+
+Why boomberg.
+	Bloomberg is considered as standard when it comes about the market data and access.
+300 thousands bloomberg terminal across world, one of them is in iraq is proof of that.
+Its is not just data, but relible financial news across any communication medium is the major
+thing for which bloomberg is trusted across world. Bloomberg terminal is indeed awesome thing
+that has been created by bloomberg and I dont think there is anything that completes it
+in terms of relieable access and wide range of access.
+
+About this openeing:
+	I will be workig upong futures and options feeds. Which will be quite interesting.
+I will come across many people with diverse background in the field of market data.
+market access and market analytics. 
+
+Wht kind kernel bypassing you use.
+Which c++ version you are using and do you used any customised memory managers?
+How you specify the config files for the feeds using xml or some po
+
+
+
+	
+

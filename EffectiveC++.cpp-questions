@@ -12,14 +12,27 @@ Q.2: Prefer const, enums and inlines to #define macros.
 	inline functions have over macro computation. Though you have already mentioned that nothing goes to symbol
 	table from the macro definition.
 
+
+Q.3 while(a * b = c); where will be taken as while( (a* b) = c);
+	where programmer really meant is while( (a * b) == c)
+	here while( (a * b) = c) is wrong assumption, as (a*b) does not return any reference and it returns by value for operator *. Not sure if it works for only user defined data types. 	
 	
-	
+Q.7 For virtual destruction:
+	Usually class at top hierarchy must be virtual, rather than some in middle order.
+	becuase lowest derived class pointer could be implicitly typecasted and stored in containder of pointers
+	of topmost parent.
+
 Q.24: dynamic_cast is applicalbe for downcasting of the polymorphic base class pointers only.	
 
 Q.27: normal casting:with genearl implementaion base class part is put first in memory layout of object. but I think
 		that is implementation dependant. As well, mutpliple/multilevel hierarchy you can not just point assume that
 		base class you are inheriting starts are first bye only. You may reorder the inheritance base classes, which
 		might change the object layout.
+
+		h.	prefer c++ casting over old one. It is safer, noticiable , can grep. It does what it means and 
+			most of the times what it should.
+			if derived class is virtual and base class is not. Derived class may contian the vptr at the start
+			of object. Directly converting pointer using c type cast from derived to base class pointer wont work here
 
 Q.32: Lot of authors says that public inheritance means public and protected members of base class become public
 		and protected members of the derived class.

@@ -198,7 +198,7 @@ Questions:
 Item 6:	Be alert for C++ most vexing parse 
 ========================================================
 	ifstream dataFile("sam.txt");
-	list<int> data(istream_iterator<int>(dataFile), istream_iterator<int>())
+	list<int> data(istream_iterator<int>(dataFile), istream_iterator<int>());
 	1> data is function and first parameter dataFile is of type istream_iterator<int>
 	2> second one is function pointer returning istream_iterator<int>
 
@@ -217,7 +217,7 @@ Questions:
 	what does second parameter do in the above function declaration?
 
 ========================================================
-Item 7: Do not forget to delete pointer in contianers while deleting container	
+Item 7: Do not forget to delete pointer in containers while deleting container	
 ========================================================
 	When container having pointers is deleted pointers inside it are not deleted
 	so you have to take care of deleting them
@@ -264,6 +264,87 @@ Item 9: Choose carefully among erasing options
 	4> Do something in loop:
 		seqContainer: use return value of erase
 		associative containers: walk over and erase with post incriment
+
+========================================================
+Item 12: Having realistic expectation about the thread
+		 safety of STL containers.
+========================================================
+	STL containers come with only below thread safety:
+	1> Multiple reads to same container are ok
+	2> Multiple writes to different container are ok.
+	
+	you will have to explicitley lock the container
+	1> during each member function called
+	2> during each lifetime of iterator returned 
+	3> during each algorithm acting on container.
+		(No algorithm has knowledge of on which
+			container is it being applied)
+
+	Providing locks in each function wont be good idea
+	as it will block other containers. So good idea is
+	managing own locks for each container.	
+
+========================================================
+Item 13: Prefer Vector and String over dynamic allocation
+========================================================
+	Dynamic allocation comes with
+	1> responsibility to delete
+	2> delete with proper type, delete [] or delete
+	3> can not delete it twice accidently.
+
+	So prefer vector/string, which automatically reallocate
+	with proper operations. Vector string provide iterators and
+	functions like size, capacity, resize, reserve. String uses
+	a resource counting approach which brings down the cost of
+	copying string, but it has overhead of synchronization.
+	
+	so if you do not want resource counting string with overhead
+	of synchronization 
+	1> disable resource counting in implementation with preprocessor
+		, this is non portable way.
+	2> Have own simple string implementation
+	3> use vector<char>, it will almost come with similar operations
+		and time/space complexity. Though vector will never use	
+		resource counting approach.
+
+
+========================================================
+Item 14: Use reserve
+========================================================
+	There are multiple functions provided by STL containers
+	1> size: no of objects initialized within container
+	2> capacity: currently allocated size to the container.
+	3> max_size: maximum no of objects could be stored within container
+	4> resize: increase/decrease the size of container. If increase, initialize
+			the default new objects. If decrease, delete the extra objects at the end.
+	5> reserve(n): make sure the capacity of container is atleast this much, ie n.
+				if current capacity is less than reserve size, 
+				1> allocate new memory
+				2> copy the objects
+				3> destruct the old objects
+				4> release the old memory
+				if current capacity is more than size to reserve
+				1> if its vector: Do not do anything
+				2> if its string: n or strlen, whichever is greater, 
+									make size that much
+
+	reserve will avoide the frequent allocations.
+
+========================================================
+Item 15: Consider difference string implementations
+========================================================
+
+	String in almost every STL implemenation has stuble
+	differences in terms of per object allocator, memory layout,
+	reference counting. The string objects size itself
+	varies very differently from sizeof(char *) till
+	7 times of it. Some implemenations store the string
+	of limited length within themselve or some uses only
+	dynamically allocated memory. If copying operations
+	of string are very frequent it is better to have reference
+	counted strings to save cost.
+	
+	
 ========================================================
 Suggestions:
 ========================================================

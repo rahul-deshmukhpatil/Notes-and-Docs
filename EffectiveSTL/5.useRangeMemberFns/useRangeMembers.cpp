@@ -105,7 +105,7 @@ void printContainer(InputIterator first, InputIterator last)
 	printClass<T> printObj;
 	printf("Container: ");
 	for_each(first, last, printObj);
-	printf("\n");
+	cout << endl;
 }
 
 int main()
