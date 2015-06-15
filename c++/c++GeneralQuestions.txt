@@ -261,3 +261,11 @@ http://stackoverflow.com/questions/5288320/why-is-stdmap-implemented-as-a-red-bl
 			  var = 1;
 		  } 
 
+27. There are two classes A and B which provide same interface. How you could ensure that a class could be derived only
+	from one of them.
+
+28. How to implement threadsafe singleton pattern.
+
+29. What are types of static polymorphism
+
+ 

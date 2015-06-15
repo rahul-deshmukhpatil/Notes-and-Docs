@@ -1,3 +1,9 @@
+#
+# Program to demonstate list operations pop, join and append
+#	e.g 
+#
+##########################################
+
 """
 	Program for while loop and lists 
 """

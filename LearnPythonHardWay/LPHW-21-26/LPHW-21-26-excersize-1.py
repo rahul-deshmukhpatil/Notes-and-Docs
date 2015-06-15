@@ -1,3 +1,9 @@
+#
+#	Prints the path given as arguments
+#	e.g
+# 		python2.7 LPHW-21-26-excersize-1.py  /home/rahul/upsc
+#
+##################################################################
 from sys import argv
 from sys import exit 
 
@@ -18,9 +24,9 @@ for path in argv[1:3]:
 if len(f) >= 1:
 	print("Some Files Found are : ")
 else:
-	print("No File Found")
+	print("No File Found under any path !!!")
 
-i=0
+i=1
 for fileName in f:
 	print("%d : %s" %(i, fileName))
 	i += 1;

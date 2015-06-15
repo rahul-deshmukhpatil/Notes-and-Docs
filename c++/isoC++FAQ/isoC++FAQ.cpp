@@ -389,6 +389,38 @@ What is a pure virtual function?
 	But could have definition.
 
 ===================================================================================
+Inheritance:
+https://isocpp.org/wiki/faq/proper-inheritance
+
+Should I hide member functions that were public in my base class?
+	Never, never, never do this. Never. Never!
+	Attempting to hide (eliminate, revoke, privatize) inherited public member functions is an all-too-common design error.
+
+Converting Derived* → Base* works okay; why doesn’t Derived** → Base** work?
+	  Car   car;
+	  Car*  carPtr = &car;
+	  Car** carPtrPtr = &carPtr;
+	  Vehicle** vehiclePtrPtr = carPtrPtr;  // This is an error in C++
+	  NuclearSubmarine  sub;
+	  NuclearSubmarine* subPtr = &sub;
+	  *vehiclePtrPtr = subPtr;
+	  // This last line would have caused carPtr to point to sub !
+	  carPtr->openGasCap();  // This might call fireNuclearMissle()!
+
+Is a parking-lot-of-Car a kind-of parking-lot-of-Vehicle?
+Is an array of Derived a kind-of array of Base?
+	Nope.
+
+Does array-of-Derived is-not-a-kind-of array-of-Base mean arrays are bad?
+	Yes, arrays are evil. (only half kidding).
+	Seriously, arrays are very closely related to pointers, and pointers are notoriously difficult to deal with. 	
+	you should use a template container class such as std::array<T, N> from the standard library rather than fixed size raw arrays.
+	Please consider the std::vector as well as an option.
+
+Is a Circle a kind-of an Ellipse?  
+	Depends. But not if Ellipse guarantees it can change its size asymmetrically.
+===================================================================================
+===================================================================================
 Terminology
 	Named constructor
 	Zero base class optimization
