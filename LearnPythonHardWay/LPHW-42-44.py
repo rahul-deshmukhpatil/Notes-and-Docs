@@ -35,7 +35,7 @@ class sellable(object):
 	Mango is inherited from fruit
 	and is composed of sellable 
 '''
-class mango(fruit):
+class mango(fruit, sellable):
 	def __init__(self, color, shape, price, quantity):
 		self.sell = sellable(price, quantity)
 		super(mango, self).__init__(color, shape)
