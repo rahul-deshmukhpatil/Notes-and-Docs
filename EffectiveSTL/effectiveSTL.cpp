@@ -344,6 +344,36 @@ Item 15: Consider difference string implementations
 	of string are very frequent it is better to have reference
 	counted strings to save cost.
 	
+========================================================
+Item 37: Use Accumulate or for_each for range operations 
+========================================================
+
+	There are different STL algorithms which act on container range
+		1> count
+		2> count_if
+		3> minimum
+		4> maximum
+	Some other numeric algos:
+		1> inner_product
+		2> partial_difference
+		3> partial_sum
+	
+	stl algorithm "accumulate" as well acts on the range. It exists in two forms
+	
+		1> Which by default adds the all elements in range with initial value
+			and returns the result which is of same type as of initial value.
+			list<float> fl;
+			accumalate(fl.begin(), fl.end(), 0.0f); ///< 0.0f is necessory
+
+		2> Takes an function, to which it passes result of previous function invokation.
+			///< Calculate sum of all strings in list<string>
+			list<string> slist;
+			accumatate(slist.begin, slist.end(), slistSum(), 0);
+			string::size_type slistSum(string::size_type sum, string& str)
+			{
+				return sum + str.size();
+			}
+	stl algorithm for_each is as well could be used where accumulate is used.
 	
 ========================================================
 Suggestions:
