@@ -541,5 +541,80 @@ private:
 
 
 
+Inline
+============================================================
+inline keyword in the DEFINITION of the member function (or non member function)
+replaces calls to the function with the object code of function.
+
+This sometimes makes function execution faster as you need not put
+the function argument on the stack and jump the code/text pointer to 
+the new location
+
+But you must define inline functions in the header file. If not defined
+in header file, then compiler will be the "unresolved external" error.
+
+Only case in which you can define it in .cpp file, when inline function
+is being called from only that .cpp file.
+
+If you define function in the header file, it implicitely says that it
+is going to be considered for inlining. Otherwise specify keyword inline
+at the time of definition only.
+Defining function inside class declaration just to make it inline is not
+good idea as it does not hurts the users of class who read the class interface.
+
+
+
+Templates
+===================================================
+Class templates are often used to build type safe containers.
+Writing code that works withe different types.
+Unlike template functions, template classes (instantiations of class templates) need to be explicit about the parameters over which they are instantiating
+Function templates get automatically initialized depending upon the template parameters.
+
+
+Compiler Dependancies
+====================================================
+Overallocation : Allocated an extra memory to save size of array being allocated. 
+So that "delete []" could know how much memory to free.
+
+There are two techniques to know size of array allocated
+1> Overallocation of byte before actual array storage
+2> Global data structure which maintains the pointer and size of storage allocated.
+Second method is slow, but it ensures that no memory corruption occurs in case of 
+delete is called instead of "delete []" for freeing arrays
+
+Code compiled from different compilers could not be linked togather.
+Every compiler can have different
+	- Object layout in case of multiple/multilevel inheritance
+	- V pointer position and Vtable layout
+	- Function stack strucutres and calling conventions
+	- How RTTI is laid out
+	- How exception handling is implimented
+
+Miscellaneous Technical Issues
+========================================================
+Functor: Function Objects are used with the lamdas in the for_each
+Note that a function object with an inline application operator inlines 
+beautifully because there are no pointers involved that might confuse optimizers. 
+To contrast: current optimizers are rarely (never?) able to inline a call through a pointer to function.
+
+Convert int to string : ostringstream;
+Convert string to int : istringstream;
+You can templetize above functionality with the template functions.
+Those template functions will use 
+	1> stringfy() for converting to string
+	2> convert() for converting string to type, convert.h
+
+Macros are evil. They just subsstitute arguments.
+Macros inside If condition, while loop are buggy
+Even macros with multiple lines have problems and should be put under do{MACRO_CODE}while(false);
+
+++y + y++ is undefined behavior, so is i++ + i++, so is v[i] = i++, so is f(v[i], i++)
+You can not use same variable twice in the same expression, while modifying it within same expresion.
+Order of evaluation is undefined and depend upon compiler optimizations.
+
+
+
+
 
 
