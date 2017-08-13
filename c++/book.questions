@@ -1,0 +1,12 @@
+Eunterpunerial C++
+
+
+1. Writing better map for the string vs any data type.
+	consider string allocation
+
+2. Initializing the shared_pointer which is data member of class 
+	//Use only constructor to initialize this shared_ptr
+
+
+
+

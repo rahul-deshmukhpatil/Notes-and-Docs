@@ -117,6 +117,7 @@ This is new addition to C++
 		There is no connection between function being inline and static. Or function templates should be inline.
 	Though recursive inline calls could be really replaced by actual recurisive function code till certain depth.
 
+	inlining like macro is source code copying.
 
 =================================================================================================
 =================================================================================================
@@ -241,7 +242,10 @@ Intro:
 		   
 			if(nh)
 			{
-				(*nh)();
+				(*nh)(); 
+				// Either free some memory
+				// Or set new handler to another freeing function
+				// Or set new handler to NULL, so that bad_alloc or its derived could be thrown
 			}
 			else
 			{
@@ -303,7 +307,8 @@ Intro:
 	
 3> CONST MEMBER FUNCTION
 	These will never modify any data member of the class.
-	These could be only called by costant objects.
+	costant objectsi could only call const member functions.
+	You can modify static and mutable data into the static function.
 
 4> CONST MEMBER FUNCTION ARGUMENTS
 	Genrerally functions which pass variable by reference should pass it as const so that original
@@ -536,8 +541,9 @@ static_cast:
 	3> upcasting
 	4> void *ptr conversion, which can not be possible with dynamic_cast
 	5> Out of hierarchy conversions are not possible and gives compile time error
-	5> Normally used to covert derived class * to base class. 
-		But otherway conversion is as well possible without any compile time error, which is not correct.
+	5> Normally used to covert derived class * to base class. which is uneccessory.
+		But otherway conversion is as well possible without any compile time error, however, 
+		it is undefined behavior to static_cast down a hierarchy to a type that isn't actually the type of the object.
 
 cost_cast:
 	1> convert const object into non-const type
