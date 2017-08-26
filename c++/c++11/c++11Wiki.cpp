@@ -108,4 +108,29 @@ Usability
 			will initialize it to the given parameter.
 			It can also use constructor or uniform initialization, instead of the assignment initialization shown above.
 
-	8> 
+	8> final and override:
+			With override keyword for the derived class virtual function, compiler checks a
+			virtual function with same signature is present in the base class.
+
+			With final keyword in base class, derived class is prevented from overriding the
+			base class virtual function. Non virtuals can not have override or final.
+
+	8> nullptr : is object of type nullptr_t a new type.
+			With C, NULL was defined as 0 or ((void *) 0).
+			But C++ forbids implicit conversion from void* to other pointers
+			so in C++, NULL is defined as 0;
+			So in below overloaded functions function with int paramter is called
+				void fun(char *);
+				void fun(int );
+					
+				//call
+				fun(NULL); // calls int variant
+
+	9> Strongly typed enums
+			With C++03, enums and intergers were inter convertible, could be assigned to each other.
+			As well underlying type of enums was implemention defined
+			With C++, enum class Error : unsigned short {};, enums are strongly typed, with no
+			interger conversion and underlying type of enum could be defined.
+
+	10> Right angle bracket in templates
+			std::vector<SomeType<SomeOtherType>> x1;  // Gives error for as  >> is treated as insertion operator
