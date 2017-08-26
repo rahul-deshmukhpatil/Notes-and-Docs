@@ -134,3 +134,20 @@ Usability
 
 	10> Right angle bracket in templates
 			std::vector<SomeType<SomeOtherType>> x1;  // Gives error for as  >> is treated as insertion operator
+
+	11> explicit for conversion operators:
+			explicit was allowed with the constructors only to prevent the non intended use of constructors.
+			now that is also allowed with other operators.
+
+	12> Template aliasing
+			now templates could be given meaning full name depending upon thier specilization.
+			template <typename First, typename Second, int Third>
+			class SomeType;
+
+			template <typename Second>
+			using TypedefName = SomeType<OtherType, Second, 5>;
+
+			The using syntax can be also used as type aliasing in C++11:
+			typedef void (*FunctionType)(double);       // Old style
+			using FunctionType = void (*)(double); // New introduced syntax
+
