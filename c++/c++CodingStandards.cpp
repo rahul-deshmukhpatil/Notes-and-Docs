@@ -77,4 +77,21 @@ Design Style
 	- Use libaries and std containers
 	- Using range based functions once over calling function for each single element.
 
+10> Minimize global and shared data
+	Global data pollutes the global namespace.
+	In case of multithreading it is overhead to manage secure access.
+
+11> Hide information
+	Dont give accesss to data members.
+	It localizes changes for implemenation and there is flexibility in changing implementation
+
+12> Know when and how to code for concurrency
+	- Use atomics
+	- Keep thread shared data minimum
+	- lock free designs
+	- external and internal locking of data structures
+
+13> Ensure resources are owned by objects. Use explicit RAII and smart pointers
+	- They prevent memory leaks
+	- They are bit costly, so use judiciously.
 
