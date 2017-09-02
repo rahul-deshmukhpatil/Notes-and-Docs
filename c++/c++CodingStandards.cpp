@@ -95,3 +95,31 @@ Design Style
 	- They prevent memory leaks
 	- They are bit costly, so use judiciously.
 
+14> Prefer compile- and link-time errors to
+	run-time errors
+	run time errors depend upon input data and execution flow. 
+	program could crash or behavior could not be defined
+	Static checks are stronger and dont incure runtime overhead
+
+15> Use const proactively
+16> Avoid macros
+	They are not good, Expand and cause undefined behavior sometimes
+
+17> Avoid magic numbers
+	instead of doing int a = 84 // 42* 2 define  42 and 2 as constants 
+	and assign 'a' value as their multiplication
+
+18> Declare variables as locally as possible
+	declare near where they are used. Prevent unecessory initializations.
+
+19> Always initialize variables
+	Unintilized cause undefined behavior
+
+20> Avoid long functions. Avoid deep nesting
+	Functions should be short and with clear responsibilty.
+	Nested for, if, while loops cause confusion
+
+21>
+
+
+
