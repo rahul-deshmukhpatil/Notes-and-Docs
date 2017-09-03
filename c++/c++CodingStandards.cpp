@@ -119,7 +119,16 @@ Design Style
 	Functions should be short and with clear responsibilty.
 	Nested for, if, while loops cause confusion
 
-21>
+21> Avoid initialization dependancies across compilation units
+	
+22> Avoid cyclic dependancies
+	If work can be done with just declarion get it done it with
+
+23> Make header selfsufficient
+	Dont include other headers which are not needed.
+	It costs to open other headers and parse them.
+
+24> Always write  "#include __HEADER_H__" guards for header
 
 
 
