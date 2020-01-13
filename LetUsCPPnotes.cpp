@@ -156,11 +156,30 @@ Intro:
 	value doesnt make sense.
 	Compiler provids default zero argument construtor even when we dont define any argument constructor.
 	If we define a one or more argument constructor then its must to define a 0 argument constructor.
+		
+	Default constructor is not generated if T has
+	1> Member is reference without default initializer list
+	2> Member is const without default initializer list or default constructor
+	3> Member does not have default constructor or ambiguous constructor
+	4> Direct or virtual base does not have Constructor or destructor accessible or deleted.
+	
 
 2> DESTRUCTOR
 	Destructor is a special function called when object is destroyed.
 	Destructors do not have return type also they dont take any argument as philosophy says there is only one way to
 	destroy any object.
+		
+		Trivial default constructor
+		The default constructor for class T is trivial (i.e. performs no action) if all of the following is true:
+
+		The constructor is not user-provided (i.e., is implicitly-defined or defaulted on its first declaration)
+		T has no virtual member functions
+		T has no virtual base classes
+		T has no non-static members with default initializers.
+		(since C++11)
+		Every direct base of T has a trivial default constructor
+		Every non-static member of class type has a trivial default constructor
+
 
 3> OVERLOADED OPERATORS
 	They enable use to use +, - , && like operators, which could be used with inbuilt data types, 
@@ -207,6 +226,13 @@ Intro:
 		then if derived class is declared struct then base class is inherited publically.
 		While if derived class is declared class then base class inherited privatly.
 	
+8> ODR-use
+	Informally, an object is odr-used if its value is read (unless it is a compile time constant) or written, its address
+	is taken, or a reference is bound to it; a reference is odr-used if it is used and its referent is not known at
+	compile time; and a function is odr-used if a function call to it is made or its address is taken. If an object,
+	a reference or a function is odr-used, its definition must exist somewhere in the program; a violation of that
+	is usually a link-time error.
+		
 =================================================================================================
 =================================================================================================
 
