@@ -97,12 +97,27 @@ This is new addition to C++
 	A> Function almost always have same values.
 	B> Suppose we add a new parameter to the function and extend functions capability and dont want
 	to change older calls to the function, then older calls may use default values.
+	C> Default values are needed only in declaraion, Do not need to be specefied in definition
+	D> Since you can have multiple declarations in different scopes, but with same signature. Each declaration
+	could have different default value.
 
 	Default values could be const, global variable or a function call.
 
 4> Operator overloading
 	Teaches normal c++ operators how to act on userdefined data types.
 	A> ., ::, : cant be overloaded
+	Operators which cannot be overloaded
+	?: (conditional)
+	. (member selection)
+	.* (member selection with pointer-to-member)
+	:: (scope resolution)
+	sizeof (object size information)
+	typeid (object type information)
+	static_cast (casting operator)
+	const_cast (casting operator)
+	reinterpret_cast (casting operator)
+	dynamic_cast (casting operator)
+		
 	B> can not modify behaviour of operators with basic instrinsic datatypes(will make program unreadable)
 	C> precedance is same as for instrinsic datatypes.
 
