@@ -7,7 +7,7 @@
 	Ways to refer identifier belonging to some specefic namespace
 	A> namespace::identifier	
 	B> using namespace <name_of_namespace>;	
-	endl is a manipulator
+	endl is a output manipulator function
 	iostream.h contains declarations needed by the cin and cout
 
 FUNCTION PROTOTYPE
@@ -302,13 +302,44 @@ Intro:
 
 4> new and delete in class 
 	. overided new and delete are always static.
-	class x
-	{
-		public:
-			void * new(int size);
-			void delete();
+
+	#include <iostream>
+	// class-specific allocation functions
+	struct X {
+		static void* operator new(std::size_t sz)
+		{
+			std::cout << "custom new for size " << sz << '\n';
+			return ::operator new(sz);
+		}
+		static void* operator new[](std::size_t sz)
+		{
+			std::cout << "custom new[] for size " << sz << '\n';
+			return ::operator new(sz);
+		}
+
+		static void operator delete(void *ptr)
+		{
+			std::cout << "delete for single object" << '\n';
+			return ::operator delete(ptr);
+		}
+
+		static void operator delete[](void *ptr)
+		{
+			std::cout << "delete for array" << '\n';
+			return ::operator delete[](ptr);
+		}
+
+		int a;
+		int b;
 	};
-	
+
+	int main() {
+		X* p1 = new X;
+		delete p1;
+		X* p2 = new X[10];
+		delete[] p2;
+	}
+
 	. this pointer is not valid in new. Obj is still to be created.
 	. delete could not be overloaded, there is only one way to destroy object
 	. never mix free-delete, new-malloc,  becauase they have different wrapper funtions
