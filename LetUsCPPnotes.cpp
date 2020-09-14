@@ -164,6 +164,54 @@ Intro:
 	4> Direct or virtual base does not have Constructor or destructor accessible or deleted.
 	
 
+	Trivial					: No virtual func/base class
+							: all members and base are trivial
+							: no user defined special member functions
+							: t occupies a contiguous memory area. 
+							: It can have members with different access specifiers. In C++, the compiler is free to choose how to order members in this situation. Therefore, you can memcopy such objects but you cannot reliably consume them from a C program. 
+
+
+	standard layout			: No virtual func/base class
+							: all members and base are standard layout 
+							: all non-static data members have same access control
+							: It is memcopy-able and the layout is sufficiently defined that it can be consumed by C programs. 
+							: Standard-layout types can have user-defined special member function
+							: Either most derived class has a non-static members or only one of the base can have non-static data memebers
+
+	POD						: When it is both standard layout and trivial it is POD. 
+							: therefore contiguous and each member has a higher address than the member that was declared before it, so that byte for byte copies and binary I/O can be performed on these types.
+
+
+
+	Default initization : 	T a; 
+							auto a = new T;
+						: if static/thread local object : zero initialize
+						: Calls default constructor if has any. Otherwise object is not initialized
+
+	Value initialization : T a(); T a{}; new T(); new T{}, Class::Class : T(){},Class::Class : T{} {} 
+						: if 
+							no constructor(no implicitly declared default (in case of const or const reference data member), 
+							deleted default
+							no user provided)
+								default initialize
+						: if implicitly declared construtor: 
+							first zero intialize then default initialize
+						: if user declared call it  
+						: if array : initialize each element by value initialization 
+
+	zero initialization : static or thread-local storage duration that is not subject to constant initialization, before any other initialization.
+						: As part of value-initialization sequence for non-class types and for members of value-initialized class types that have no constructors, including value initialization of elements of aggregates for which no initializers are provided.
+						: When an array of any character type is initialized with a string literal that is too short, the remainder of the array is zero-initialized.
+	
+	Aggregate initialization
+						: Initializes an aggregate from braced-init-list
+						: for array type or class type without user provided or inherited constructor
+						: no virtual member functions or virtual, private, protected base class
+						 
+
+
+								
+
 2> DESTRUCTOR
 	Destructor is a special function called when object is destroyed.
 	Destructors do not have return type also they dont take any argument as philosophy says there is only one way to

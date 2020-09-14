@@ -4,6 +4,8 @@ Size of char is always 1 byte. On some platforms 1 byte could contain more than 
 Byte is something that you could address with. Unit of sizeof is a byte.
 
 POD: plain old data is data type that is compliant with C. It is copied bit by bit.
+A POD type is a C++ type that has an equivalent in C, and that uses the same rules as C uses for initialization, copying, layout, and addressing.
+
  To make sure the other rules match, the C++ version must not have virtual functions, base classes, non-static members that are private or protected, or a destructor. It can, however, have static data members, static member functions, and non-static non-virtual member functions.
 
 
