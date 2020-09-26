@@ -572,6 +572,7 @@ Class templates are often used to build type safe containers.
 Writing code that works withe different types.
 Unlike template functions, template classes (instantiations of class templates) need to be explicit about the parameters over which they are instantiating
 Function templates get automatically initialized depending upon the template parameters.
+Function templates participate in name resolution for overloaded functions, but the rules are different. For a template to be considered in overload resolution, the type has to match exactly. If the types do not match exactly, the conversions are not considered and the template is simply dropped from the set of viable functions.
 
 
 Compiler Dependancies

@@ -7,8 +7,8 @@
 		d.	STL: data structures easyness and help in fast,relieable program
 	
 2. Prefer const, enum , inline over	#define macro variables
-		a. macros do not have scope, they are global till #undef is done
-		b. no return type checking
+		a. macros do not have scope ie function, file, {} block, they are global till #undef is done
+		b. no return type checking or parameter type checking
  		c. macros are not logged in symbol tables, hard to debug if macro is in
 			3rd party lib as you will see value of macro in compiler error which
 			does not make sense.
@@ -74,7 +74,7 @@
 
 		c. 	const and references must be initized in initialization list.
 		
-		d.	static objects begin life when constructor invoked and lasts till program lasts.
+		d.	static objects begin life when static objects constructor invoked and lasts till program lasts.
 			local static begin life when first time function is called.
 			
 		e.	Class global static objects have very unreliable initialization order if they are defined
@@ -84,6 +84,30 @@
 			But any local/global non-const static varible
 			is suseptible to bug, in case of multiple threads. Only solution is to manually
 			invoke the reference(to static members) in single threaded startup. 
+
+			Below is section about thread safe initialization of C++11 local static variables and guarantees
+				
+				Order is
+				1> compile time : Zero initialization before any initilization, static int i;
+				2> compile time : Const Initilization before entering into block, ie static int i = 0;
+				3> Then other static variables (either early initalization permitted) or must do initalization at the time
+				of control reaches first time to declaration
+
+			class with constexpr constructor or members initialized with brace or equal ie "static const auto a = T{}; static const T a{}" are constants
+			https://en.cppreference.com/w/cpp/language/constant_initialization
+
+			"The zero-initialization (8.5) of all block-scope variables with static storage duration (3.7.1) or thread storage
+			duration (3.7.2) is performed before any other initialization takes place. Constant initialization (3.6.2) of a
+			block-scope entity with static storage duration, if applicable, is performed before its block is first entered.
+			An implementation is permitted to perform early initialization of other block-scope variables with static or
+			thread storage duration under the same conditions that an implementation is permitted to statically initialize
+			a variable with static or thread storage duration in namespace scope (3.6.2). Otherwise such a variable is
+			initialized the first time control passes through its declaration; such a variable is considered initialized upon
+			the completion of its initialization. If the initialization exits by throwing an exception, the initialization
+			is not complete, so it will be tried again the next time control enters the declaration. If control enters
+			the declaration concurrently while the variable is being initialized, the concurrent execution shall wait for
+			completion of the initialization. 88 If control re-enters the declaration recursively while the variable is being
+			initialized, the behavior is undefined."
 
 5. C++ silent function additions	
 		a.	If default constructor, copy constructor, operator=, destructor are not provided
