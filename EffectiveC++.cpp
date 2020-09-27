@@ -466,15 +466,18 @@
 			most of the times what it should.
 			if derived class is virtual and base class is not. Derived class may contian the vptr at the start
 			of object. Directly converting pointer using c type cast from derived to base class pointer wont work here
+		i.  dynamic casts with 4+ level inheritance cause much delay with type checking via strcmp function
+		k.  static case converting objects (and not pointers, references) create new temp obj
+			static_cast<Base>(dervObj).func()
 
 28.	Avoid returning handles to object internals.
 		a.	Do not return reference to private member via public member.
 		b.	It might happen that it will refer to dangling object if member object is replaced by other.	
 
 29.	Strive for exception safe code.
-		a.	Exception causes the memory lekage.
+		a.	Exception causes the memory lekage. you might forget to free mem in catch block or forget to write catch block itself
 		b. 	They cause corruption of data structure.
-		c.	So exception safe code is
+		c.	So exception safe function offers 3 types of guarantees
 				basic guarantee: state of object may not be same, but object is not corrupt
 				strong:	either function succeds or excpetion is called.
 				no throw: if excpetion throws something, it is serious error and unexpected should be called.
@@ -589,3 +592,11 @@
 		e.	If neccessory to have virtual base class, just have functions, typedefs , enums in them.
 		f.	In case of multiple inheritance, Use public inheritance for interface and private inheritance
 			for the implementation.
+
+41. Understand implicit interfaces and compile time polymorphism
+		a. runtime polymorphism is via virtual functions
+		b. static/compile time : overloading functions
+								: template functions instantiated overload
+	
+		
+
