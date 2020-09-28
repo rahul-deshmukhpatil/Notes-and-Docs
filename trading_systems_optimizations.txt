@@ -1,0 +1,38 @@
+99% code does not run, only 1% is critical run
+Not all market data events are to be acted upon
+Little threading. Threading increases problems
+
+HFT stack
+				Algo
+				C++
+				Tuned Kernel and NIC
+				Server:  Should do only 1 thing and 1 thing really good
+				Network
+
+Low latency does not mean high throughput
+Simple code is generally faster. Read assembly
+Benchmarking : google benchmark
+
+Move things at compile time.
+Apply pricing and limit/risk check approximations
+Limits checks could be raised if you reached 90%, rather than computing more
+
+c++ compiler knows inlining
+use constexpr for compile time
+In hot path write logs into memory, let logger thread write to file
+
+Signed do not have overflow
+Unsinged have overflow and they add extra intruction for it
+Default float type is double, check if you need float or double.
+
+Keep related functions togather
+Keep related data togather
+unimportant function which do not get called should not be inlined
+
+Have memory pools, new/delete is expensive. Buy more memory if running out of
+std::vector is good and fast w.r.t. map or set
+prefer copy over lookup
+use hash tables
+
+Build and link time optimizations. Keep debug symbols.
+Measure latency, measure, measure, measure
