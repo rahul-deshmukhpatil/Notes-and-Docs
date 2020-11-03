@@ -1,0 +1,33 @@
+# Questions
+Why structs are more efficient than classes
+	https://stackoverflow.com/questions/13049/whats-the-difference-between-struct-and-class-in-net
+	value type lives on stack, reference type variable lives on stack which contains reference or pointer to heap memory where actual body of the 
+	reference type lives
+
+	value types memory is freed automatically and deterministic
+	refernce types freed at runtime after all refernces get exausted and its still non-deterministic when they are freed
+
+	struct have default public access specifier, class have private?
+	structs cant be inherit from except from System.ValueType
+	struct can not be base class either : ie sealed
+	Abstract and sealed modifiers are not allowed and struct member cannot be protected or protected internals.
+	No abstract or virtual members. Only override the methods from the System.ValueType (or System.Object ? check)
+	A struct can implement interfaces
+	A struct can be used as a nullable type and can be assigned a null value.
+	
+	struct is made to copy the whole object efficiently
+	class are big and made to copy only reference. So any change via one reference to same object is visible via another reference variable
+
+	https://stackoverflow.com/questions/7484735/c-struct-vs-class-faster
+	Do not define a structure unless the type has all of the following characteristics:
+
+	It logically represents a single value, similar to primitive types (integer, double, and so on).
+	It has an instance size smaller than 16 bytes.
+	It is immutable.
+	It will not have to be boxed freque
+
+Why int is boxed to object while passing to the WriteLine
+	https://stackoverflow.com/questions/27132042/is-boxing-involved-when-calling-tostring-for-integer-types
+	WriteLine accepts the string and array of Objects. To convert value type into object you box it
+
+

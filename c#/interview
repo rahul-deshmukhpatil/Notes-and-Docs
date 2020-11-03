@@ -1,0 +1,31 @@
+worked in C++/Python
+
+# c#
+	#study and knowlege
+	gone through msdn documention for langauge refernce, keywords and concetps,
+	compilers and compiler options and code optimizations
+	
+	# contribution
+	numerous video series about also .NET enviorment and c#
+	contributed to community via stackoverflow, msdn documentation
+
+	# implementation
+
+
+#Motivation for the change
+	Analogy of the sea of trading opportunities
+	passionate, want to move away from small fish netting to systematic big whale spear fish hunting
+
+	HFT is more about small trades due to pricing errors or delays and opportunistic trading,
+	but now would like to do more of generating systematic alpha with creative ideas over opportunistic trading
+
+	more of a trading technology developer and not pure HFT/C++ developer. So my motivation for developing technology
+	is changed from HFT to systematic trading. I am in the right field but on the different path than I want to be on now
+
+#Questions
+	Wanted to know breifly about interesting or challanging problems you are solving now or in the queue for future development
+		Speed optimization
+		feature set of the trading platform
+
+	Do you already have trading engine which could execute big orders are TVWAP or VWAP or you use external bank platforms for it
+	do you use any RFQ platform for the OTC trades
