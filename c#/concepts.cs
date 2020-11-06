@@ -127,3 +127,13 @@ default value expression
 	default operator = int i = default(int)
 	default literal = void func(int i = default) // compiler knows the type
 
+Null-conditional operators ?. and ?[]
+	evaluate expression to 
+	1> null,  a is null in expression a?.x or a?[x]
+	2> valid value if a is not null in a?.x or a?[x], but a?.x or a?[x] might throw any valid exception such as IndexOutOfRangeException
+	
+!null-forgiving operator
+	used to suppress the compiler warning that about the expression x which is sure to be null at static time as not-null i.e null! or x!
+	so compiler please forgive me for passing null and dont complain
+
+
