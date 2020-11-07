@@ -30,4 +30,21 @@ Why int is boxed to object while passing to the WriteLine
 	https://stackoverflow.com/questions/27132042/is-boxing-involved-when-calling-tostring-for-integer-types
 	WriteLine accepts the string and array of Objects. To convert value type into object you box it
 
+Implement singleton in c#
+	https://docs.microsoft.com/en-us/previous-versions/msp-n-p/ff650316(v=pandp.10)
+
+Can we have global methods
+	No. In c# only class static methods are allowed. Which are more like global methods but you do not clutter
+	global namespace with static methods.
+	use the syntax Namespace.Class to access Namespace.Class.GlobalMethod to access GlobalMethod like global
+
+Extension methods vs Static methods
+	https://stackoverflow.com/questions/19142182/what-is-difference-between-extension-method-and-static-method
+	Extension methods are static methods.
+
+	int result = stringValue.BMethod();
+	int result = BClass.BMethod(stringValue);
+
+	the compiler sees the first form, and if the BClass is usable (it has a proper using and is in a referenced assembly), 
+	then it will turn it into the second method's IL for you. It's purely a convenience.
 

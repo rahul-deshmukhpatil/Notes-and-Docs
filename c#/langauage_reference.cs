@@ -289,9 +289,9 @@ Operators
 		comparision of pointers is comparison of their unsinged integers value
 	
 	Lambda
-		Action del = () = a[0] = 0;
+		Action del = () => a[0] = 0;
 	Lambda expressions
-		Action del = () = {a[0] = 0;};
+		Action del = () => {a[0] = 0;};
 		 Func<int, int> square = x => { x *x;}
 	Lambda tuples
 		Func<(int, int, int), (int, int, int)> doubleThem = ns => (2 * ns.Item1, 2 * ns.Item2, 2 * ns.Item3);
