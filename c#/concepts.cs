@@ -136,4 +136,5 @@ Null-conditional operators ?. and ?[]
 	used to suppress the compiler warning that about the expression x which is sure to be null at static time as not-null i.e null! or x!
 	so compiler please forgive me for passing null and dont complain
 
-
+https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals
+https://docs.microsoft.com/en-us/dotnet/standard/managed-code

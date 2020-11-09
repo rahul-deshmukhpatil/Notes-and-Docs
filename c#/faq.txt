@@ -48,3 +48,15 @@ Extension methods vs Static methods
 	the compiler sees the first form, and if the BClass is usable (it has a proper using and is in a referenced assembly), 
 	then it will turn it into the second method's IL for you. It's purely a convenience.
 
+
+Why compiler emits callvirt even for non-virtual methods? [duplicate]
+	https://stackoverflow.com/questions/14283373/why-compiler-emits-callvirt-even-for-non-virtual-methods
+	https://stackoverflow.com/questions/845657/why-is-the-c-sharp-compiler-emitting-a-callvirt-instruction-for-a-gettype-meth
+
+
+difference between const and readonly field
+	const field is static in nature and belong to class
+	readonly is initiated in declaration or constructor but belongs to instnace
+
+Abstrct vs interface
+	both define interaface, abstract might have default implementation for fields, constructors, members
