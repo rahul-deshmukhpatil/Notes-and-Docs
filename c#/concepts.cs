@@ -114,6 +114,7 @@ Interface
 Extension Methods
 	To extend exisiting class with the new methods outside of it (without deriving, recompiling or modifying original type)
 	with static methods which could be just called as member methods
+	Useful if you want to implement an interface to existing system interface for struct
 
 Enum constraints
 	you can also specify the System.Enum type as a base class constraint. The CLR always allowed this constraint, but the C# language disallowed it.
@@ -124,8 +125,8 @@ Value Semantics:
 	by default copied on assingment, passing to func, return from  func
 
 default value expression
-	default operator = int i = default(int)
-	default literal = void func(int i = default) // compiler knows the type
+	default operator usage.. int i = default(int)
+	default literal usage .. void func(int i = default) // compiler knows the type
 
 Null-conditional operators ?. and ?[]
 	evaluate expression to 

@@ -32,6 +32,11 @@ Why int is boxed to object while passing to the WriteLine
 
 Implement singleton in c#
 	https://docs.microsoft.com/en-us/previous-versions/msp-n-p/ff650316(v=pandp.10)
+	use a public static property with private constructor
+	public static ClassName Instance => ClassName.instance;
+	or for multithreaded use static method with lock for delayed contruction
+
+
 
 Can we have global methods
 	No. In c# only class static methods are allowed. Which are more like global methods but you do not clutter

@@ -214,12 +214,12 @@ Classes
 			private protected : accssible only in derived classes in (current private) assembly
 
 		classes and struct
-			public and internal. default internal
+			Both can be public and internal. default internal
 			derived class cant be more accessible than the parent
 
 			nested classes/struct are private by dafault, but could be internal or public
 
-			members could be of any of 6 above
+			members could be of any of 6 above. while default class or struct members are private
 			members can not be more accessible than their type itself.
 			derived or overridden members as well cant be more accessible than base class
 			interface members are by default public as they meant to override
@@ -281,7 +281,7 @@ Classes
 		Events are raised with the help of delegates
 		typical syntax is for delegate is
 
-		public delegate retType DelName eventHandler(args);
+		public delegate retType DelName(args);
 		public event DelName _eventName;
 
 		you can implement the  event property
@@ -294,7 +294,7 @@ Classes
 		you can raise the base publisher event from the derived publisher using a virtual method to Invoke event 
 	
 	strings
-		they are mutable
+		they are immutable
 		all string modify operations return a new string
 		verbatim strings for not replacing the characters
 		string interpolation
@@ -316,11 +316,6 @@ Classes
 		for(int i =0; i< pubArray.Length; i++)
 			pubArray[i] = new Publisher[10];
 
-		you can not create the size of array once intiatiated
+		you can not change the size of array once intiatiated
 		arrays are treated as "collections of variables" so values[0] is variable
 		while List is collection of values
-
-	
-	
-		
-	
