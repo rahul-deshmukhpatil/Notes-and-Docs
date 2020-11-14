@@ -26,6 +26,11 @@ worked in C++/Python
 
 	Overall I am looking for team which develops the tech for wide array of financial products and company which has
 	innovative trading ideas rather than executing same obvious idea over million times.
+	
+	My current job involves high portion of speed calculations and optimization coding along with simple mathematics,
+	I want to atleast work with company where mathematical component is bit more.
+
+	And in nutshell, I think HFT is much more about when to buy/sell and what price to what to buy and sell at what what price
 
 # What are you looking for
 	interesting and challanging problems to solve
@@ -60,3 +65,12 @@ worked in C++/Python
 
 	Do you already have trading engine which could execute big orders are TVWAP or VWAP or you use external bank platforms for it
 	do you use any RFQ platform for the OTC trades
+
+	Do you use all features of the .Net platform i.e Entity Frameworks, .Net notebooks
+	Do you used .Net core (since its release in 2014 before founding of RCM) or .Net framework
+	Do you use any open source python libs or C# packages for quant or infra work or to optimize speed
+
+	Sytem stability: One thing I am sure that you test code heavily, but what kind of special steps do you take for 
+			no functionality break,
+			system is robust and no runtime crash
+			and regression of new features

@@ -73,6 +73,9 @@ Types
 		if var is used when nullable ref is enabled it C# 9.0 it represent the nullable ref type even if result is not null
 		common use is with cstors new declarations
 
+		anonymous types are still strong types and mainly used when you do not need a type outside of function
+		i.e. local reference
+
 		with c# 9.0 you have target typed new declarations
 		List<int> i = new();
 		List<int>? i = new();
@@ -295,6 +298,10 @@ Operators
 		 Func<int, int> square = x => { x *x;}
 	Lambda tuples
 		Func<(int, int, int), (int, int, int)> doubleThem = ns => (2 * ns.Item1, 2 * ns.Item2, 2 * ns.Item3);
+		tuples can be named  var book = (title: "Lost in the Snow", author: "Holly Webb");
+		and unlike anonymous types they can be used as a parameter types
+
+		The => syntax (already used by lambda expressions) is used to indicate an expression-bodied member:
 	
 	Lambdas with the standard query operators
 		
