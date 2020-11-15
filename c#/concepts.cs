@@ -71,7 +71,7 @@ Overloading
 	you can specify the in-ref while calling to select in-ref overload, otherwise plain value based overload has a priority
 
 Interface
-	A group of related functionalities
+	A group of related functionalities. Its signatures to services the implementer of interface provides
 
 	Can have:
 		Methods can have default implementation, event, properties, indexers 
@@ -88,10 +88,12 @@ Interface
 	class or struct can inherit multiple interfaces
 
 	class inheriting interface must define the non static interface methods which dont have implementation
-	if base class implements the interface derived inherits that interface implementation	
+	if base class implements the interface derived inherits that interface implementation (if you override the base class implementation
+	the method called via interface will still call to the base class method. i.e interface methods are not implicitely virtual)	
 
 	properties and indexers can define extra accessors for property or indexers
 	however if class explicitely implement the property or indexers, accessors must match : Not clear, do you mean signature should match?
+	interface properties does not define auto-implemenation of variables in the interface. It goes to the class that implements the interface
 
 	interfaces can inherit.
 	class must implement the interface and base interfaces of immeadiate interface
@@ -99,8 +101,9 @@ Interface
 	a class can inherit an interface via multiple paths of interface inheritances or class multilevel inheritance
 	but implementation can be done only once
 
-	if you inherit a class from base class you inherit the interface implementation from base class
-	howeve derived class can re-implement the virtual interface members
+	if you inherit a class from base class you inherit the interface implementation from base class. you can not override the base clas
+	interface implementation in dervived class.
+	howeve derived class can only re-implement the virtual interface members. Non-virtuals are used only from the base class
 
 	default implementation in interface is inherited by classes, repeated above.
 	implementations defined in the interfaces are virtual (could be silent virtual) and the implmenting class may override them
@@ -109,7 +112,17 @@ Interface
 	by overriding virtual member
 	https://stackoverflow.com/questions/13516264/can-a-child-class-implement-the-same-interface-as-its-parent
 
-	interaces cant be instantiated directly. A class or struct implements it.
+	interaces cant be instantiated directly. A class or struct implements it and class objects could be casted as interface type objects.
+
+Explicit Interface Implementation
+	What if two methods or two properties or Property and Method is two different interfaces have same name, no default implementation
+	and these two interfaces are inherited by a single class.  
+
+	You use explicit interface format ie. IPoint1.A {get; set;} and IPoint2.A {get;set;} syntax to implement the
+	interface member with common name A.
+
+	An explicitely implemented interface methods can not be called via class object, unlike default implemented members. 
+	so its better if your names do not clash or re/-implement the interface by calling another implementation method in class
 
 Extension Methods
 	To extend exisiting class with the new methods outside of it (without deriving, recompiling or modifying original type)
