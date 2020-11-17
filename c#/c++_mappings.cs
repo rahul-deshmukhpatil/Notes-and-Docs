@@ -17,3 +17,5 @@ ref paramters are not allowed in lambda
 	because local ref parameters have certain life
 	change in ref paramters must reflect outside of lambda
 	this are incompatible properties
+
+sealed is like final

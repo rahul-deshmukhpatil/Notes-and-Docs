@@ -101,7 +101,7 @@ Architecture components
 	.Net standard implementation or multiple .NETs implement the BCL API.
 	.Net standard is the API contract specification against which programs are compiled
 
-	If you compile your app against one .NET standard it could run on any implementation of .NET standard 
+	If you compile your app against one .NET standard it could run on any implementation of that .NET standard 
 	ie ContractID or OS+Processor
 
 	.NET implementations or Platforms
@@ -143,7 +143,7 @@ Class libraries
 		unity
 		UWP
 		Xamrin
-	Higher .Net version more are the API and each .Net platform claiming to support the .Net version needs to
+	Higher .Net version more are the API and each .Net platform claiming to support the .Net standard version needs to
 	implement the additional APIs
 	.Net implementation support all the lower .Net standards also than the standard they claim to support
 	
@@ -152,5 +152,5 @@ Class libraries
 
 	.Net standard is a language specification ie c++11, c++14, c++17
 	.Net platforms are different compilers like gcc, clang etc 
-	and .Net platform versions are the	compiler versions 
+	and .Net platform versions are the compiler versions 
 	
