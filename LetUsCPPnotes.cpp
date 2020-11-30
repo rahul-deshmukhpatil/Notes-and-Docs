@@ -219,14 +219,13 @@ Intro:
 		
 		Trivial default constructor
 		The default constructor for class T is trivial (i.e. performs no action) if all of the following is true:
-
-		The constructor is not user-provided (i.e., is implicitly-defined or defaulted on its first declaration)
-		T has no virtual member functions
-		T has no virtual base classes
-		T has no non-static members with default initializers.
-		(since C++11)
-		Every direct base of T has a trivial default constructor
-		Every non-static member of class type has a trivial default constructor
+			The constructor is not user-provided (i.e., is implicitly-defined or defaulted on its first declaration)
+			T has no virtual member functions
+			T has no virtual base classes
+			T has no non-static members with default initializers.
+			(since C++11)
+			Every direct base of T has a trivial default constructor
+			Every non-static member of class type has a trivial default constructor
 
 
 3> OVERLOADED OPERATORS
@@ -401,7 +400,7 @@ Intro:
 
 5> Objects at predetermined location
 	. new(ptr) class_name(); will create object of class_name at ptr location.
-	. There is no concept of placement delete, that you will have to override :)  
+	. There is no concept of placement delete, that you will have to override :  
 	. you will have to use placement destructor to delete same object 
 		ptr->~class_name.
 	. object created at predetemined location must be delete by placement destructor and vice-versa.
