@@ -29,11 +29,11 @@ Expression body syntax
 	public string FirstName
 	{
 		get => name;
-		set => Name = name;
+		set => name = value;
 	}
 
 	method
-	public string Concatinated() => $"{name} {surname}".Trim()
+	public string Concatinated() => $"{name} {surname}".Trim();
 
 	indexers
 	public string this[int i] 
@@ -74,7 +74,7 @@ Interface
 	A group of related functionalities. Its signatures to services the implementer of interface provides
 
 	Can have:
-		Methods can have default implementation, event, properties, indexers 
+		Methods can have default implementation, event, properties(without implement/body), indexers 
 		static methods must have definition
 		static constants, fields and operators 
 		can have static constructor for the static feilds

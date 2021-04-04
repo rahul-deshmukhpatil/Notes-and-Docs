@@ -163,6 +163,7 @@ c# Keywords
 		Person p; // is null
 		represents default value of the reference types
 		except for value types which are nullable value types ie T?, int?, long?
+		If the conversion is not possible, the as operator returns null.
 
 	nullable value type:
 		T? represent all values of underlying value type T, and one more value "null"

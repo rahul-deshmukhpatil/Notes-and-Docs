@@ -105,7 +105,7 @@ Classes
 	overview
 	are reference types and allocated on the heap 
 	copied shallowed 
-	When object is created by new reference is passed back to the variable
+	When object is created by new, reference is passed back to the variable
 
 	inheritance
 		can inherit only one class but multiple interfaces
@@ -123,6 +123,9 @@ Classes
 		valueType Equals methos is in System.ValueType which uses reflection to compare all fields
 		in the struct. This could be slow so use custom implementation for efficiency
 		You may implement the interface IEquatable<T> or IEqualityComparer<T> for it
+
+		if you want to use == syntax rather than the method you will have to override the operator==.
+		overided operators are always public static
 		
 
 	Inheritance
@@ -285,7 +288,7 @@ Classes
 		public event DelName _eventName;
 
 		you can implement the  event property
-		public event EventProperty
+		public event DelegateName EventProperty
 		{
 			add => _eventName += value;
 			remove  => _eventName -= value;
