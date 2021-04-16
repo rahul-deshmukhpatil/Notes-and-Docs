@@ -1,0 +1,45 @@
+
+Compile And Linking is not mentioned as  point 1.1.4
+	
+	1.2.2 Fixing Type conversion 
+	1.2.3 Type deduction for default call arguments
+		All the type arguments after last type argument with default value must be deducible 
+
+
+	1.3.1 Template Parameters for Return Types
+		Not really good description to introduce "return template type"
+
+
+	115     1.3.2 Deducing the Return Type
+		explanation of why decay must be used to remove reference from type is ambigous
+		Under what conditions T can be reference?
+		And example we are using has T1 and T2, 
+			1. which could be deduced to be reference?
+			2. why are you referring T in this point?
+
+		simplify: c++11 auto is replaced with ->  std::decay<decltype(true?a:b)>::type
+
+
+2.5 SPECIALIZATIONS OF CLASS TEMPLATES
+
+	Specilizing individual member functions should be a saparate sub point
+	Full Specializing whole template class should be a saparate sub point
+
+	However, if you specialize a class template, you must also specialize all member functions. 
+		This is not correct https://godbolt.org/z/9od9zab35
+		https://stackoverflow.com/questions/5949992/template-class-member-function-only-specialization
+
+	It is possible to specialize single member function for a particular type parameter to 
+	template class.	This will cause template class instantition for that type.
+
+	But once you specialize single member function outside of template class declaration for a type
+	parameter to template class, then you can not fully specialize template class for that type.
+
+
+2.6    Partial Specialization
+
+		No description of how to resolve below
+				MyClass<int, int> mii; // Error, Ambibuity MyClass<T,T> or MyClass<T, int>
+			
+
+
