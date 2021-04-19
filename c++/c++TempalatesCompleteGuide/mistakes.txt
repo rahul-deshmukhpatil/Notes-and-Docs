@@ -43,3 +43,13 @@ Compile And Linking is not mentioned as  point 1.1.4
 			
 
 
+2.9 Class Template Argument Deduction 
+	Stack stringStack = "bottom"; // Stack<char const[7]> deduced since C++17
+
+	stringStack should be named as cstringStack to distinguish between std::string and cstring
+
+	The description does not specify why this is not valid
+	Stack stringStack = "bottom";  // Stack<std::string> deduced, but still not valid
+
+	deduction guide explanation sequence is not that good.
+

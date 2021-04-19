@@ -383,11 +383,100 @@ Part I: The Basics
 			void Stack<T,Container>::top (T const&)  {}
 
 	2.8    Type Aliases
+			There are two ways to declare type aliases
+			1> typedef
+				typedef Stack<int, std::vector<int>> IntStack;
+			2> using 
+				using IntStack = Stack<int, std::vector<int>>;
+
+			But you can declar  
 
 	2.9    Class Template Argument Deduction
+			Until c++17 you always had to specify the template parameters. Now it is relaxed in
+			c++17. Template parameters could be deduced automatically from
+			1> Copy assignment constructor
+				Stack<int> i1;
+				Stack i2 = i1; // since c++17 ok, i2 is Stack<int>				
 
+			2> Argument deduction from constructor arguments 
+				template<typename T>
+				Stack<T>::Stack(const T& element) {}
+
+				Stack i1 = 1; // Stack<int> deduced since c++17
+
+			3> Class Template Arguments Deduction with String Literals
+				a.	if constructor accepts argument by reference, no decay happens
+					and T is deduced as const char[7] rather than as const char*
+					Stack stringStack = "bottom";  // T is const char[7]
+				b.	But if you pass T as value to constructor then decay happens
+					Stack stringStack = "bottom";  // T is const char*
+
+			4> Deduction Guide:
+			
+				Stack stringStack{"bottom"};  // Stack<const char[7]> deduced
+				
+				But below is not valid, because, when using one argument constructor to copy
+				initialize(initialize using = at variable definition time), you can not pass
+				const char[7] where constructor expects std::string
+
+					Stack stringStack = "bottom";  // Stack<std::string> deduced, but still not valid
+
+				Also dealing with raw c strings pointers is dangerous. We can force to
+				deduce the raw c string pointers to deduce std::string as template type
+				parameter by using "deduction guide" which works more like trailing/auto
+				return types
+
+					Stack( char const*) -> Stack<std::string>;
+
+				If you specify this at the end of Stack template definition, in the same
+				namespace as of stack, then  
+
+				Stack stringStack{"bottom"};  // Stack<std::string> deduced
+
+				Using copy constructor to intialize the template class copies the template type
+				deductions i.e its exactly same type that is of source object
+		
 	2.10   Templatized Aggregates
+				It could be that template aggregate classes/structs (no custom/inherited const
+				, private/protected static data, no virt func, no virt, private/protected class)
+				can be template.
+				
+				template<typename T>
+				struct ValueWithComment
+				{
+					T value;
+					std::string comment;
+				};
+
+				ValueWithComment< int> vc; // valid
+				[vc.val, vc.comment] = [42, "initial value"]
+
+				You may define type deduction guide for the aggregate types since c++17
+				ValueWithComment vc{"hello", "initial value" }; // valid
 
 	2.11   Summary
+
+
+3 Nontype Template Parameters
+		type and non-type parameters remain open until class is not instantiated or function is not used.
+
+3.1    Nontype Class Template Parameters
+		It could be int or another integral or user defined type's value could be parameter to template
+		class.
+
+3.2    Nontype Function Template Parameters
+		Simialar to class function templates accept value as template parameter. Could be used to pass 
+		function as parameter. Below, addValue parameter types are deduced when used. Function template
+		deduction works only for immidiate calls. There is no such thing that only half of the parameters
+		are deduced and remaining will be deduced as they fit at the time of call
+
+		std::transform(s.begin(), s.end(), d.begin(), addValue<5, int>)
+
+
+3.3    Restrictions for Nontype Template Parameters
+
+3.4    Template Parameter Type auto
+
+3.5    Summary
 
 
