@@ -53,3 +53,9 @@ Compile And Linking is not mentioned as  point 1.1.4
 
 	deduction guide explanation sequence is not that good.
 
+
+3.3 RESTRICTIONS FOR NONTYPE TEMPLATE PARAMETERS
+	Can labmda function be non-type template parameter?
+
+
+		With c++17, you can define non type template parameter to generally accept any types value argument

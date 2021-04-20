@@ -269,3 +269,5 @@ http://stackoverflow.com/questions/5288320/why-is-stdmap-implemented-as-a-red-bl
 29. What are types of static polymorphism
 
 30. What are manipulators ? i.e. endl
+
+31. What is external vs internal linkage

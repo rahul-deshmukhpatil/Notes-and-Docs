@@ -458,11 +458,12 @@ Part I: The Basics
 
 
 3 Nontype Template Parameters
-		type and non-type parameters remain open until class is not instantiated or function is not used.
+		type and non-type parameters remain open until class is not instantiated or function is not used
+		or called.
 
 3.1    Nontype Class Template Parameters
-		It could be int or another integral or user defined type's value could be parameter to template
-		class.
+		It could be int or another integral, pointer to object, member, function or lamda could be 
+		parameter to template class.
 
 3.2    Nontype Function Template Parameters
 		Simialar to class function templates accept value as template parameter. Could be used to pass 
@@ -474,8 +475,62 @@ Part I: The Basics
 
 
 3.3    Restrictions for Nontype Template Parameters
+		Floting point or class type objects cant be template parameter
+		When passing pointer or references you can not pass string literals, temporories or data members
+		or other sub-objects
+
+		template<double VAT>         // ERROR: floating-point values are not
+		double process (double v)    //        allowed as template parameters
+
+		template<std::string name>   // ERROR: class-type objects are not
+		class MyClass {              //        allowed as template parameters
+
+		MyClass<"hello"> x;  //ERROR: string literal "hello" not allowed
+
+		Template argyment expression could be constexpr.
+		
+		template<int I, bool B>
+		class C;
+		C<sizeof(int) + 4, sizeof(int)==4> c;
+
+		If you want to use > anywhere in the template argumend, put it inside parenthesis, so compiler does
+		not complain about syntax ambiguity
+
+		C<42, sizeof(int) > 4> c;    // ERROR: first > ends the template argument list
+		C<42, (sizeof(int) > 4)> c;  // OK
 
 3.4    Template Parameter Type auto
+		With c++17, you can define non type template parameter to generally accept any types value argument
+		that is allowed forthe non type parameter.
+
+		template<typename T, auto Maxsize>
+		Stack
+		{
+			using sizetype = decltype(Maxsize);
+			sizetype numElements;
+
+			auto size()
+			{
+				return numElements;
+			}
+		};
+
+		auto s1 = Stack<int, 20u>().size();
+		auto s2 = Stack<int, 20>().size();
+		
+		assert(std::is_same_v(decltype(s1), decltype(s2))); // Fails, usigned int == int
+
+		Remember that constrains on what could be non-type parameter/argument remains applicable
+		Stack<int,3.14> sd;        // ERROR: Floating-point nontype argument
+
+		Note that, template<decltype(auto) N> is possible, which does instantiation of N as reference
+
+
+		template<decltype(auto) N>
+		class C {};
+		int i;
+		C<(i)> x; // N is int&
+
 
 3.5    Summary
 
