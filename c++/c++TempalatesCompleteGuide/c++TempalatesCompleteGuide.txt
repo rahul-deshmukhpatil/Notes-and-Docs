@@ -534,4 +534,214 @@ Part I: The Basics
 
 3.5    Summary
 
+5 Tricky Basics
 
+5.1    Keyword typename
+		In ambigous example 
+		T::SubType* ptr;
+		If it is to be compiled as multiplication of static member T::SubType and ptr, where does ptr
+		could be declared is not specified
+
+5.2    Zero Initialization
+
+5.3    Using this->
+		Not mentioning if base class is not dependant on T, then does inherited member 'x' could be 
+		simply referred as 'x' or have to have use 'this->x' ?
+
+5.4    Templates for Raw Arrays and String Literals
+
+5.5    Member Templates
+		class template might have member function as template function
+		such as operator= which helps to copy the elements from another Stack<T2> into Stack<T1>.
+
+		remember Stack<T2> and Stack<T1> are different types so none of them can access private
+		members such as container used to store stack.
+
+		So operator= must use only public inteface of stack to copy the elements
+
+		template<typename T>
+		class Stack
+		{
+			...
+			public:
+			...
+
+			template<typename T2>
+			Stack operator=(Stack<T2> const&);
+		}
+
+		template<T>
+			template<T2>
+		Stack<T> Stack<T>::opeartor=(Stack<T2> const& )
+		{
+			...
+		}
+
+		To access private members of the Stack<T2> you can declare all stack instances to be friend
+		of each other
+
+		template<typename T>
+		class Stack
+		{
+			template<typename> 
+			friend class Stack;
+		}
+
+		You can also templatize the container as parameter to stack
+
+		template<typename T, typename C=std::deque<T>>
+		class Stack
+		{
+			template<typename T2, typename C2>
+			Stack operator=(Stack<T2, C2> const&);
+
+			template<typename, typename> 
+			friend class Stack;
+		}
+	
+		But remember template class member functions are only instantiated if they are used. So if any
+		method/operation on the particular deduced type T, C, T2, C2 is used in member function but
+		if that member function itself is not called then it does not instantiate and no compiler error
+		is reported
+
+			
+5.4.1 Specialization of Member Function Templates
+		We can fully specialize the member templates. But all the template definitions are in the header files so
+		that they could be instantiated.
+
+		Full specialization of the template class does not need declaration not tou can declare if function
+		template has a any full specialization.
+
+		So in order to define the full specilization of member function template and which could be used by
+		the all translation units, define them in the header files.
+
+		But each translation unit might create its own copy of the full specialized template. This will cause
+		linker error. To avoid this you can declare full specialization of the template as inline
+
+		class BoolString
+		{
+			std::string v;
+			public:
+			template<typename T>
+			T get() {return v;}
+		}
+
+		template<>
+		T BoolString::get<bool>() {return v == "1" || v== "true" || v == "on";}
+
+5.4.2 Special Member Function Templates
+		Class provides default member functions copy,move construtors, assigment operators. You may define them
+		as template member function accepting different template class instance of similar type.
+		ie. 
+		
+		template<typename T2>
+		Stack(Stack<T2> const&); // Copy constructor for Stack<T1> accepting Stack<T2>
+
+		However remember, these template special members are not really special member functions and default
+		provided special member functions are still there for Stack<T1>.
+
+		1. It might happen that these overloaded template might be better fit than the compiler provided special
+		member funcitons
+		2. its difficult to write template move,copy constructors with constraints on its existences
+
+
+5.5.1 The .template Construct
+		in order to explicitely call specefic instance of the member template function, you will have to 
+		use .template construct, otherwise template parameter pack starting '<' could be confused by 
+		compiler with 'less than < operator'
+
+		instance.template doSomething<int, float>(4, 7.2);
+
+5.5.2 Generic Lambdas and Member Templates
+		generic lamda in C++14 are shortcuts for member templates
+	
+		[] (x, y) { return x+y;}
+
+		class GenLamCompilerSpecName {
+			GenLamCompilerSpecName(); // only callable by compiler
+
+			template<typename T1, typename T2>
+			auto operator()(T1 x, T2 y) const {return x+y;}
+		}
+
+
+5.6    Variable Templates
+		With C++17 you can declare variable templates, at same scope of template classes
+		ie. not in block nor at function scope
+		
+		template<typename T = float>
+		constexpr T pi = {3.142723232};
+
+		And can use like below in diff translational units, which refers to same global variable
+		instance. You may have default template parameter types.
+
+		std::cout << pi<double> << std::endl;
+		std::cout << pi<long double> << std::endl;
+		std::cout << pi << std::endl; // ERROR
+
+		So if you have an std::array variable in diff translation unit, it will refer to same global
+		variable even if you initialize it multiple times.
+
+		you may have non type template parameters ie. int for size,
+		template<int N>
+		std::array<int, N> arr{}; // Value Zero initialization
+
+		template<auto N> // auto type depends upon what has been passed
+		constexpr decltype(N) dval = N;
+
+		std::cout << dval<'c'> << std::endl;
+
+
+	5.6.1 variable Types as data members
+
+		template<typename T>
+		struct MyClass
+		{
+			static constexpr T veryLongName = 10000;
+		};
+
+		template<typename T>	
+		T shortName = MyClass<T>::veryLongName;
+		
+		template<typename T> class numeric_limits		
+		{
+			auto is_signed = false;
+		};
+
+		template<typename T>
+		constexpr bool isSigned = numeric_limits<T>::is_signed;
+
+	5.6.2 type traits suffic_v
+		
+		template<typename T>
+		constexpr bool is_const_v = is_const<T>::value;
+
+5.7    Template Template Parameters TTP
+		
+		you might want to pass the another template class(without actual template parameter types pack)
+		as stand alone type to new template.
+
+
+		Befor C++17, you could use only keyword 'class' for template template parameter
+		as well, TTP must match all of its parameter pack including default types
+		
+		//Elem is optional and could be just given for documentation purpose
+		// template<typename T, template<typename Elem, typename Alloc> class Container = std::deque> // Pre-C++17
+		// template<typename T, template<typename Elem, typename Alloc = std::allocator<Elem>> class Container = std::deque> // Pre-C++17
+		template<typename T, template<typename Elem> typename Container = std::deque> // C++17
+		class Stack
+		{
+			Container<T> data;
+		}
+
+		After c++11 we can substiute the TTP with template alias names as well.
+
+		Now the operator= looks like below
+		template<typename T, typename<typename, typename> typename C>
+			template<typename T2, typename<typename, typename> typename C2>
+		Stack<T, C>& Stack<T,C>::opeartor=(const Stack<T2, C2>& s2){}
+
+
+
+
+5.8    Summary
