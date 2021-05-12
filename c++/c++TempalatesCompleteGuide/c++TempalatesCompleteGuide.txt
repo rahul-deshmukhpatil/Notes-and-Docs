@@ -745,3 +745,103 @@ Part I: The Basics
 
 
 5.8    Summary
+
+
+6 Move Semantics And Enable_If<>
+
+6.1    PERFECT FORWARDING
+		struct X{};
+
+		f(X) {}
+		f(X cosnt &) {}
+		f(X&&) {}
+
+		g(X x) {g(x);}   => f(X)
+		g(X const& x) {g(x);}  => f(X const &)
+		g(X&& x) {g(std::move(x()}; => Need std::move to call f(X&&)
+
+		to create common template function for g
+
+		template<typename T>
+		g(T x)
+		{
+			f(x); // Here we can not use std::move for the X&&, otherwise first two
+					// calls become incorrrect
+		}
+
+		So comes use pefect forwarding or univeral reference(which could be any of 
+		lvalue  and rvalue) 
+
+
+		g(X&& x) {g(std::move(x()}; => Need std::move to call f(X&&)
+		
+		template<typename T>
+		g(T&& x) {g(std::forward<T>(x));}
+
+						Above X&& and T&& are not same
+						X&& : only bould to pr-values temprory or xvalue (std::move)
+						T&& : T could be mutable, non-mutable or rvalue reference
+
+		std::move: does not has template param and always forwards X as rvalue
+		std::forward: deduces correct type of T and forwards
+					 as ravlue ref : if T is rvalue ref
+					 as lavlue or const lvalue : if T is ref or const ref
+
+		T const&& : does not make much sense, but it is valid and could be used to
+				stop further modifying of the rvalue reference
+		
+		Also remember only T is PerFwdRef, forwarding T::iterator&& itr is not PFR 
+
+6.2    SPECIAL MEMBER FUNCTION TEMPLATES
+		
+		class P // Person
+		{
+			std::string n; // name
+
+			P(str& n): name(name) {}
+			P(str&& n): name(std::move(name)) {}
+			P(Person const& p): n(p.name) {}
+			P(Person&& p): n(std::move(p.name)) {}
+		};
+
+		std::string s{'abc'};
+		P p1(s); // calls 1
+		P p2("xyz"); // calls 2
+		P p3(p1); // calls 3
+		P p4(std::move(p1)); // calls 4
+		
+
+		Now template the first two constrs
+
+		template<typename STR>
+		P(STR&& n): name(std::forward(name)) {}
+
+		P p1(s); // calls templ
+		P p2("xyz"); // calls teml, but STR == char const [4]
+
+		P p3(p1); // ERROR  : template overload resolution takes place and
+				// templ function is better match than 3rd constr
+				// 3rd constructor is better match for const P not for non-const P
+				// and you can not copy non-const(or const) P into string P.n
+		P p4(std::move(p1)); // calls 4
+
+		Solution: declare the non-const copy constr and const one 
+			P(Person & p): n(p.name) {}
+			P(Person const& p): n(p.name) {}
+
+		cons: Does not cover same scenario for the dervived classes
+
+		Final Perfect solution: use enable_if to use template verion if STR is
+		not deduced as Person
+
+		
+6.3    DISABLE TEMPLATES WITH ENABLE_IF<>
+
+6.4    USING ENABLE_IF<>
+
+6.5    USING CONCEPTS TO SIMPLIFY ENABLE_IF<> EXPRESSIONS
+
+6.6    SUMMARY
+
+
+

@@ -115,6 +115,9 @@ Compile And Linking is not mentioned as  point 1.1.4
 6.1    PERFECT FORWARDING
 
 6.2    SPECIAL MEMBER FUNCTION TEMPLATES
+		explain why templ constrctr fails
+		P p3(p1); // ERROR  : templ function is better match than 3rd constr
+					// and you can not copy P into string P.n
 
 6.3    DISABLE TEMPLATES WITH ENABLE_IF<>
 
