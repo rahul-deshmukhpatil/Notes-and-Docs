@@ -844,4 +844,55 @@ Part I: The Basics
 6.6    SUMMARY
 
 
+7 BY VALUE OR BY REFERENCE?
 
+7.1    PASSING BY VALUE
+	
+
+7.2    PASSING BY REFERENCE
+
+7.2.1 PASSING BY CONSTANT REFERENCE
+
+7.2.2 PASSING BY NONCONSTANT REFERENCE
+
+7.2.3 PASSING BY FORWARDING REFERENCE
+
+7.3    USING STD::REF() AND STD::CREF()
+
+7.4    DEALING WITH STRING LITERALS AND RAW ARRAYS
+
+7.4.1 SPECIAL IMPLEMENTATIONS FOR STRING LITERALS AND RAW ARRAYS
+
+7.5    DEALING WITH RETURN VALUES
+
+7.6    RECOMMENDED TEMPLATE PARAMETER DECLARATIONS
+
+7.7    SUMMARY
+
+Appendix B
+
+	glvalue: generalized lvalue
+	lvalue : localizable value, has address in memory
+				variable declarion
+				pointer derefereceing expression
+				function returning reference
+				const string literals
+
+	xvalue : eXpiring value, whos resources could be resued
+				func returning rvalue ref
+				cast to rvalue ref
+
+	prvalue: temporaries 
+				literals 7,8,'c' etc except const string literals
+				& address of variable
+				
+	rvalue : either prvalue or xvalue
+
+
+	if lvalue appears on the right side of the expression, it is implicitly convered to rvalue, via implicit lvalue-to-rvalue conversion.
+
+	Always remember in variable declaration, 
+	int x = 3; // 3 is rvalue, but x is just varible, its an expression which is has value type, variables do not have value type
+
+	int y = x; // here x is an lvalue expression which is converted to rvalue expression
+and then assinged to the variable y.

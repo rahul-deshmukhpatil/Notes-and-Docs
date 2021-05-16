@@ -130,8 +130,17 @@ Compile And Linking is not mentioned as  point 1.1.4
 7 BY VALUE OR BY REFERENCE?
 
 7.1    PASSING BY VALUE
+	7.1.2 Passing by value decays
+		example : 
+		printV("hi"); // args decays to const char *, but const and volatile are stripped 
+						// off while decaying
+
+		int arr[4];
+		printV(arr); // its written that it decays to const char *, but its int array
 
 7.2    PASSING BY REFERENCE
+		sometimes passing is not possible
+		You mean "sometimes passing BY REF is not possible" ?
 
 7.2.1 PASSING BY CONSTANT REFERENCE
 
