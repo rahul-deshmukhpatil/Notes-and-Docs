@@ -949,8 +949,51 @@ Part I: The Basics
 
 
 7.2.3 PASSING BY FORWARDING REFERENCE
+    What if you want to pass objects are received from the caller to another function
+    in template function.
+
+    template<typename T>
+    passR(T&& arg) {std::forward<T>(arg);}
+
+    std::string s = "hi";
+    passR(s);   // T is std::string& and same is arg
+    passR(rvalueString());  // T is std::string, arg is std::string&&
+    passR(std::move(s));    // T is std::string, arg is std::string&&
+    passR("hi");    // T and arg is const char[3]
+
+    int a[3];
+    passR(arr); // T and arg is const int [4]
+
+    but once you pass const variables and T is deduced as const, then you will have
+    to initiaize T's variables
+    Also passing ref, deduces types as ref, so declaring any variable T will be ref
+
+
+    template<typename T>
+    passR(T&& arg)
+    {
+        T a;
+    }
+
+    const int a = 15;
+    const int b = 15;
+    passR(15); // ok
+    passR(a); // Error, T is const int&
+    passR(b); // Error, T is int&
+
 
 7.3    USING STD::REF() AND STD::CREF()
+        std::ref and std::cref are the wrapper classes, which contain only reference
+        to the simple type and function for implicite conversion to simple type
+
+        This is why T is deduced as a type std::cref<T>. In order to use std::cref<T>
+        you will have to convert it back to T usually by calling another function
+        which is called by implicite conversion to T.
+
+        bool isLess(int, int);
+        template<T>
+        bool func(T a, T b) { return isLess(a, b); }
+
 
 7.4    DEALING WITH STRING LITERALS AND RAW ARRAYS
 
