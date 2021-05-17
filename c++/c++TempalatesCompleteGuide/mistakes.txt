@@ -150,6 +150,9 @@ Compile And Linking is not mentioned as  point 1.1.4
 
 7.3    USING STD::REF() AND STD::CREF()
 
+	isLess(isLess(std::cref(s) < "hello"); // This is incorrect
+	isLess(isLess(std::cref(s), "hello"); // This is correct
+
 7.4    DEALING WITH STRING LITERALS AND RAW ARRAYS
 
 7.4.1 SPECIAL IMPLEMENTATIONS FOR STRING LITERALS AND RAW ARRAYS
