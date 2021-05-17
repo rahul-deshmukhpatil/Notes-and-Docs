@@ -847,13 +847,106 @@ Part I: The Basics
 7 BY VALUE OR BY REFERENCE?
 
 7.1    PASSING BY VALUE
-	
+
+	7.1.1 Passing lvalue, prvalue and xvalus
+		Passing by values is not expensive for the builtin types. For expensive classes.
+
+		template<typename T>
+		printV(T a) {...}
+
+		std::string s = "hi";
+		printV(s);				// costlier, passed lvalue, copy constr
+		printV(std::string("hi"));//cheap,passed prvalue, compiler optimized to move constr
+		printV(returnsString());// cheap, passed prvalue, compiler optimized to move constr
+		printV(std::move(s));	// cheap, passed prvalue, forced to use move constr
+
+
+	7.1.2 Passing by value decays type
+		const int a;
+		printV(a);	// T will be deduced as just int
+		printV("hi"); // T will be deduced as const char * instead of const char[3]
+
+		int arr[4];
+		printV(arr); // T will be deduced as int* instead of int [4]
+		
+		arrays are converted pointers so we lose size of elements information.
 
 7.2    PASSING BY REFERENCE
+	
+	Lets discuss first the PBR const.
 
-7.2.1 PASSING BY CONSTANT REFERENCE
+	7.2.1 PASSING BY CONSTANT REFERENCE
 
-7.2.2 PASSING BY NONCONSTANT REFERENCE
+		template<typename T>
+		printV(T const& ) {...}
+
+		std::string s = "hi";
+		printV(s);				// no copy
+		printV(std::string("hi"));// no copy
+		printV(returnsString());// no copy
+		printV(std::move(s));	// no copy
+
+		PBR is implemented by passing address. The callee function might change the passed
+		object even its const ref, by using const_cast or any other means. This invalidates
+		any values cached in the registers in "caller" function. This reloading of register
+		may be costlier.
+
+		Most of the template functions are small and likely candidates for the inlining,
+		which will embed code of calle function into caller and this will give confidence
+		to compiler not to invalidate values cached in register
+
+	7.2.1.2 PBR does not decay
+		arrays are not decayed to pointers
+		const, volatile specifiers are not removed
+
+		Though in 
+
+		template<typename T>
+		printV(T const& ) {...}
+
+		if you pass  "int  const&"	it is mapped to "T const&", so  T itself is deduced as
+		non-const int
+
+	7.2.2 PASSING BY NONCONSTANT REFERENCE
+
+		for PBNCR, passing the prvalues and xvalues is an error.
+
+		template<typename T>
+		printV(T & ) {...}
+
+		std::string s = "hi";
+		printV(s);				// no copy
+		printV(std::string("hi"));// error 
+		printV(returnsString());// error 
+		printV(std::move(s));	// error
+
+
+		But if you pass const reference to the temporories, prvalues and xvalues it is
+		valid, Though type T is deduced will be const in this case
+
+		const std::string s = "hi";
+		printV(s);				// T, is const std::string
+		printV(returnsString());// same 
+		printV(std::move(s));	// same
+		printV("hi");			// same. T is const char[3] 
+
+		Since T is not const, any attempt to modify arguments will be an error. It might be
+		ok to pass as const while calling could be ok, but when function is instantiated
+		in later stage of compilation it will be an error.
+
+		7.2.2.1  Disable passing const refs to PBNCR functions
+		
+		you may disable the passing the const object refrences like below
+
+		printV(T& a) {static_assert(!is_const_v<T>)}
+
+		template<typename T, typename = enable_if_t<!is_const_v<T>>
+		printV(T& a) {}
+
+		template<typename T>
+		requires !is_const_v<T>
+		printV(T& a) {}
+
 
 7.2.3 PASSING BY FORWARDING REFERENCE
 
