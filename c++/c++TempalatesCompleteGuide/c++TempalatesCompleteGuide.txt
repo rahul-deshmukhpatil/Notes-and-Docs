@@ -1005,6 +1005,98 @@ Part I: The Basics
 
 7.7    SUMMARY
 
+8 COMPILE-TIME PROGRAMMING
+	There are various ways of code selection and compute at compile time provided by the 
+	C++.
+	C++ provided class template partial specialization
+	SFINE could choose diff template functions
+	c++11 introduced constexpr
+	now C++17 has compile time  constexpr 'if'
+
+8.1    TEMPLATE METAPROGRAMMING
+	recursive instatiation of templates could be used to compute at compile time.
+	
+	template<unsinged p, unsigned d>
+	class DoIsPrime{static constexpr auto value = (p%d != 0) && DoIsPrime<p, d-1>::value;}
+
+	template<unsinged p>
+	class DoIsPrime<p,2>{ static constexpr auto value = (p%d != 0);}
+	
+	template<unsinged p>
+	class IsPrime{ static constexpr auto value = DoIsPrime<p, p/2>::value;}
+
+	template<> class IsPrime<0> {static constexpr auto value = false;}
+	template<> class IsPrime<1> {static constexpr auto value = false;}
+	template<> class IsPrime<2> {static constexpr auto value = true;}
+	template<> class IsPrime<3> {static constexpr auto value = true;}
+
+8.2    COMPUTING WITH CONSTEXPR
+	In the context where compile time value is required constexpr is evaluated at compile
+	time, if it can not evaluate then error is thrown.
+
+	In other context where compile time value is not required, conxtexpr functions
+
+	1> global and namespace scope are computed at compile time if possible
+	2> At block or function scope : compiler can decide compute at compile or run time
+	
+	constepxr makes this code really easy.
+
+	c++11 : 
+	constexpr bool DoIsPrime(p, d)
+	{
+		return d > 2 : (p%d != 0) && DoIsPrime(p, d-1)
+					 : (p%d != 0);
+	}
+
+	constexpr bool isPrime(p) {
+		return p < 4 ? !(p<2)
+					 : DoIsPrime(p, p/2);
+	}
+
+	With c++14: you can use the for loop and 
+
+	constexpr bool isPrime(p) {
+		for (auto d = p/2; d >= 2; d--)
+		{
+			if (p%d == 0) return true;
+		}
+		return false;
+	}
+
+
+8.3    EXECUTION PATH SELECTION WITH PARTIAL SPECIALIZATION
+
+		// isPrime false or no partial specilization match
+		template <size_t SZ, bool isPrime = isPrime(SZ)>
+		class Helper{};	
+	
+		template <size_t SZ>
+		class Helper<SZ, true>{};	
+
+		template<typename T, size_t SZ>
+		void foo(T[SZ] arr)
+		{
+			Helper<SZ> h;
+		}
+		
+		depending upon SZ of arr, partial specialization of template will be choosen.
+
+		There are different ways to implement this
+		1. having static functions in Helper function
+		2. enable_if 
+		3. SFINE
+		4. compile time if
+		
+8.4    SFINAE (SUBSTITUTION FAILURE IS NOT AN ERROR)
+
+8.4.1 EXPRESSION SFINAE WITH DECLTYPE
+
+8.5    COMPILE-TIME IF
+
+8.6    SUMMARY
+
+
+
 Appendix B
 
 	glvalue: generalized lvalue

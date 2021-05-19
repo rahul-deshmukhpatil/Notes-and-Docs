@@ -170,6 +170,7 @@ Compile And Linking is not mentioned as  point 1.1.4
 8.2    COMPUTING WITH CONSTEXPR
 
 8.3    EXECUTION PATH SELECTION WITH PARTIAL SPECIALIZATION
+		mention function foo has two instantiations because Helper object h is of 2 types
 
 8.4    SFINAE (SUBSTITUTION FAILURE IS NOT AN ERROR)
 
