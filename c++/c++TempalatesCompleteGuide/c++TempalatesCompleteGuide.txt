@@ -1089,6 +1089,41 @@ Part I: The Basics
 		
 8.4    SFINAE (SUBSTITUTION FAILURE IS NOT AN ERROR)
 
+	typename<T, N>
+	size_t len(T (&a)[N]) { return N;}
+	
+	typename<T>
+	typename T::size_type len(T &a) { return a.size();}
+		
+	size_t len(...) { // assset_fail, exception}
+	
+	int arr[5];
+	len(a); // OK, matches 1
+	len("123"); // OK, matches 1
+	
+	std::vector<int> intV;
+	len(intV); // OK, matches 2
+	
+	int *p;
+	len(p); // OK, matches 3
+	
+	std::allocator<int> intAlloc;
+	len(intAlloc); // OK, matches 2 but does std::allocator does not has method size so compilation error
+	
+	Compiler chooses the template function based on the argument substitution, but best matching function
+	must compile otherwise its a compilation error.
+	
+	In order to avoid this, we can put constains on the signature of function to be considered for the
+	argument deduction. This contrains will cause substitution failures when template it considered to take
+	part in the argument duduction. Substitution Failure of such constrains Is Not An Error (SFINAE).
+	enable_if<> is one of such method of to use SFINAE.
+
+	e.g. std::thread constr has constrain that the first argument function F, should not be of type 
+	std::thread, otherwise compiled pre-default-defined copy and move constr wont be considered 
+	
+	typename<F, typename... Args, typename = enable_if<!is_same_v<std::decay<F>, std::thread>>>	
+	explicit std::thread(F f, Args... args) {}	
+
 8.4.1 EXPRESSION SFINAE WITH DECLTYPE
 
 8.5    COMPILE-TIME IF
