@@ -175,8 +175,20 @@ Compile And Linking is not mentioned as  point 1.1.4
 8.4    SFINAE (SUBSTITUTION FAILURE IS NOT AN ERROR)
 
 8.4.1 EXPRESSION SFINAE WITH DECLTYPE
+		rename the function "undeclared" in the first example. Otherwise it sounds
+		to be some standard lib function.
+
+		else {
+			some_undeclared_func(t); // not error, depends on template type param T
+			some_undeclared_func(); // error, oveload does not depend on type param T 
+			static_assert(false, "is integral"); // error, always asserts false
+			static_assert(!std::is_intergral_v<T>, "is integral"); // OK 
+		}
 
 8.5    COMPILE-TIME IF
+		below is an error, but marked as if its OK, seems like copy paste error from
+		prev example
+		static_assert(!std::numberic_limits<char>::is_signed, "char is signed"); // error 
 
 8.6    SUMMARY
 

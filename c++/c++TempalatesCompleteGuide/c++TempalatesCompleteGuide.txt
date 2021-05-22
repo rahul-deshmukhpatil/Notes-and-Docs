@@ -1125,8 +1125,69 @@ Part I: The Basics
 	explicit std::thread(F f, Args... args) {}	
 
 8.4.1 EXPRESSION SFINAE WITH DECLTYPE
+	Its not easy to specify all constrains at one place to "SFINAE out" function.
+
+	You can do it easily with auto return type, decltype and comma operator
+
+	1> Specify auto return type for function
+	2> provide all contrains at the end of function using decltype
+		auto foo -> decltype() {}
+	3> all req constrains occur first, and ret type occurs at last
+		auto foo -> decltype((void)(t->size()), T::size_type) {}
+	4> casting to void is to avoid any overload of comma operator to take place 
+
+	typename<T>
+	auto len(T &a) -> decltype((void)(t->size()), T::size_type) 
+	{ return a.size();}
 
 8.5    COMPILE-TIME IF
+	Compile time if is easy way to void extra function to end the template recursion
+	template<typename T, typename... ARGS>
+	void print(T t, ARGS... args)
+	{
+		std::cout<< t;
+		
+		if constexpr(sizeof...(args))
+		{
+			print(args...);
+		}
+	}
+
+	Compile time if works just like template instantiation in two phases
+	1> initial translation
+		only template independent code is initialized
+	2> full instantiation
+
+
+	template<typename T>
+	void foo(T t)
+	{
+		if constexpr(std::is_integral_v<T>) {
+			...
+		}
+		else {
+			some_undeclared_func(t); // not error, depends on template type param T
+			some_undeclared_func(); // error, oveload does not depend on type param T 
+			static_assert(false, "is integral"); // error, always asserts false
+			static_assert(!std::is_intergral_v<T>, "is integral"); // OK 
+		}
+	}
+
+	You can use constexpr if in non template functions as well
+	
+	void main()
+	{
+		if constexpr(42) {
+			...
+		}
+		else {
+			some_undeclared_func(42); // error, not dependant on template type param
+			some_undeclared_func(); // error,  not dependant on template type param
+			static_assert(false, "is integral"); // error, always asserts false
+			static_assert(!std::numberic_limits<char>::is_signed, "char is signed"); // error 
+		}
+	}
+
 
 8.6    SUMMARY
 
