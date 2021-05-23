@@ -19,6 +19,9 @@ Compile And Linking is not mentioned as  point 1.1.4
 
 		simplify: c++11 auto is replaced with ->  std::decay<decltype(true?a:b)>::type
 
+	1.5: on Page no 18, you are binding lvalue reference to the rvalue in  the call and said
+		it will be ok
+		::max(7,42,68) => template<T> max(T& a, T& b,  T& c)
 
 2.5 SPECIALIZATIONS OF CLASS TEMPLATES
 
