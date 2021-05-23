@@ -1,6 +1,8 @@
 Part I: The Basics
 
-	 Function parameters are the names listed in the function's definition. Function arguments are the real values passed to the function. Parameters are initialized to the values of the arguments supplied
+	 Function parameters are the names listed in the function's definition. Function 
+	 arguments are the real values passed to the function. Parameters are initialized
+	 to the values of the arguments supplied
 
 1 Function Templates
 
@@ -29,7 +31,8 @@ Part I: The Basics
 
 	1.1.2 Using the Template
 		calling template function with actual arguments "instantiate" function. 
-		An instance of function will be generated for every different concrete type. 
+		An instance of function will be generated for every different concrete type
+		deduced. 
 
 	1.1.3 Two-Phase Translation
 		If all operations in template function are not supported by the type
@@ -148,9 +151,11 @@ Part I: The Basics
 		but, to override default template type, you must specify T1 and T2
 		::max<int, int, float>(5,6);
 
-		template<typename RT = std::commont_type_t<T1, T2>, typename T1, typename T2>
+		template<typename RT = long, typename T1, typename T2>
 		RT max(T1, T2);
-		::max<float>(5,6);
+
+		::max<float>(5,6.2); // Returns losg as default type 
+		::max<float>(5,6); // Returns float as explicitely requested
 
 		All the type arguments after last type argument with default value must be deducible 
 	
@@ -184,7 +189,7 @@ Part I: The Basics
 
 		auto a = ::max(4, 7.2);                     // uses first template
 
-		# long double is different than  double
+		# long double(RT) is different than T1 (deduced as double)
 		auto b = ::max<long double>(7.2, 4);        // uses second template
 	
 		// ERROR: both function templates match
