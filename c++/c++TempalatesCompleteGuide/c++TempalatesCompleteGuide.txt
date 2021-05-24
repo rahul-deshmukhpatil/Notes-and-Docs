@@ -1095,16 +1095,25 @@ Part I: The Basics
 8.4    SFINAE (SUBSTITUTION FAILURE IS NOT AN ERROR)
 
 	typename<T, N>
-	size_t len(T (&a)[N]) { return N;}
+	size_t len(T (&a)[N]) 
+	{ 
+		return N;
+	}
 	
 	typename<T>
-	typename T::size_type len(T &a) { return a.size();}
+	typename T::size_type len(T &a)
+	{ 
+		return a.size();
+	}
 		
-	size_t len(...) { // assset_fail, exception}
+	size_t len(...) 
+	{ 
+		// assset_fail, exception
+	}
 	
 	int arr[5];
 	len(a); // OK, matches 1
-	len("123"); // OK, matches 1
+	len("123"); // OK, char const [4], matches 1
 	
 	std::vector<int> intV;
 	len(intV); // OK, matches 2
@@ -1113,10 +1122,11 @@ Part I: The Basics
 	len(p); // OK, matches 3
 	
 	std::allocator<int> intAlloc;
-	len(intAlloc); // OK, matches 2 but does std::allocator does not has method size so compilation error
+	len(intAlloc); // Error, only signature considered to choose function so matches 2 
+	but does std::allocator does not has method size() so compilation error, 
 	
-	Compiler chooses the template function based on the argument substitution, but best matching function
-	must compile otherwise its a compilation error.
+	Compiler chooses the template function based on the argument substitution, but best
+	matching function must compile otherwise its a compilation error.
 	
 	In order to avoid this, we can put constains on the signature of function to be considered for the
 	argument deduction. This contrains will cause substitution failures when template it considered to take
