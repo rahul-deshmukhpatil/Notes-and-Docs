@@ -1206,6 +1206,37 @@ Part I: The Basics
 
 8.6    SUMMARY
 
+9 USING TEMPLATES IN PRACTICE
+	templates lie between macros and functions
+
+9.1    THE INCLUSION MODEL
+	template declaration in header
+	template definition in .cpp files
+		This causes linker error as template definition is not visible at the time of
+		instantitiating
+
+9.1.2 TEMPLATES IN HEADER FILES
+	Solution for above problem is include template definition in header files.
+	This incrases compile time as everything that template needs is also included.
+
+	If two of translational units (.cpp files) instantiate same function for same
+	type of arguments twice, then this might cause linker time error of duplicate
+	definition. but this ocasional problem is compilers responsibility to discard
+	duplicate definitions for templates discussed in chapter 14.
+
+	Solution is "modules" based model discussed in the chapter 17. which organises
+	code logically, compiler will compile parts/declarations seperately and 
+	user can import just part it needs
+
+9.2    TEMPLATES AND INLINE
+
+9.3    PRECOMPILED HEADERS
+
+9.4    DECODING THE ERROR NOVEL
+
+9.5    AFTERNOTES
+
+9.6    SUMMARY
 
 
 Appendix B
