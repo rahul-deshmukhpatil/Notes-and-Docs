@@ -1221,7 +1221,7 @@ Part I: The Basics
 
 	If two of translational units (.cpp files) instantiate same function for same
 	type of arguments twice, then this might cause linker time error of duplicate
-	definition. but this ocasional problem is compilers responsibility to discard
+	definitions. but this ocasional problem is compilers responsibility to discard
 	duplicate definitions for templates discussed in chapter 14.
 
 	Solution is "modules" based model discussed in the chapter 17. which organises
@@ -1229,12 +1229,65 @@ Part I: The Basics
 	user can import just part it needs
 
 9.2    TEMPLATES AND INLINE
+	inline is instruction to the compiler not compulsion. Since compiler is better
+	at making decision of inlining optimisation, its usually upto compiler and 
+	compilation flags whether to inline function actually.
+
+	templates and inlines are defined in header file and instantiate in multiple 
+	translational units and extra copies are discarded by compiler at link time
+
+	some compiler specefic flags noinline and always_inline might help to force
+	this decision.
+
+	Full specialization of function acts as normal function and could be defined
+	only once only one translational unit .cpp file. Or full specialization could 
+	be inline defined in header.
+
 
 9.3    PRECOMPILED HEADERS
+	PCH is vendor specific operation and its not mentioned in the c++ standards
+	though process of how PCH is done process is almost same among compilers
+
+	When code gets compiled, all include directives are parsed and symbol tables
+	are created along the way in object files. If you have same set of includes
+	repeating in multiple files you can precompile the set of includes when you
+	first read them and save it.
+
+	Later when same set of include is required you can reload it from table/cache
+	in which its corrosponding PCH is saved.
+
+	
+	Many developers create a common header file, i.e. CommonHeaders.hpp which might
+	include super set of headers required in the module to ease the management of
+	headers. This CommonHeaders is good case for PCH optimization.
+	
+	PCH  may be done at hierarchical way where most unstable/under development
+	headers could be at the top while stable/std lib headers which dont change could
+	be at bottom
+
 
 9.4    DECODING THE ERROR NOVEL
+	most of the errors are because of lamda's signtures dont match to call or function
+	needs to be declared const.
+
+	Its hard to read errors, clang does better when outputing template errors.
 
 9.5    AFTERNOTES
+
+	Inclusion model is declartions in header and definitions in .cpp files
+	but templates definitions need to be in the headers only are compiled multiple times
+
+	In C++98 :
+	There existed Exported Template a Seperation model for templates under which
+	templats could be declared as "export" in header and definitions in .cpp files
+	This was difficult to implement, took 5 years and except one compiler nobody
+	implemented it.
+
+	You might want to extend PCH use. but they dont extend much with macros defined
+	one header files affecting code compilation in other header at depth of hierarchy.
+
+	It makes not sense to create PCH and then edit result for the changed macro meanings.
+	This is solved by the concept called modules in C++20
 
 9.6    SUMMARY
 
