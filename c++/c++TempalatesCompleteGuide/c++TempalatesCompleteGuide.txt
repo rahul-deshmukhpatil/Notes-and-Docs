@@ -1291,6 +1291,43 @@ Part I: The Basics
 
 9.6    SUMMARY
 
+10 BASIC TEMPLATE TERMINOLOGY
+
+10.1  “CLASS TEMPLATE” OR “TEMPLATE CLASS”?
+	class types : include class, struct and union
+	
+	Class template : is generic template
+	template Class : used for variety, same as above or instantiation of template
+			for particular class
+	avoid using template class, template function or template memb func
+
+10.2  SUBSTITUTION, INSTANTIATION, AND SPECIALIZATION
+	substituation : substitute actual arguments for template parateters
+	instantiation : ... to instatiate template after substituting arg for templ params
+	
+	There could be incomplete specilisation i.e only instantitiate declaration for 
+	template instance and there is no standard term for this.
+	
+	Specialization : Could be complete or partial, and main template in this case is
+	called primary template.
+
+10.3  DECLARATIONS VERSUS DEFINITIONS
+	declaration: is introduction or reintroduction of name and its classification
+		i.e if its class, function or 'extern' variable
+	definition: is details of type, function def or allocating storage to variable
+	
+	Template declration is template signature but definition is providing body to 
+		function templ or class template.
+
+10.3.1 COMPLETE VERSUS INCOMPLETE TYPES
+
+10.4  THE ONE-DEFINITION RULE
+
+10.5  TEMPLATE ARGUMENTS VERSUS TEMPLATE PARAMETERS
+
+10.6  SUMMARY
+
+
 
 Appendix B
 
