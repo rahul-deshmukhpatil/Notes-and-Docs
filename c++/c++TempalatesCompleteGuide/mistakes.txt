@@ -231,15 +231,6 @@ Compile And Linking is not mentioned as  point 1.1.4
 	definitions across all-tranlational units must be identical
 	
 10.5  TEMPLATE ARGUMENTS VERSUS TEMPLATE PARAMETERS
-	template name along with its argument is called template-id.
-	i.e. ArrayInClass<double, 10> which could be equivalent to Double10ArrayInClass;
-	
-	templ params: just names after template.
-	templ args : what substituted for params in actual instantiation
-	templ params are initialized by templ arguments
-	
-	template params/arguments are compile time constants values or types that can be further
-	used for another types such as ie array size or as other templates arguments
 
 10.6  SUMMARY
 
@@ -252,6 +243,10 @@ Compile And Linking is not mentioned as  point 1.1.4
 11.1.2 DEALING WITH MEMBER FUNCTIONS AND ADDITIONAL ARGUMENTS
 
 11.1.3 WRAPPING FUNCTION CALLS
+	you callable might return void, in which case above definition will cause error
+	as void is incomplete type. there are 2 ways to deal with this
+	1> read book, its bit difficult to understand this.
+
 
 11.2  OTHER UTILITIES TO IMPLEMENT GENERIC LIBRARIES
 

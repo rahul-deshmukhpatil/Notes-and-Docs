@@ -1334,9 +1334,135 @@ Part I: The Basics
 	definitions across all-tranlational units must be identical.
 	
 10.5  TEMPLATE ARGUMENTS VERSUS TEMPLATE PARAMETERS
+	template name along with its argument is called template-id.
+	i.e. ArrayInClass<double, 10> which could be equivalent to Double10ArrayInClass;
+	
+	templ params: just names after template.
+	templ args : what substituted for params in actual instantiation
+	templ params are initialized by templ arguments
+	
+	template params/arguments are compile time constants values or types that can be 
+	further	used for another types such as ie array size or as other templates arguments
+
 
 10.6  SUMMARY
 
+
+11 GENERIC LIBRARIES
+
+11.1  CALLABLES
+	function, func pointers, func references, functor, lambda, member functions
+
+11.1.1 SUPPORTING FUNCTION OBJECTS
+	template<Iter, Callable>
+	void for_each(Iter curr, Iter end, Callable op)
+	{
+		while(curr != end){
+			op(*curr);
+			curr++;
+		}
+	}
+
+	You can pass function names but they are decayed to pointer. Passing them by const
+	like Callable const& strips off the const.
+	Calling them by address is just straigh forward
+	Calling them by function object is also ok. Some Functors might have a convesion
+
+	operator which convert Functor to another function pointer i.e. surrogate function.
+
+	int SurrogateFunction(int){};
+	Functor{
+		void operator(){};
+		operator SurrogateFunction*();
+	};
+
+	Call to foreach(intBegin, intEnd, Func); should end in calling SurrogateFunction
+	via conversion. This is complex c++ and not used much
+
+11.1.2 DEALING WITH MEMBER FUNCTIONS AND ADDITIONAL ARGUMENTS
+	Calls to simple callables are straight forward but calling memeber function involves
+	obj->memFuncPtr() or  for member function ref obj.memFuncRef().
+
+	But in order to work your foreach for ordinary and member functions at same time
+	you must use std::invoke.
+
+	template<Iter, Callable, typename... Args>
+	void for_each(Iter curr, Iter end, Callable op, Args const...& args)
+	{
+		while(curr != end){
+			std::invoke(op, args, *curr);
+			curr++;
+		}
+	}
+
+	if op is member function, then args first member is treated as object for which 
+	"op" is invoked. and other remaining args are passed as beggining arguments to 
+	member "op" and at the end *curr is passed to op.
+
+	If its not member function, then args are passed as initial arguments to the op.
+	and at the end *curr is passed to op.
+
+	Above args are not perfectly fw because they might steal resourcs giving wrong
+	impression to the caller.
+
+11.1.3 WRAPPING FUNCTION CALLS
+	
+	You can write a wrapper to function like below with using perfect forwarding
+
+	template<Callable, typename... Args>
+	decltype(auto) for_each(Callable&& op, Args...&& args)
+	{
+		return std::invoke(std::fw(op), std::fw(args...));
+	}
+
+	decltype(auto) is C++14 construct which will return correct return type.
+	
+	you might want to save return value in  temp variable and return it
+
+	template<Callable, typename... Args>
+	decltype(auto) for_each(Callable&& op, Args...&& args)
+	{
+		decltype(auto) ret = std::invoke(std::fw(op), std::fw(args...));
+		return ret;
+	}
+
+	You can not use auto&& to return back the ret_value as reference because as reference
+	life its life is only extended only till return of the caller function.
+
+	you callable might return void, in which case above definition will cause error
+	as void is incomplete type. there are 2 ways to deal with this
+	1> read book, its bit difficult to understand this.
+	2> use std::result_of 	
+
+	template<Callable, typename... Args>
+	decltype(auto) for_each(Callable&& op, Args...&& args)
+	{
+		if constexpr(!std::is_same_v<std::result_of<op, args...>, void>)
+			return std::invoke(std::fw(op), std::fw(args...));
+		else
+			std::invoke(std::fw(op), std::fw(args...));
+			return;
+	}
+
+	
+
+11.2  OTHER UTILITIES TO IMPLEMENT GENERIC LIBRARIES
+
+11.2.1 TYPE TRAITS
+
+11.2.2 STD::ADDRESSOF()
+
+11.2.3 STD::DECLVAL()
+
+11.3  PERFECT FORWARDING TEMPORARIES
+
+11.4  REFERENCES AS TEMPLATE PARAMETERS
+
+11.5  DEFER EVALUATIONS
+
+11.6  THINGS TO CONSIDER WHEN WRITING GENERIC LIBRARIES
+
+11.7  SUMMARY
 
 
 Appendix B
