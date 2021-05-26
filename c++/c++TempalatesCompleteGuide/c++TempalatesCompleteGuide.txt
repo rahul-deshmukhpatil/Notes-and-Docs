@@ -1320,9 +1320,19 @@ Part I: The Basics
 		function templ or class template.
 
 10.3.1 COMPLETE VERSUS INCOMPLETE TYPES
+	incomplete class declarations class C;,
+	extern array with unbound, extern int arr[],
+	extern array with unknown class type extern C arr[10];
+	void
+	undeclared enum type
 
 10.4  THE ONE-DEFINITION RULE
-
+	ordinary non-inline fun, memb func, non-inline global and static members must have only
+	one definition
+	Class types and templates, partial splz templats (except explicite full specilization) 
+	inline func, variables can be defined only once per translational unit and all these 
+	definitions across all-tranlational units must be identical.
+	
 10.5  TEMPLATE ARGUMENTS VERSUS TEMPLATE PARAMETERS
 
 10.6  SUMMARY
