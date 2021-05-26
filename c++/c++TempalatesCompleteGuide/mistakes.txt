@@ -224,8 +224,22 @@ Compile And Linking is not mentioned as  point 1.1.4
 10.3.1 COMPLETE VERSUS INCOMPLETE TYPES
 
 10.4  THE ONE-DEFINITION RULE
-
+	Definitions identical across what? if it can be only once defined?
+	
+	Class types and templates, partial splz templats (except explicite full specilization) 
+	inline func, variables can be defined only once per translational unit and all these 
+	definitions across all-tranlational units must be identical
+	
 10.5  TEMPLATE ARGUMENTS VERSUS TEMPLATE PARAMETERS
+	template name along with its argument is called template-id.
+	i.e. ArrayInClass<double, 10> which could be equivalent to Double10ArrayInClass;
+	
+	templ params: just names after template.
+	templ args : what substituted for params in actual instantiation
+	templ params are initialized by templ arguments
+	
+	template params/arguments are compile time constants values or types that can be further
+	used for another types such as ie array size or as other templates arguments
 
 10.6  SUMMARY
 
