@@ -1449,8 +1449,28 @@ Part I: The Basics
 11.2  OTHER UTILITIES TO IMPLEMENT GENERIC LIBRARIES
 
 11.2.1 TYPE TRAITS
+	can help to write template functions with constexpr avoiding complex enable_if
+	conditions
+
+	if constexpr(std::is_same_v<std::decay_t<V>, T>)
+		...
+	else if constexpr(std::is_reference_v<T>) 
+		...
+	else if constexpr(std::has_virtual_destructor_v<V>) 
+
+ 
+	std::remove_const_t<int const&>; // yeild int const&
+	because reference is not constant, it is non-const ref to const int
+
+	so to remove ref from const int
+	std::remove_const_t<std::remove_reference_t<int const&>>; // yeild int
+	std::remove_reference_t<std::remove_const_t<int const&>>; // yeild int const
 
 11.2.2 STD::ADDRESSOF()
+	sometimes operator& is overloaded so using std::address_of is guranteed to
+	give you address
+		int* xp = &x;
+		int* xp = &x;
 
 11.2.3 STD::DECLVAL()
 
