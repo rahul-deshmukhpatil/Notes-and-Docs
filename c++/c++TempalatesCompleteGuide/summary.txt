@@ -165,28 +165,158 @@ Function templates define a family of functions for different template arguments
 2.1    IMPLEMENTATION OF CLASS TEMPLATE STACK
 
 2.1.1 DECLARATION OF CLASS TEMPLATES
+		Unlike template functions, in template class template parameter can not be
+		deduced and must be explicitely specified unless they are default.
 
 2.1.2 IMPLEMENTATION OF MEMBER FUNCTIONS
 
 2.2    USE OF CLASS TEMPLATE STACK
+		Member functions are not instantiated unless they are called.
 
 2.3    PARTIAL USAGE OF CLASS TEMPLATES
+		If the template param T does not support operator <<, it is not an error
+		until you call operator << for Stack<T> as Stack<T>::operator<< wont be
+		instantiated
 
 2.3.1 CONCEPTS
+		new concept uses 'requires' statement rather than enable_if or static_assert
+		in order to instantiate template for certain template paramater types
 
 2.4    FRIENDS
+		template<T>
+		Stack
+		{
+			// Just another ordinary function, must be defined
+			// friend std::ostream operator<<(std::ostream&, const Stack<U>&);
+
+			template<U> // U does not collide with the type T 
+			friend std::ostream operator<<(std::ostream&, const Stack<U>&);
+		};
+
+		or first declare generic template function for operator<<,
+		and instantiate it later inside inside class.
+
+		template<T>
+		class Stack;
+
+		template<T>
+		std::ostream operator<<(std::ostream&, const Stack<T>&);
+
+		template<T>
+		class Stack
+		{
+			friend std::ostream operator<< <T>(std::ostream&, const Stack<U>&);
+		};
+
+
 
 2.5    SPECIALIZATIONS OF CLASS TEMPLATES
+		You can specilize one or more members of template class for any concrete type
+		T, but then you can not fully specilize the class for that type again.
+
+		Stack<int>::pop() {...}
+		Stack<int>::push() {...}
+
+		Now you cant specialize 
+		template<>
+		class Stack<int> {}; // Error
 
 2.6    PARTIAL SPECIALIZATION
+		If you have two types
+
+		template<T1, T2> // primary template
+		class Stack{};
+
+		template<T>
+		class Stack<T, T>{};
+
+		template<T>
+		class Stack<T, int>{};
+
+		class Stack<T1, T2>{};
+		class Stack<T1*, T2*>{};
+
+	MyClass<int, float> mif; // MyClass<T1, T2>
+				MyClass<float, float> mff; // MyClass<T, T>
+				MyClass<float, int> mfi; // MyClass<T, int>
+				MyClass<int*, Float*> mif; // MyClass<T1*, T2*>
+
+				MyClass<int, int> mii; // Error, Ambibuity MyClass<T,T> or MyClass<T, int>
+				MyClass<int*, int*> mii; // Error, Ambibuity MyClass<T,T> or MyClass<T1*, T2*>
+
+				To resolve this provide additional partial specialization for exact match
+
+				// full specialization
+				template <>
+				struct MyClass<int, int>{};
+
+				template <typename T>
+				struct MyClass<T*, T*>{};
+
+
 
 2.7    DEFAULT CLASS TEMPLATE ARGUMENTS
+			template<typename T, typename Container=std::vector<T>>
+			class Stack	{};
+
+			template<typename T, typename Container>
+			void Stack<T,Container>::top (T const&)  {}
+
 
 2.8    TYPE ALIASES
+		typedef Stack<int, std::vector<int>> IntStack;
+		using IntStack = Stack<int, std::vector<int>>;
+
+			1. template alias
+				template<typename T>
+				using DequeStack = Stack<T, std::deque>;
+			2. Member types
+				template<typename T>
+				using MyIter = typename Stack<T>::Iter;
+			3. type_traits suffic _t 
+				template<typename T>
+				using my_type_t = typename my_type<T>::type;
+
 
 2.9    CLASS TEMPLATE ARGUMENT DEDUCTION
+		pass by value is decayed so
+			Stack stringStack{"bottom"};  // Stack<const char[7]> deduced
+
+		template<T>
+		class Stack
+		{
+			Stack() = default; // so that below definition does not suppress this
+								// compiler provided default constr
+			Stack(T elem) 
+			: elems ({elem}) // Initializer list for the elems vector constr
+			{
+			}
+		}
+
+		Stack<int> i1;
+		Stack i2 = i1; // since c++17 ok, i2 is Stack<int>				
+		Stack i1 = 1; // Stack<int> deduced since c++17, I think it uses copy constr
+
+		Bind by ref
+			Stack stringStack = "bottom";  // T is const char[7]
+		Bind by value
+			Stack stringStack = "bottom";  // T is const char*
+
+		Template Guides: After class definition. Change constr signature
+		Stack(char const*) -> Stack(const std::string&);
+
+
+		Stack stringStack{"bottom"};  // Stack<std::string> deduced
+		Stack stringStack = "bottom";  // Stack<std::string> deduced, but still not valid
+		This is because 2nd operation involves copy constr, and according to lang
+		rules you can not pass string literal expecting std::string to copy constr
 
 2.10   TEMPLATIZED AGGREGATES
+		Simple types: which dont have private/protected self or inherited static memb
+		or no virt function or inheritance, They can even use the template guides
+
+		ValueWithComment(const char*, const char*) -> ValueWithComment(string, string); 
+		ValueWithComment vc{"hello", "initial value" }; // ValueWithComment(str, str)
 
 2.11   SUMMARY
 

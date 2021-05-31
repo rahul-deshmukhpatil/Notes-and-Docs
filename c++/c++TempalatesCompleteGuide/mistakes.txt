@@ -73,6 +73,11 @@ Compile And Linking is not mentioned as  point 1.1.4
 
 	deduction guide explanation sequence is not that good.
 
+		This is because 2nd operation involves copy constr, and according to lang
+		rules you can not pass string literal expecting std::string to copy constr
+
+	Do you mean expected "const std::string&" or 
+	I think you mean you can not do Stack<string> s1 = Stack<const char*>{"asdf"};
 
 3.3 RESTRICTIONS FOR NONTYPE TEMPLATE PARAMETERS
 	Can labmda function be non-type template parameter?

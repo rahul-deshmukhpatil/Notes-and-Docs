@@ -394,7 +394,18 @@ Part I: The Basics
 			2> using 
 				using IntStack = Stack<int, std::vector<int>>;
 
-			But you can declar  
+			But you can declare the
+			1. template alias
+				template<typename T>
+				using DequeStack = Stack<T, std::deque>;
+			2. Member types
+				template<typename T>
+				using MyIter = typename Stack<T>::Iter;
+			3. type_traits suffic _t 
+				template<typename T>
+				using my_type_t = typename my_type<T>::type;
+				
+
 
 	2.9    Class Template Argument Deduction
 			Until c++17 you always had to specify the template parameters. Now it is relaxed in
@@ -457,6 +468,7 @@ Part I: The Basics
 				[vc.val, vc.comment] = [42, "initial value"]
 
 				You may define type deduction guide for the aggregate types since c++17
+		ValueWithComment(const char*, const char*) -> ValueWithComment(string, string); 
 				ValueWithComment vc{"hello", "initial value" }; // valid
 
 	2.11   Summary
