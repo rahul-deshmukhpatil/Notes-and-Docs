@@ -281,6 +281,14 @@ Compile And Linking is not mentioned as  point 1.1.4
 11.3  PERFECT FORWARDING TEMPORARIES
 
 11.4  REFERENCES AS TEMPLATE PARAMETERS
+	typo in basics/referror1.cpp
+	Do you mean invalid default value for Z instead of "N"?
+
+	1. Assigment operators have to be defined if T1, T2 of the std::pair or
+		std::tuple are deduced to be ref type?
+		Do you mean they have to be suppressed if T1 and T2 are ref type?
+		so need definition
+
 
 11.5  DEFER EVALUATIONS
 

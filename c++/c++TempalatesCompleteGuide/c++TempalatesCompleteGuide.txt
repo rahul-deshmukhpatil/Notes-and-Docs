@@ -1377,7 +1377,7 @@ Part I: The Basics
 
 	You can pass function names but they are decayed to pointer. Passing them by const
 	like Callable const& strips off the const.
-	Calling them by address is just straigh forward
+	Calling them by address is just straight forward
 	Calling them by function object is also ok. Some Functors might have a convesion
 
 	operator which convert Functor to another function pointer i.e. surrogate function.
@@ -1485,16 +1485,101 @@ Part I: The Basics
 		int* xp = &x;
 
 11.2.3 STD::DECLVAL()
+	declval is function used for object reference of specific type. It does not has
+	definition so can not be called so can be only used as unevaluated operand.
+
+	It does not call default constructor to create object but gives appearance of
+	object, so you can assume presence of object of specefic type
+
+	std::declval() yeild rvalue reference so you will have to used decay_t
+	calls such as max(1,2) will return int&&
 
 11.3  PERFECT FORWARDING TEMPORARIES
+	you may perfectly forward return values from get to set below
+		set(get());
+	But what if you want to perform some op on get return value and then perfectly
+	fw it
+		auto&& ret = get();
+		// ... some op on ret 
+		set(std::forward<decltype(ret)>(ret));
 
 11.4  REFERENCES AS TEMPLATE PARAMETERS
+	Sometimes template paramters are deduced as reference specially when you
+	explicitely specify template paramters to class or functions. 
+
+	template<typename T>
+	void tmplParamIsRefType()
+	{
+		std:cout << "Is refernce : " << std::is_reference_v<T> << std::endl;
+	}
+
+	int i;
+	int& r = i;
+
+	tmplParamIsRefType(i); // False
+	tmplParamIsRefType(r); // False
+	tmplParamIsRefType<int&>(i); // True 
+	tmplParamIsRefType<int&>(r); // True 
+
+	but below might cause problem
+
+	template<typename T, T Z = T{}>
+	class RefMem
+	{
+		T zero;
+		public:
+		RefMem() : zero(Z) {}
+	}
+
+	RefMem<int> rm1, rm2;
+	rm1 = rm2; // ok
+
+	RefMem<int&> rm3; // T is deduced as int& and Z = int&{} is error
+	RefMem<int&, 0> rm4; // T is deduced as int&
+					// int& Z = T{} will try to bind rvalue to lvalue non-const ref
+	
+	extern int null;
+	RefMem<int&, null> rm5, rm6;
+	rm5 = rm6; // Error, operator = is disabled
+	
+	1. default intialization does not work
+	2. no longer can pass 0 i.e. rvalue types to bind to lavlue non-const ref
+	3. opeartor= is disabled because of non-static member is of ref type
+
+	Also in below template example, default size passed as refence might change
+	later and any usage of SZ will be erranious as it is not a constant value
+	or the value it refers to is not a constant.
+
+	template<T, uint &SZ>
+	MyVector
+	{
+		vector elems;
+		MyVector() : elems(SZ) {}
+		void print
+		{
+			for (auto i = 0u; i < SZ; i++) // SZ could change at run time
+										// it could be const int& but the value
+										// it refers to can be changed.
+		}
+	}
+
+
+	1. Assigment operators have to be defined if T1, T2 of the std::pair or
+		std::tuple are deduced to be ref type?
+		Do you mean they have to be suppressed if T1 and T2 are ref type?
+		so need definition
+	2. std::variant and std::optional do not accept reference types due to
+		complications of the reference types
 
 11.5  DEFER EVALUATIONS
 
 11.6  THINGS TO CONSIDER WHEN WRITING GENERIC LIBRARIES
 
 11.7  SUMMARY
+	What is surrogate function
+	What is method of returning that returns void, decltype(auto)
+	what is auto&& and fw it perfectly?
+	why decltype(auto) can produce reference easily?
 
 
 Appendix B
