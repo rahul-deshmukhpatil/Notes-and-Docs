@@ -493,6 +493,23 @@ Function templates define a family of functions for different template arguments
 11.4  REFERENCES AS TEMPLATE PARAMETERS
 
 11.5  DEFER EVALUATIONS
+	templates do not instantiate if operation is performed on T, for which T needs
+	to be completely defined.
+
+	If that operation is in member function, just make that member function a 
+	template function with type param D with default type-value T of class template
+	type param T.
+
+	template<T> // incomplete type
+	class S 
+	{
+		template<typename D = T> // Deffered the deduction of T for foo 
+		D foo() {
+			D a; // dont worry till function foo is called when member function
+				// templates are initiated
+		}
+	};
+
 
 11.6  THINGS TO CONSIDER WHEN WRITING GENERIC LIBRARIES
 

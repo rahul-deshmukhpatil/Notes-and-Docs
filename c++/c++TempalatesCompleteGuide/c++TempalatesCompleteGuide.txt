@@ -1572,6 +1572,25 @@ Part I: The Basics
 		complications of the reference types
 
 11.5  DEFER EVALUATIONS
+	What if template param type is incomplete at the time of instantiation.
+	As long as you use only pointer to the type it works. but something line
+	is_move_constructible<T> is used then you need complete definition.
+
+	There is a way to avoid this, by making member function template function
+	with default type param equal to class templates type param.
+
+	template<T>
+	class S 
+	{
+		template<typename D = T> // Deffered the deduction of T for foo 
+		std::conditional<std::is_move_constructible_v<D>, D&&, D>
+		foo() {}
+	};
+
+	Node{
+		Node* next;
+		S<Node> node;
+	}
 
 11.6  THINGS TO CONSIDER WHEN WRITING GENERIC LIBRARIES
 
