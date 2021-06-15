@@ -149,7 +149,17 @@ static_assert(std::is_same<const int&, decltype(g(x))>::value == 1);
 ```
 
 - [relaxing constraints on constexpr functions](#relaxing-constraints-on-constexpr-functions)
+in c++11 constexpr function could have only 1 return statement, now you can have many 
+
 - [variable templates](#variable-templates)
+```c++
+template<class T>
+constexpr T pi = T(3.1415926535897932385);
+template<class T>
+constexpr T e  = T(2.7182818284590452353);
+auto pi_double =  pi<double>();
+```
+
 - [\[\[deprecated\]\] attribute](#deprecated-attribute)
 
 C++14 includes the following new library features:
