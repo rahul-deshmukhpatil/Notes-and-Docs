@@ -87,8 +87,7 @@ auto b = generator(); // == 1
 auto c = generator(); // == 2
 ```
 
-labda does not capture values which dont have operator= i.e. unit_ptr, which needs to
-be passed by std::move explicitely, which creates new capture variable local to labda
+labda does not capture values which are not copyable i.e. dont have copy constr or operator= i.e. unit_ptr, which needs to be passed by std::move explicitely, which creates new capture variable local to labda
 
 ```c++
 auto p = std::make_unique<int>(1);
@@ -108,9 +107,47 @@ auto f = [&r = x, x = x * 10] {
 f(); // sets x to 2 and returns 12
 ```
 
-
 - [return type deduction](#return-type-deduction)
+now you could give auto as return type to function, lambda and you do not have to provide trailing return type.
+in order to deduce return type as reference you will have to capture it reference explicitely
+```c++
+template <typename T>
+auto& f(T& t) {
+  return t;
+}
+
+// Returns a reference to a deduced type.
+auto g = [](auto& x) -> auto& { return f(x); };
+int y = 123;
+int& z = g(y); // reference to `y`
+```
+
+
 - [decltype(auto)](#decltypeauto)
+decltype(auto) does not decay the return type of function or variable declaration.
+```c++
+int&& z = 0;
+auto z1 = std::move(z); // int
+decltype(auto) z2 = std::move(z); // int&&
+```
+```c++
+// Note: Especially useful for generic code!
+// Return type is `int`.
+auto f(const int& i) {
+ return i;
+}
+
+// Return type is `const int&`.
+decltype(auto) g(const int& i) {
+ return i;
+}
+
+int x = 123;
+static_assert(std::is_same<const int&, decltype(f(x))>::value == 0);
+static_assert(std::is_same<int, decltype(f(x))>::value == 1);
+static_assert(std::is_same<const int&, decltype(g(x))>::value == 1);
+```
+
 - [relaxing constraints on constexpr functions](#relaxing-constraints-on-constexpr-functions)
 - [variable templates](#variable-templates)
 - [\[\[deprecated\]\] attribute](#deprecated-attribute)
