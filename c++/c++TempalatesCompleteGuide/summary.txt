@@ -31,11 +31,8 @@
 	1. Ref call parameters do not decay
 	2. Accepting by value type decays
 	3. If two call accept by same template type param T, then type deduced for them
-	must be same.
-		int max(int, int);
-		template<T>
-		int max(T, T);
-
+	must be same including cv specifiers in case of binding to reference template type
+	param.
 		max('c', 4.2); // Calls max(int, int);
 		max<>('c', 4.2); // Error, tries to call templ version by arg deduct 
 		max("abc", 4.2); // Error, tries to call templ version 
@@ -67,8 +64,7 @@
 	auto max(T1 a, T2 b) -> decltype(true? a: b)
 
 1.3.3 RETURN TYPE AS COMMON TYPE
-	using commont_type_t 
-	auto max(T1 a, T2 b) -> std::common_type_t
+	auto max(T1 a, T2 b) -> std::common_type_t<T1, T2>
 
 1.4    DEFAULT TEMPLATE ARGUMENTS
 		template<RT=long, T1, T2>
@@ -79,25 +75,11 @@
 	function calls to template function are resolved on the templates seen till now
 
 	ie.
-		template<T>
 		max(T, T);
-
-		template<T>
 		max(T a, T b, T c) {return max(max(a, b),c);} // only template max is seen
 			// so for event T=int, above func will be called
-
-		template<>
 		max(int, int);
 
-
-	int max(int a, int b);
-
-	template<typename T>
-	T max(T a, T b);
-
-	::max(7, 42);                // calls the nontemplate for two ints 
-	::max(7.0, 42.0);            // calls max<double> (by argument deduction)
-	::max(’a’, ’b’);              //calls max<char> (by argument deduction)
 	::max<>(7, 42);              // calls max<int> (by argument deduction)
 	::max<double>(7, 42);        // calls max<double> (no argument deduction)
 
