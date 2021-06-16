@@ -133,6 +133,7 @@ namespace a::b::c {}
 
 - [selection statements with initializer](#selection-statements-with-initializer)
 if and switch can embed local variable declaration statements in the condition
+so that scope of the embeded variables remains inside if-else and switch code blocks 
 
 ```c++
 	if (auto p = 10; a) {...} 
@@ -160,6 +161,7 @@ decide the float of code at compile time
 ```
 	
 - [utf-8 character literals](#utf-8-character-literals)
+A character literal that begins with `u8` is a character literal of type `char`. The value of a UTF-8 character literal is equal to its ISO 10646 code point value.
 char x = u8'x';
 
 - [direct-list-initialization of enums](#direct-list-initialization-of-enums)
