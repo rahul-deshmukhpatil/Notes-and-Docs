@@ -35,19 +35,153 @@ C++20 includes the following new library features:
 
 C++17 includes the following new language features:
 - [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
+	class constructors decoding template class arguments
+```c++
+template <typename T = float>
+...
+MyContainer c1 {1}; // OK MyContainer<int>
+MyContainer c2; // OK MyContainer<float>
+```
+
 - [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
+```c++
+template <auto... seq>
+struct my_integer_sequence; 
+
+auto seq2 = my_integer_sequence<0, 1, 2>();
+```
+
 - [folding expressions](#folding-expressions)
+
+```c++
+( pack op ... )	(1)			=> (p1 op (.(.(.)))) => (p1 op (p2 op(p3 op( Pn))))	
+( ... op pack )	(2)			=> ((((.).).) op Pn) => ((((p1 op p2) op p3)op p4) op Pn)
+( pack op ... op init )	(3)	=> (p1 op (.(.(. op init)))) => (p1 op (p2 op( p3 op (Pn op init)))) 
+( init op ... op pack )	(4) => ((((init op .).).) op Pn) => ((((init op p1 )op p2) op p3) op Pn)
+```
+
 - [new rules for auto deduction from braced-init-list](#new-rules-for-auto-deduction-from-braced-init-list)
+Changes to `auto` deduction when used with the uniform initialization syntax. Previously, `auto x {3};` deduces a `std::initializer_list<int>`, which now deduces to `int`.
+```c++
+auto x1 {1, 2, 3}; // error: not a single element
+auto x2 = {1, 2, 3}; // x2 is std::initializer_list<int>
+auto x3 {3}; // x3 is int
+auto x4 {3.0}; // x4 is double
+```
+
 - [constexpr lambda](#constexpr-lambda)
+https://stackoverflow.com/questions/54492750/what-is-the-difference-between-inline-and-constexpr-captureless-lambda-in-a-head
+
+if lambda function could be constexpr which coule be called at compile time
+```c++
+auto identity = [](int n) constexpr { return n; };
+static_assert(identity(123) == 123);
+```
+
+if lambda object is constexpr then its initialized at start of process, but lambda might
+be just lambda that could be called at runtime.
+```c++
+constexpr auto add = [](int x, int y) {
+  auto L = [=] { return x; };
+  auto R = [=] { return y; };
+  return [=] { return L() + R(); };
+};
+
+static_assert(add(1, 2)() == 3);
+```
+
 - [lambda capture this by value](#lambda-capture-this-by-value)
+Capturing `this` in a lambda's environment was previously reference-only. An example of where this is problematic is asynchronous code using callbacks that require an object to be available, potentially past its lifetime. `*this` (C++17) will now make a copy of the current object, while `this` (C++11) continues to capture by reference.
+```c++
+struct MyObj {
+  int value {123};
+  auto getValueCopy() {
+    return [*this] { return value; };
+  }
+  auto getValueRef() {
+    return [this] { return value; };
+  }
+};
+MyObj mo;
+auto valueCopy = mo.getValueCopy();
+auto valueRef = mo.getValueRef();
+mo.value = 321;
+valueCopy(); // 123
+valueRef(); // 321
+```
+
 - [inline variables](#inline-variables)
+like inline functions in header files, you can define inline variables in header or source files. By default implicitly they have external linkage, so the link	time it linker only keeps one copy of it.
+
+This way you can define common variables in the header file itself. 
+	1. all inline variables must have exaclty same definition
+	2. inline var definition must be defined in the every source file that uses it
+
+Also you can define non const static member variables as inline.
+  static inline int count{0}; // declare and initialize count to 0 within the class
+
 - [nested namespaces](#nested-namespaces)
+```c++
+namespace a::b::c {}
+```
+
 - [structured bindings](#structured-bindings)
+```c++
+	const auto [ x, y, z ] = tuple<int, float, double>(4, 4.2f, 4.2);
+	const auto [ x, y, z ] = make_tuple(4, 4.2f, 4.2);
+```
+
 - [selection statements with initializer](#selection-statements-with-initializer)
+if and switch can embed local variable declaration statements in the condition
+
+```c++
+	if (auto p = 10; a) {...} 
+	else
+	{
+		// p is accessible here;
+	}
+
+	if (auto p = 10; a) {...} 
+	else if (auto p = 20; a) {...} 
+	{
+		// p is accessible, but one from else so p is 20;
+	}
+
+	switch(auto p=0; cond)
+```
+
 - [constexpr if](#constexpr-if)
+decide the float of code at compile time
+```c++
+	if constexpr(std::is_integral_v<T>) 
+		return true;
+	else
+		retunr false;
+```
+	
 - [utf-8 character literals](#utf-8-character-literals)
+char x = u8'x';
+
 - [direct-list-initialization of enums](#direct-list-initialization-of-enums)
+```c++
+enum byte : unsigned char {};
+byte b {0}; // OK
+byte c {-1}; // ERROR
+byte d = byte{1}; // OK
+byte e = byte{256}; // ERROR
+```
+
+
 - [fallthrough, nodiscard, maybe_unused attributes](#fallthrough-nodiscard-maybe_unused-attributes)
+fallthrough : for switch case no-break in two cases is intended one
+	case 1: [[fallthrough]]
+
+nodiscard : do not discard the return value
+	[[nodiscard]] bool do_something()
+
+maybe_unused : variable/param declared but not used 
+	void my_callback(std::string msg, [[maybe_unused]] bool error)
+
 
 C++17 includes the following new library features:
 - [std::variant](#stdvariant)
@@ -164,8 +298,24 @@ auto pi_double =  pi<double>();
 
 C++14 includes the following new library features:
 - [user-defined literals for standard library types](#user-defined-literals-for-standard-library-types)
+	can be constexpr and used at compile time
+```c++
+using namespace std::chrono_literals;
+auto day = 24h;
+day.count(); // == 24
+std::chrono::duration_cast<std::chrono::minutes>(day).count(); // == 1440
+```
 - [compile-time integer sequences](#compile-time-integer-sequences)
+
+```c++
+make_integer_sequence<int, 20>
+make_index_seq<5> // make_integer_sequence<size_t, 20>
+integer_sequence<int, 4,5,7,1,0>
+```
+
 - [std::make_unique](#stdmake_unique)
+	for simple syntax without new
+	exception safety
 
 C++11 includes the following new language features:
 - [move semantics](#move-semantics)
