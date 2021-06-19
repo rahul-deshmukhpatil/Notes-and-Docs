@@ -187,15 +187,100 @@ maybe_unused : variable/param declared but not used
 
 C++17 includes the following new library features:
 - [std::variant](#stdvariant)
+	typesafe union contains only one of its alternative values and remembers which value it has
+	variant can have : arrays, ref, or void. 
+	can have : duplicate types, cv qualified versions of same type
+	default construction : first member with first default constr. not def constructible if no member is def constructible
+
+```c++
+std::variant<int, double> v{ 12 };
+std::get<int>(v); // == 12
+std::get<0>(v); // == 12
+v = 12.0;
+std::get<double>(v); // == 12.0
+std::get<1>(v); // == 12.0
+```
+
 - [std::optional](#stdoptional)
+	Either contains value or not. Can be used to return empty values of functions that may fail.
+	Contains object of T and does not allocated any dynamic mem to store object.
+	Cant contain ref, but std::reference_wrapper could be used
+	Optional::reset called when to erase value
+	has overriden bool operator, operator*(), operator->()
+	can be initialized with the std::nullopt
+```c++
+std::optional<std::string> create(bool b) {
+  if (b) {
+    return "Godzilla";
+  } else {
+    return {};
+  }
+}
+
+create(false).value_or("empty"); // == "empty"
+create(true).value(); // == "Godzilla"
+// optional-returning factory functions are usable as conditions of while and if
+if (auto str = create(true)) {
+  // ...
+}
+```
+
 - [std::any](#stdany)
+	A type-safe container for single values of any type.
+	optimization of objects without dynamic allocations for small objects and objects wiht is_nothrow_move_constructible
+```c++
+std::any x {5};
+x.has_value() // == true
+std::any_cast<int>(x) // == 5
+std::any_cast<int&>(x) = 10;
+std::any_cast<int>(x) // == 10
+```
+
 - [std::string_view](#stdstring_view)
+non resource owning string.
+supports remove_prefix, remove_suffix etc
+
 - [std::invoke](#stdinvoke)
+used to call any callable i.e. function, function pointer, functor, std::function, std::bind
+
 - [std::apply](#stdapply)
+	invoke std::invoke with arguments in tuple
+```c++	
+	std::apply(func, tuple<int, float>(1, 2.3))
+```
+
 - [std::filesystem](#stdfilesystem)
+std way of dealing with files
+
 - [std::byte](#stdbyte)
+not char not int8_t type. has only bitwise operators. uses to_integer for int conversion
+```c++
+std::byte a {0};
+std::byte b {0xFF};
+int i = std::to_integer<int>(b); // 0xFF
+std::byte c = a & b;
+int j = std::to_integer<int>(c); // 0
+```
+
+
 - [splicing for maps and sets](#splicing-for-maps-and-sets)
+move elements of the std containers without erasing and reallocating. moves elements.
+```c++
+dst.insert(src.extract(src.find(1))); // Cheap remove and insert of { 1, "one" } from `src` to `dst`.
+dst.insert(src.extract(2)); // Cheap remove and insert of { 2, "two" } from `src` to `dst`.
+```
+
+
 - [parallel algorithms](#parallel-algorithms)
+copy, find, sort can have exeuction policy seq, par, par_unseq
+```c++
+std::vector<int> longVector;
+// Find element using parallel execution policy
+auto result1 = std::find(std::execution::par, std::begin(longVector), std::end(longVector), 2);
+// Sort elements using sequential execution policy
+auto result2 = std::sort(std::execution::seq, std::begin(longVector), std::end(longVector));
+```
+
 
 C++14 includes the following new language features:
 - [binary literals](#binary-literals)
