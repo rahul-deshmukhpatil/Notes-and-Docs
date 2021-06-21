@@ -479,7 +479,7 @@ Part I: The Basics
 		or called.
 
 3.1    Nontype Class Template Parameters
-		It could be int or another integral, pointer to object, member, function or lamda could be 
+		It could be int or another integral, pointer to object, member function, function or lamda could be 
 		parameter to template class.
 
 3.2    Nontype Function Template Parameters
@@ -488,7 +488,7 @@ Part I: The Basics
 		deduction works only for immidiate calls. There is no such thing that only half of the parameters
 		are deduced and remaining will be deduced as they fit at the time of call
 
-		std::transform(s.begin(), s.end(), d.begin(), addValue<5, int>)
+		std::transform(s.begin(), s.end(), d.begin(), addValue<5, int>);
 
 
 3.3    Restrictions for Nontype Template Parameters
@@ -504,7 +504,7 @@ Part I: The Basics
 
 		MyClass<"hello"> x;  //ERROR: string literal "hello" not allowed
 
-		Template argyment expression could be constexpr.
+		Template argument expression could be only constexpr.
 		
 		template<int I, bool B>
 		class C;
@@ -543,10 +543,10 @@ Part I: The Basics
 		Note that, template<decltype(auto) N> is possible, which does instantiation of N as reference
 
 
-		template<decltype(auto) N>
+		template<decltype(auto) N> // do not decay
 		class C {};
 		int i;
-		C<(i)> x; // N is int&
+		C<(i)> x; // N is int& // (i) becomes reference
 
 
 3.5    Summary
