@@ -168,9 +168,10 @@ Function templates define a family of functions for different template arguments
 		template<T>
 		Stack
 		{
-			// Just another ordinary function, must be defined
+			// Just another ordinary friend function, must be defined
 			// friend std::ostream operator<<(std::ostream&, const Stack<U>&);
 
+			// templetized friend function
 			template<U> // U does not collide with the type T 
 			friend std::ostream operator<<(std::ostream&, const Stack<U>&);
 		};
@@ -207,16 +208,11 @@ Function templates define a family of functions for different template arguments
 		If you have two types
 
 		template<T1, T2> // primary template
-		class Stack{};
+		class MyClass{};
 
-		template<T>
-		class Stack<T, T>{};
-
-		template<T>
-		class Stack<T, int>{};
-
-		class Stack<T1, T2>{};
-		class Stack<T1*, T2*>{};
+		class MyClass<T, T>{};
+		class MyClass<T, int>{};
+		class MyClass<T1*, T2*>{};
 
 	MyClass<int, float> mif; // MyClass<T1, T2>
 				MyClass<float, float> mff; // MyClass<T, T>
