@@ -160,8 +160,9 @@ Intro:
 	Default constructor is not generated if T has
 	1> Member is reference without default initializer list
 	2> Member is const without default initializer list or default constructor
-	3> Member does not have default constructor or ambiguous constructor
-	4> Direct or virtual base does not have Constructor or destructor accessible or deleted.
+	3> Member does not have default constructor ( T()= delete; deleted def constr) 
+	4> ambiguous constructor (another construtor with all params having default value)
+	5> Direct or virtual base does not have Constructor or destructor accessible or deleted.
 	
 
 	Trivial					: No virtual func/base class
