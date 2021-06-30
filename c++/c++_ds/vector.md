@@ -1,3 +1,4 @@
+std:vector
 
 - Continuous allocated storage, so random access is possible
 - allocates more than required storage to accomodate future growth
@@ -76,3 +77,4 @@ resize: either add the extra default or value copies or reduce the size by erasi
 		returns void
 		never reduces capacity because that will cause reallcation and it invalidates
 		all the iter, pointers, ref than past the resize count
+		If you use custom allocator you might suppress call to default constructor for user defined types or prevent zero out memory for intetral types 
