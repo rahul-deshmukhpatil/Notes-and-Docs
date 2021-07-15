@@ -29,4 +29,21 @@ Always use make_uniq and make_shared
 		- deleter knows how to free this single block of memory by destroying control block and object separatly
 	-
 
+weak_ptr: is ticket to shared_ptr. It has exactly same control block as of shared_ptr.
+		if weak ref count is not 0 that means you can still get shared_ptr to object is destroyed only if both
+		ref counts are 0.
+	
+	in case of make_shared, control block is contigious, so upon refcounts become 0, deleter is called for T.
+	but actual memory block is freed only once weak_ptr goes out of context, check video
+
+
+	usage:
+		if (std::shared_ptr ptr = wk_ptr.lock())  // if its not null
+		// auto ptr = wk_ptr.lock() 
+		// if (ptr != nullptr)
+		{
+			use(ptr);
+		}
+
+
 	
