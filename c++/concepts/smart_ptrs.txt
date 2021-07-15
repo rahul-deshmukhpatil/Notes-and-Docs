@@ -1,0 +1,8 @@
+https://www.youtube.com/watch?v=xGDLkt-jBJ4&list=PLerNAYTyMSwabSnDjFmYzoXU-68RTUwdq&index=16&t=2232s
+
+
+uniq_ptrs:
+	just 8 bytes pointer
+	move only, cant copy
+	have deleter functionality
+	handles deletion of arrays correctly with delete [] 
