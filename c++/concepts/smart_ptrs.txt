@@ -1,8 +1,32 @@
 https://www.youtube.com/watch?v=xGDLkt-jBJ4&list=PLerNAYTyMSwabSnDjFmYzoXU-68RTUwdq&index=16&t=2232s
 
+smart pointers or references are extra level of "
 
 uniq_ptrs:
 	just 8 bytes pointer
 	move only, cant copy
 	have deleter functionality
 	handles deletion of arrays correctly with delete [] 
+
+	cons:
+		cant handle uniq_ptr<Base2> initialized with Derv pointer,
+		where Derv is inherited from Base1 and Base2
+
+
+shared_ptrs
+	stores reference count and handles above con of uniq_ptr
+	has control block, which saves
+		- ref count
+		- weak ref count
+		- custom deleter
+		- Actual pointer to Derv if its shared_ptr<Base2> intialized with Derv pointer
+
+
+
+Always use make_uniq and make_shared
+	- make_shared to avoid above cons scenario of multiple inheritance
+	- make_shared allocated the control block and object in contigious memory
+		- deleter knows how to free this single block of memory by destroying control block and object separatly
+	-
+
+	
