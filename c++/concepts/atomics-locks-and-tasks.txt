@@ -31,4 +31,14 @@ Critical Section
 	Solution:
 		1. acquire locks in only same sequence. Not always possible.
 		2. try_lock and give up lock after some time. Not so clean.
-		3. try unique_lock, with std::defer_ptr 
+		3. c++11, try unique_lock, with std::defer_ptr 
+			std::unique_lock ula(a.mut, std::defer_lock);
+			std::unique_lock ulb(b.mut, std::defer_lock);
+			std::lock lk(a.mut, b.mut); // local a.mut n b.mut in atomic way or wait in while
+		4. c++17 clean n short way, use std::scoped_lock<std::mutex>  scLock(a.mut, b.mut);
+	
+
+	Suppose you want to have atomic counter, which is incremented by 1000 times by 1000 threads
+	1. Better to use atomic, but its still not efficient
+	2. Have a local variable, increment it. And the end add local var to counter
+	Use local variables as possible. 
