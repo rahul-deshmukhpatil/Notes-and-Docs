@@ -1,0 +1,34 @@
+https://www.youtube.com/watch?v=o0i2fc0Keo8&t=2137s
+
+Data race
+	i++ : is a read, modify and write operation
+	this can not be atomic by default on any builtin integral type
+	use atomic if possible
+
+Critical Section
+	Only one code should have access to critical section.
+	Take locks or critial section. Analogy of entering into room
+	
+	Mutex must not be function local i.e. must be accessible to all threads
+	Use mutex with lock_guard, which in case of exception raised still frees lock
+
+	Mutex Limitations:
+	1. Aquiring same mutex twice by same thread is undefined behavior
+	2. You might take another lock insisde critical section room.
+	3. You might come out of another door from critical section, forgeting free initial lock
+		taken while entering.
+
+	1. keep only minimum req, race code inside critical section
+	2. Do not call any third party functions after taking lock.
+		Do only simple operations insid it otherwise called functions might sleep
+		or change implementation. This will break code in future
+	3. Lock inside lock is not a good idea.
+
+	Deadlock
+	Two locks req causes deadlock. Analogy of there are only two chopticks to eat noodle.
+	and two people(threads) want to eat noodle acquiring locks.
+
+	Solution:
+		1. acquire locks in only same sequence. Not always possible.
+		2. try_lock and give up lock after some time. Not so clean.
+		3. try unique_lock, with std::defer_ptr 
