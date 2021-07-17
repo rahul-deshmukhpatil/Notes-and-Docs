@@ -5,6 +5,7 @@ std:vector
 - Can `reserve` the size if known before hand
 - Can `shrink_to_fit` or forcefully `resize` to required number of elements 
 
+With c++20 we can have constexpr vector and all opeartions have constexpr overload.
 
 Template parameters
 T : must support actual operations in the functions you use.
@@ -40,6 +41,28 @@ Capacity:
 
 Modifiers:
 	clear : erase all elements in linear complexity. does not change capacity.
+
+	operator=(const vector& other): 
+		if (allocator_traits<allocator_type>::proprage_on_container_copy_assigment)
+			copy the allocator
+
+		if ! compare_equal(old_allocator, new_allocator)
+			reallocated memory and move elements from old memory
+			deallocate old memory
+			and copy assign element wise from other into current
+		else:
+			possibly reuse memory if other fits into current meory
+
+	operator=(const vector&& other): 
+		if (allocator_traits<allocator_type>::proprage_on_container_move_assigment)
+			copy the allocator
+
+		if ! compare_equal(this_allocator, other_allocator)
+			reallocate additional memory if needed 
+					move constrct elements from old mem into new reallocated
+			and move assign element wise
+		else:
+			dealloate current memory/elements and use others memory directly
 
 	insert(pos, value)					: insert before pos in all functions, iterator to inserted position
 											complexity distance(pos,end)
