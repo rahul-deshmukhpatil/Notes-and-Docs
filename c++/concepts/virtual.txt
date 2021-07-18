@@ -1,0 +1,75 @@
+
+virtual funs work with only ref or pointer
+virtual call is suppressed if qualified lookup is used.
+	derv_p->Base::f(); // prints "base"
+ 
+ declaration for member function with the same
+	 name
+	 parameter type list (but not the return type)
+	 cv-qualifiers
+	 ref-qualifiers
+ overrides in the der class. If return types do not match, then
+ conflicting return types error is thrown by compiler
+ 
+ base private virt func can be overridden
+
+
+ There is diff between overrider. Final overrider is the virutal function called.
+ Even if you speicifiy
+
+ struct A { virtual void f() {std::cout << "A" << '\n';}; };     // A::f is virtual
+struct B : A { void f() {std::cout << "B" << '\n';}; };         // B::f overrides A::f in B
+struct C : virtual B { void f() {std::cout << "C" << '\n';}}; // C::f overrides A::f in C
+struct D : virtual B {}; // D does not introduce an overrider, B::f is final in D
+struct E : C, D  {       // E does not introduce an overrider, C::f is final in E
+	using A::f; // not a function declaration, just makes A::f visible to lookup
+};
+int main() {
+	E e;
+	e.f();    // virtual call calls C::f, the final overrider in e
+	A *a = &e;
+	a->f();   // virtual call calls C::f, the final overrider in e
+	e.E::f(); // non-virtual call calls A::f, which is visible in E
+}
+
+same name and parameter list hides the base function.
+
+incorrect use of override(fn is not virt in base) and final (derv class still tries to override) is 
+compilation error
+
+
+Covariant return types:
+	What if derv class virtual override (matches same args, cv and ref qual)
+	but return types are diff.
+
+	They must be same or must be covariant of each other.
+		1. Ret type must be ptr or ref (lvalue or rvalue)
+		2. Base ret type must be direct or indirect base of der type
+		2. Derv ret type must be less cv qualified
+
+Virtual destructor: base class must declare if it has single virt function
+	A useful guideline is that the destructor of any base class must be public and virtual or protected and non-virtual.
+
+During construction and destruction
+	virt func always call current class virt functions
+
+	Complex case of multiple branches in case of virtual inheritance
+	A: virt V {};
+	B: virt V {
+		B(V* v, A* a)
+		{
+			// a->f(); // Attempted to call A::f using B's virtual fn table
+						// in practice calls A::f but its really undefined behavior
+						// to call the another branch  func
+		}
+
+	};
+	
+	D : A,B // Branch A is constructed first.
+	{
+		D() : B((A*)this, this)
+	}
+	
+
+
+
