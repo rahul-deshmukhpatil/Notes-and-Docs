@@ -4,8 +4,12 @@
 2. is shrink_to_fit must reallocated i.e. binding? 
 	nope. its compiler dependant
 
-3. end is past-the-end. its may point to element capacity+1 and thats why dereffering end() is undefined.
+3. end is past-the-last. its may point to element capacity+1 and thats why dereffering end() is undefined.
 
 4. If reallocation happens during the emplace, does T(args...)  constructed before reallocation and copying elements or after it?
 
 5. Any chance of optimization during the insert/emplace reallocation that first move(begin(), pos), then insert(pos, T) and then move copy (pos, end)
+
+
+6. How elemenst are moved during erase, insert, emplace in middle? copy or move constr syntax? do delete happens?
+7. How to intialize all elemetns to 0 or if default inserted are always 0?
