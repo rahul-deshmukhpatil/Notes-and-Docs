@@ -45,10 +45,21 @@ iter insert_or_assign(hint, K&&, V&&) : returns iterator that was either inserte
 
 
 <iter, bool> emplace(Args...) : first create pair from args and then try to insert only if K is not present
-								strong exception safe gurantee
+								strong exception safe gurantee. If failed to insert destroy created pair
 <iter, bool> emplace_hint(hint, Args...) : try to insert prior to hint, 
 									if hint is lower_bound : inserted in amortized constant time
 									otherwise no change in time complexity of log N
 
+<iter, bool> try_emplace(& key, Args&&... args): behaves like emplace just diff value constr
+iter try_emplace(hint, & key, Args&&... args): behaves like emplace_hint just diff value constr
+									1. Unlike emplace does not move rvalue args if insertion does not happen
+										so for map<str, uniq_ptr> makes easy to manipulate 
+									2. accepts mapped_type arguments saperately
+
+
+
+erase(itr): 			removes elements, pos itr must be valid and dereferencible (end is valid but not deref)
+erase(first, last):		removes range if itrs belong to *this
+erase(key):				with key
 
 
