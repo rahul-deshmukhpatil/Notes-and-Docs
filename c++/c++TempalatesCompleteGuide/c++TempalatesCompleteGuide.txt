@@ -41,7 +41,7 @@ Part I: The Basics
 		It is actually two steps process
 			1.	Definition Time:
 				at template "definition" time template code is checked for language
-				syntax, unknown type and function names, static assertions independant
+				syntax, known type and function names, static assertions independant
 				of template parameters. 
 				Basically checks only part that can be determined
 			2.	Instantiation Time
