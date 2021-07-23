@@ -1,0 +1,11 @@
+using std::move to pass, caller allows the rvalue ref param to steal the resource.
+now it depends on called function definition if it steals resources or not
+
+
+void move_func(T&& t);
+
+Calling:
+	move_func(t); // should give error, binding lvalue to rvalue ref
+	move_func(std::move(t)); //caller has allowed to steal resource, now passing by rvalue.  
+
+
