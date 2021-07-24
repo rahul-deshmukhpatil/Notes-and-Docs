@@ -1,0 +1,95 @@
+CppCon 2019: Klaus Iglberger “Back to Basics: Move Semantics (part 1 of 2)”
+https://www.youtube.com/watch?v=St0MNEU5b0o
+
+
+rvalues : temporaries, which dont have name
+xvalues : eXpiring values
+lvalues : have name.  
+
+std::move : is just a static cast, cast is adult feature, user knows what he is doing
+Moving is stealing resource. Can say that its half of the swap. Its a complete transfer of ownership
+caller agrees to transfer, and allows to steal resource if callee wants to steal it.
+
+Always use the default provided move, copy constr, assignments.
+Rule of 0, rule of 3, rule 5.
+
+uniq_ptrs or any smart pointers self copy/move assigments handles the self copy.
+but this is not the case with the user defined object. 
+
+The only sane self move/copy scenario would be during std::swap. Otherwise
+move constr is always called with the xvalue or rvalue T&&. Until and unless user is not carefull
+self copy is not the normal scenario. You may handle it, but can be a assert
+
+const rvalue ref is possible :
+
+void f (const s&&); // #4
+const s g ();
+f (g ()); // const rvalue
+
+Move constr:
+	better to be noexcept. compiler generated are by default noexcept, if any function directly
+	called by move constr is noexcept. 
+	https://stackoverflow.com/questions/35318501/when-does-compiler-mark-default-generated-constructor-as-noexcept
+	if member intialize of move constr uses 
+		1> make_shared, which allocates memory, which could throw, so throws indirectly
+		1> copy constr of make_shared, which is noexcept, exception safe,
+	now its compiler dependant wheater to count make_share
+
+
+Widget(W&& w) noexcpet // Some STL ops require exception safety, otherwise they use copy constr instead of move constr
+	: int_i(std::move(w.int_i)) // you may change type of i later, which changes meaning
+	, str_s(std::move(w.str)) // std::move is req. w is lavlue, it has name, so s(w.s) wont call move constr of str
+	, ptr(std::exchange(w.ptr, nullptr)) // std::exchange just puts the values in the w.ptr, ptr/ref are special, handle them
+{
+	// if you use ptr(std::move(w.ptr)) above
+	// then do w.ptr = nullptr here
+}
+
+Widget w{1, s, nullptr}
+vector.push_back(std::move(w));
+
+push_back gives you strong exception safe gurantee, If push_back throws its as if nothing happened, as if you would
+not have called any function. When you move constr you are changing state of object. and if move constr throws then
+it means its inconsitent state, so push_back becomes defensive and tries to use copy constr instead of move constr
+even explicitely specifying std::move. So always keep 
+
+Move should leave its source is valid state. ints dont have any default, so its ok to source uninitialized. Although
+after std::move(int) source int state is undefined. So its ok to leave source int values after move for perf reason.
+
+move assignment: objectives
+	1. clean visible resources i.e. delete pointer
+	2. Transfer content from source into this
+	3. Leave source in valid but undefined state i.e. set pointer to nullptr
+	
+
+Widget& operator=(W&& w) noexcept
+{
+	// Wrong if its self assignment, but self copy is not ordinary scenario
+	delete this->ptr;
+
+	i = w.i;
+	str = w.str;
+	ptr = w.ptr;
+	w.ptr = nullptr;
+	// std::swap(ptr, w.ptr) removes all 3 delete,copy,set to nullptr ops
+	// but its less deterministic when your resource will be deleted with `w`
+
+	return *this;
+}
+
+// copy+move assingment
+Widget& operator=(Widget w) // w could be move assigned, or copy assigned, both will be destoyed at end
+{
+	swap(w)
+	return *this;
+}
+
+void swap(W& w) {} 
+
+When to use what:
+
+
+
+
+std::ref and std::cref, are template reference wrappers class, which have T& as member.
+	Now you can pass the ref wrapper by value
