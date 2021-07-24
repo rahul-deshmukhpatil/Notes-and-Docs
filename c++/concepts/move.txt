@@ -86,6 +86,23 @@ Widget& operator=(Widget w) // w could be move assigned, or copy assigned, both 
 
 void swap(W& w) {} 
 
+
+Default functions:  saying = default is treated as user defined function
+	1. Compiler generates move constr and =
+		if no copy op or destr is user defined
+	2. Compiler generates copy constr and =
+		if no move op is user defined
+	
+	if virtual ~destr() = default, means no move ops are generated, but copy ops are provided by compiler
+
+Rule of 0/3/5. Either declare all as = default, or all as = delete. rule of 6 if you count default constr
+
+If cheap copy/impossible to move, then use return or pass by value f(X)
+If in and out, then use return or pass by ref X&
+in and move from : X&&
+
+
+
 When to use what:
 
 
