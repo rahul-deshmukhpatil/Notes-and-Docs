@@ -8,15 +8,15 @@ lvalues : have name.
 
 std::move : is just a static cast, cast is adult feature, user knows what he is doing
 Moving is stealing resource. Can say that its half of the swap. Its a complete transfer of ownership
-caller agrees to transfer, and allows to steal resource if callee wants to steal it.
+caller agrees to transfer, and allows to steal resource. callee may/may not to steal it.
 
 Always use the default provided move, copy constr, assignments.
 Rule of 0, rule of 3, rule 5.
 
 uniq_ptrs or any smart pointers self copy/move assigments handles the self copy.
-but this is not the case with the user defined object. 
+but this is not the case with the user defined object move. 
 
-The only sane self move/copy scenario would be during std::swap. Otherwise
+The only self move/copy scenario would be during std::swap. Otherwise
 move constr is always called with the xvalue or rvalue T&&. Until and unless user is not carefull
 self copy is not the normal scenario. You may handle it, but can be a assert
 
