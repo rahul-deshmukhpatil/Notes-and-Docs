@@ -1,0 +1,4 @@
+CppCon 2017: Arthur O'Dwyer “A Soupçon of SFINAE”
+https://www.youtube.com/watch?v=ybaE9qlhHvw
+
+

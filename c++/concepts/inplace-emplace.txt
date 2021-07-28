@@ -1,0 +1,50 @@
+CppCon 2019: Ben Deane “Everyday Efficiency: In-Place Construction (Back to Basics?)”
+https://www.youtube.com/watch?v=oTMSgI1XjF8&t=1967s
+
+1. moving from string is not faster than copying
+	most strings are small : small str optimization
+	STL impl might 0 out the string
+
+2. RVO
+	caller passes address of the "return value capture variable"
+	if callee can construct element directly in this addr its RVO
+
+	Optimizations : return values being destroyed will be moved if not RVO
+
+3. Map move constr: needs allocates of end()
+
+# my own thoughts : move assignment is stealing, no one src/dst should die by calling destr
+just because of move assgment or dstr
+
+4. constexpr functions do not see the RVO. 
+	T() :x(0){}
+	T(T&&) :x(1){}
+
+constexpr auto f() { T a; retunr a;} // T.a will be 1 in GCC as constexpr eludes RVO
+	
+Gcc is agreesive to put things into constexpr context.
+Dont write code like above, its just not in logical sync/correct
+
+
+5. Push Back vs Emplace Back
+const char *s = "Hello";
+v.push_back(s); // construct and copy it to func
+v.emplace_back(s); // construct and copy it to func
+
+string s;
+v.pb(std::move(s));
+v.eb(std::move(s)) ; // both are same
+
+
+6. emplace_back is powerful but not always go to solution.
+	using push_back is simple to read and says that copy is being made.
+
+7. emplace_back can take/fw empty paramter pack. can call explicit constr
+
+8. there is not back_emplacer (which could construct data from args) vs back_inserters (which copies data) 
+
+
+
+	 
+
+
