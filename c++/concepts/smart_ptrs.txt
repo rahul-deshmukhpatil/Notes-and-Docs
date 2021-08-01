@@ -1,9 +1,9 @@
 https://www.youtube.com/watch?v=xGDLkt-jBJ4&list=PLerNAYTyMSwabSnDjFmYzoXU-68RTUwdq&index=16&t=2232s
 
-smart pointers or references are extra level of "
+smart pointers or references are extra level of indirection and need extra level of dereferencing
 
 uniq_ptrs:
-	just 8 bytes pointer
+	just 8 bytes poinlevel oflevel of  ter
 	move only, cant copy
 	have deleter functionality
 	handles deletion of arrays correctly with delete [] 
