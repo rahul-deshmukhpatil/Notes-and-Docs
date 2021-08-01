@@ -9,8 +9,27 @@ uniq_ptrs:
 	handles deletion of arrays correctly with delete [] 
 
 	cons:
-		cant handle uniq_ptr<Base2> initialized with Derv pointer,
-		where Derv is inherited from Base1 and Base2
+		can convert uniq_ptr<Derv> to uniq_ptr<Base> implicitely
+		cant handle uniq_ptr<Base> initialized with unique_ptr<Derv>,
+		std::default_deleter resulting of Base will called instead of derived
+		, unless B's destr is not virtual
+
+Functions:
+	operator=(&&);// to pass pointer to another func
+	release, reset, swap; // to free, replace assign new and swap the underlying pointer 
+	get_deleter(); // returns reference to deleter, which can be then changed
+
+Restrictions: move constr or move assignable, but not copy constr/assignable.
+			const uniq_ptr could be used only in scope its created as you cant move it.
+
+Usage: Exception safe freeing mem of dynamic alloction in try block.
+	   Acquiring ownership and passing it to other functions.
+	   std::vector is move aware container, can hold unique_ptrs for polymorphic behaviors
+
+Notes: Can be constr from incomplete type, but must know type if deleter == std::default_delete()
+		at the time of delete invokation at the time of uniq_ptr deletion, move assign, reset.
+
+
 
 
 shared_ptrs
@@ -21,21 +40,19 @@ shared_ptrs
 		- custom deleter
 		- Actual pointer to Derv if its shared_ptr<Base2> intialized with Derv pointer
 
-
-
 Always use make_uniq and make_shared
 	- make_shared to avoid above cons scenario of multiple inheritance
 	- make_shared allocated the control block and object in contigious memory
 		- deleter knows how to free this single block of memory by destroying control block and object separatly
-	-
+		- remember when reference count goes to 0, object is destroyed by deleter, 
+		- but combined memory block is freed when ref count goes to 0
 
 weak_ptr: is ticket to shared_ptr. It has exactly same control block as of shared_ptr.
-		if weak ref count is not 0 that means you can still get shared_ptr to object is destroyed only if both
+		if weak ref count is not 0 that means you can still get shared_ptr to object. Object is destroyed only if both
 		ref counts are 0.
 	
 	in case of make_shared, control block is contigious, so upon refcounts become 0, deleter is called for T.
 	but actual memory block is freed only once weak_ptr goes out of context, check video
-
 
 	usage:
 		if (std::shared_ptr ptr = wk_ptr.lock())  // if its not null
@@ -44,6 +61,3 @@ weak_ptr: is ticket to shared_ptr. It has exactly same control block as of share
 		{
 			use(ptr);
 		}
-
-
-	
