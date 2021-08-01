@@ -14,6 +14,8 @@ uniq_ptrs:
 		std::default_deleter resulting of Base will called instead of derived
 		, unless B's destr is not virtual
 
+** make_unique, make_shared are functions, you can not template alias any functions 
+
 Functions:
 	operator=(&&);// to pass pointer to another func
 	release, reset, swap; // to free, replace assign new and swap the underlying pointer 
