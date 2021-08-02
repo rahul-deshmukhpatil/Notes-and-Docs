@@ -42,6 +42,23 @@ shared_ptrs
 		- custom deleter
 		- Actual pointer to Derv if its shared_ptr<Base2> intialized with Derv pointer
 
+Deletes memory pointed if
+	- last shared_ptr remaning is deleted
+	- last shared_ptr is reset(), or  operator= assigned with diff one
+	- implementation of operator= must handle case of self assign
+
+You may store the pointer to member or base class pointer in the shared_ptr, which
+is accessed by get(), op-> and op*, but deleter deletes the original object at the time of destruction
+
+Constructor aliasing : ptr is member of other object managed by another shared_ptr r. When this shared_ptr
+is last among group to be deleted, deleter for the r is called. its resposibility of user to ensure that
+this ptr is always valid and does not get deallocated.
+
+access to differnt instances of shared_ptr pointing to same object, is thread safe. 
+But multithreaded access to same instance of shared_ptr is thread safe only during read only ops.
+If you want synchronized access to same instance of shared_ptr, use atomic fucntion overloads for shared_ptr
+
+
 Always use make_uniq and make_shared
 	- make_shared to avoid above cons scenario of multiple inheritance
 	- make_shared allocated the control block and object in contigious memory
