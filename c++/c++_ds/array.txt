@@ -1,0 +1,17 @@
+
+T[N] : as only non-static data member
+
+satiesfies req of revesivble container : supports bidirectional and random itr
+
+default constructed array is not empty
+swap is linera time.
+
+
+when len =0, begin == end , which is some uniq value as 0 lenth obj
+is not possible so does not have address. also front(), back() have undefined result.
+
+Iterators are not invalidated till lifetime of array.
+But after iterators point to same array, so change its values to other arrays.
+
+Whereas vector.swap does not call the move,copy or swap on individual elements
+so its iterators remain valid except past the end

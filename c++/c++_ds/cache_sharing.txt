@@ -1,0 +1,34 @@
+
+Cache Issues -- False Sharing -- Mike Bailey, Oregon State University
+https://www.youtube.com/watch?v=dznxqe1Uk3E
+
+
+If two cores are modifying same values or different values which fall on same L2
+cache line then we are going to have the false sharing issue.
+Benefits of multithreading disappear if threads compete for cache lines.
+
+Cache follows MESI protocol
+
+Modified
+Exclusive
+Sharedd
+Invalid.
+
+Thread A reads mem
+pulled local L2 cache of core 1, marked exclusive
+
+Thr B reads same mem
+pulled in L2 of diff core2. marking line in both L2s as shared
+
+Thr B writs same mem.
+Now marks line in L2 of core1 as invalid. Needs to be synched with the Main memory
+
+Thr A tries to read mem.
+L2 fetches from main memory, and marks as shared again. but its costlier
+
+
+Fixes
+1. Use temp var on stack for doing shared mem calculations and read/write only
+once to shared memory
+2. Use proper padding to align elements at diff cache line, rather than same.
+3. Threads work on different parts of container

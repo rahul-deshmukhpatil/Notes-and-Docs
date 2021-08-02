@@ -1,0 +1,38 @@
+	
+Thread :
+    not copy constr or copy assignable
+    but its move constr and move assig
+
+Begins execution upon construction.
+and if top level func terminates by throwing Exception std::terminate is called
+
+Return value of top level func is ignored, use std::promise or shared variable
+to get the return value or exception thrown.
+
+std::thread may be in state that does not represent any thread, after Default Constr, move op,
+join or detach.
+
+
+Constr:
+Default std::thread(); // does not represent thread
+// get_id() == thread::id() i.e. joinable is false
+
+Move constr
+thread(thread&& other); // other is no longer repr thr of exec
+// prior to start of constr begins, get_id() = other.get_id()
+// and other.get_id() == thread::id() i.e. other.joinable is false
+
+Construct with F and Arguments
+https://stackoverflow.com/questions/29693630/details-in-the-process-of-constructing-a-stdthread-object
+typename<F, typename... ARGS>
+thread(F&& f, ARGS&&... args);
+
+Values are not passed by the ref. But they are decay_copy and called with invoke.
+This is because if you pass reference to function/body local object while creating thread,
+your thread might refer to dangling reference after thread creating function is done.
+
+std::invoke(decay_copy(std::forward<Function>(f)), decay_copy(std::forward<ARGS>(args))...)
+
+First constr is constructed and then f starts execution, ensured by memory_order.
+
+// get_id() != thread::id() i.e. joinable is true
