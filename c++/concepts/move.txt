@@ -102,11 +102,113 @@ If in and out, then use return or pass by ref X&
 in and move from : X&&
 
 
-
-When to use what:
-
-
-
+When to use what: the ref or rref, when objects are big or small. Check video
 
 std::ref and std::cref, are template reference wrappers class, which have T& as member.
 	Now you can pass the ref wrapper by value
+
+
+Forwarding Ref 
+Perfect Fw reference
+Universal reference
+
+template<typename T>
+void foo(T&&)
+
+auto&& a = a1; // Look like rvalue ref but its forwarding reference 
+
+lvalue is something is name, address, memory, on stack or on heap
+rvalue is temprary, xvalue(explicit expiring) or prvalue (returned by functions by value)
+
+Reference collapsing happens in case of the forwarding reference
+T& & -> T&
+T& && -> T&
+T&& & -> T&
+T&& && -> T&&
+
+1. Without perfect fw 
+	1. pass by val : cant pass non-copiable objects, or large objects cuase latency
+	2. pass by ref : cant pass rvalue to non-const ref
+
+Even with Universal ref, if you pass rvalue, its accepted as rvalue ref, but if now in function
+as a function param its a lvalue with name and its address on stack
+
+Use std::forward which is conditional cast  (vs to std::move which is just static_cast to rvalue ref)
+1. returns lvalue ref for lvalue 
+1. returns rvalue ref for rvalue 
+We pass explicit type to the std::forward as all function params are always lvalues. it returns T&& but here T is 
+the type deduced by the wrapper function so while returning static_cast<T&&> ref collapsing happens
+
+std::move also accepts the T&&, but returns  static_cast<std::remove_reference_t<T>&&>
+
+
+Perils of perfect fw
+
+Person(const std::string&);
+
+template<typename T>
+Person(T&&);
+
+Person p1("Bjarne"); // calls template T is char[7]
+
+string name = "Herb"
+Person p2(name); // calls template, because non-templ is const 
+
+Person p3(p1); // Calls template, doesnt call def copy constr which takes `const Person&` as argument
+
+f(W &)			: non const is more relaxing this is choosen, after than template T& which is non-const, then explcit below const version
+f(const W &)	: choosen over template instantiated version as c++ rule, then template version
+f(W&&)			: same as above, choosen over 2nd choice template and 3rd choice const rvalue version, 4th Template const T&&
+f(const W&&)	: const rvalue, 2nd choice template constT&&, then template T& and then const W&. 
+
+f(T&&)
+f(const T&&)
+
+Scott Mayers, : Effect Modern c++, avoid overloading over universal references
+
+
+template<typename T>
+A(T&& t)
+: b(std::move(t)) // Wrong, T could be lvalue or rvalue use std::forward<T>(t), move is unconditional
+
+
+template<typename T>
+class A {
+A(T&& t) // t is always rvalue reference, this does not cause any serious issue but its wrong
+: b(std::forward(t)) // T is just a type, constructor param is not universal reference 
+}
+
+
+template<typename T>
+A(T&& t)
+: b(std::forward(t))  // just copy t, using b(t) 
+: c(std::forward(t)) // Wrong, can move twice if T is deduced as rvalue ref 
+
+
+template<typename T1, typename T2>
+A(T1&& t1, T2&& t2)
+: b(std::forward(t1))  
+: c(std::forward(t2)) // Wrong, if T1==T2 and t1 and t2 are same object
+
+
+template<typename... Args>
+uniq_ptr<W> create(Args&&... args)
+{
+	auto uptr(std::make_uniq<W>(args));
+	return std::move(uptr); // prevents RVO, which is no-cost op, 
+							// RVO helps to create non copiable, non-movables
+	// return std::make_uniq<W>(args); // solution, RVO, if not RVO atleast move, if not move copy
+}
+
+// Do not return by rvalue reference, its going to be always invalid, its core guideline
+
+if constexpr(is_integral_v<T>) // T could be lvalue or rlvaue ref to int, but ref itself is not integral
+if constexpr(std::remove_reference<T>) // remove reference and you are good 
+
+
+
+rvalue ref binds to const lvalue
+const lvalue ref binds to  
+
+
+
