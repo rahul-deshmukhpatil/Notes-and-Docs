@@ -1,0 +1,85 @@
+
+
+Globals : its scope, true global or namespce global
+Singlton : its class property
+
+class static is is a global variable. remember.
+
+Global: constructor and destructor might run at same spot twice.
+		means, if you allocate member using new in constr
+		you are going to free twice
+
+
+Linker links from left to right.
+	When linker tries to link symbol from static lib, 
+	it copies "uniq" symbol into destination dynamic lib  from static lib
+		i.e symbols address is same across program but resposibility
+		to initialize is copied, when dynamic lib is loaded at run time run its initializer/constr
+
+	when linker links dynamic lib, this responsibility is not copied and left
+	with source dynamic lib
+
+
+For each lib and executable main.cpp, linker maintains, what lib needs and what symbols lib has
+
+So if you link dynamic lib first to main.o, then symbols from dynamic libs are first checked and 
+ownership to initialize is not transffered. so you only have single constr execution and destr as well
+
+
+But if you link static lib first to main.o, then symbols from static libs are copied and 
+ownership to initialize is transffered to main. But when you had linked dynamic lib to same static lib
+you had also transffered initialization resp to dynamic lib. so you only have double constr execution and double destr as well
+So when loader loads lib, your constr will run first time. Then the main functions global_var_init will execute
+
+Simple solutions: none are good
+1.link dynamic lib first, not so good way
+2. use globals only in dynamic lib
+3. dont mix dynamic and static libs
+
+
+How to avoid
+1. Use inline
+2. dont use local static var to functions
+	- its lazy way
+	- impl will use branch to check already initialized and atomic sync to prevent two thread initializing at same time
+	- lazy is dangerous, often you are in critical path when its really initialized
+3. use static function returning reference, Again its a lazy and static, same as above.
+	use this func to initialize the global_var or use this function instead of global var
+4. Linker already had this problems solved, by implicit inlining the global vars, its just difficult to impl
+and it took C++17 to have this explcite inline static. Remember templates are by default implicit inline declared in header files
+and can have statics
+
+namespace detail {
+	template<class=void>
+	struct MyGlobals
+	{
+		static int g_var;
+	};
+
+	template<>
+	int MyGlobals<>::g_var = 5; // or g_var = blah blah ...
+}
+
+static auto& g_var =  detail::MyGlobals<>::g_var;
+
+
+Interdependant globals
+- remember static vars are global
+- and Static Initialization Order Fiasco present there. Statics/globals in diff translation unit (.cpp) file
+	are initialzed in undefined order
+- try if possible interdependant globals
+- Define globals in the header files. If your global uses the "another" global in other header file
+	the included header file will make sure that "another" global is already intialized
+
+
+being comfortable with ar and nm
+be aware of SFIO
+reduce dependancy
+
+1. you may choose to have pointer globals which wont be deallocated at the end, 
+	cons: resource could be buffer of logger to be flushed
+
+2. constexpr constructors, which are run during compile time.
+
+	
+

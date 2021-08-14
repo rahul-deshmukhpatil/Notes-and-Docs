@@ -1,0 +1,63 @@
+youtube.com/watch?v=7Qgd9B1KuMQ&t=1634s
+Back to Basics: RAII and the Rule of Zero - Arthur O'Dwyer - CppCon 2019
+
+Resource anything that requires special management
+	memory, locks, file handles
+	resource may not be copiable or duplicable
+	needs some kind of manual cleanup
+
+Destructor : needs to free resource.
+Copy Constr : deep copy of the resource
+assign operator : use copy-swap idom to prevent
+		1. prevent self-asigment bugs
+		2. recursive data structures.(see video)
+		a = b; where b.c points to d, and a.c points do d;
+		and you free d recursively while emptying a, to copy b into it
+
+Rule of 3: have special resource allocation in constructor, then write all of these
+	1. delete the not provided functions
+	2. explicitely default them for readers documention that default function work correctly
+		This will try/create default functions forcefully in case they are suppressed by default
+
+If you write non-member specialized std::swap then it might do magic that compiler generated functions
+	or STL functions will use your custome non-member std::swap.(rather than templ instantiated std::swap)
+
+Prefer rule of zero
+	1. Business Clases dont manage resources i.e business class has std::string  
+	2. Resource Clases spl in managing resource i.e. std::string managse allocation, dellocation
+
+Rule of 5 (or 6 if include default constr)
+	4. move constr
+	5. move assigment operator to steal resources of argument
+
+	T& operator=(const T& rhs)
+	{
+		auto copy = T(rhs);
+		copy.swap(*this);
+		return *this;
+	}
+
+	T& operator=(T&& rhs)
+	{
+		auto copy = T(std::move(rhs));
+		copy.swap(*this);  // or just rhs.swap(*this);
+		return *this;
+	}
+
+	=== Really uncommon and good way ===
+	1. used as move= operator if `copy` is constructed on stack by moving if passed rvalue
+	2. used as copy= operator if `copy` is constructed on stack by copying lvalue or lvalue referenced value.
+
+	T& operator=(T copy)
+	{
+		copy.swap(*this);
+		return *this;
+	}
+
+If you gonna use copy/swap idom, write custom swap function, otherwise
+	1. std:swap gonna be used
+	2. which will use move constr
+	3. which will use move= operator , which will tries to use std::swap so infinite operation
+	
+
+
