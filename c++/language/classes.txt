@@ -1,0 +1,42 @@
+
+class/struct <attributes> alignas  <class name> <optionally qualified? , final> : Bases {}
+
+only declaration
+class-key attr identifier ;
+
+local declarations hide the outer scope definitions
+//namespace, class, func, block{ struct S;  // S in new type; }
+
+Members:
+
+attr(optional) decl-specifier-seq(optional) member-declarator-list(optional) ;	
+
+attr(optional) :  any c++ attr
+decl-specifier-seq(optional) :  static, inline, friend, constexpr, consteval, constinit etc
+
+1. Member declartions
+declartion may be <static/non-static> <data members, typedefs, enums, unions, friend declrations>
+
+2. Function declare
+	all functions defined inside class as automaticlly inlined.
+
+3. Access specifiers public:, protected:, and private:
+
+4. Using-declarations
+
+5. static_asserts inside struct might prevent instaitation of class templates
+
+6. deduction guides of member class templates
+
+7. Using-enum-declarations:
+
+Local classes:
+	classes inside block or function scope.
+	Cant be accessed outside of the scope, cant have member templates
+	or friends as this class can not be accessed at all outside of class
+
+Lambdas are implemented as local classes, with exception that they may have template members
+with the auto parameter
+
+
+
