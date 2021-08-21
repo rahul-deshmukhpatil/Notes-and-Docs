@@ -74,7 +74,7 @@ Part I: The Basics
 		
 			::max(4, 7.2); // error, T can be either int or double
 			::max("maths", std::string("maths")); // error, T can be either string or 
-										// const char [5]
+										// const char [6]
 				
 	1.2.2 Fixing Type conversion 
 		1. cast calling arguments to match
@@ -135,7 +135,7 @@ Part I: The Basics
 
 		ternary operator returns a "more common type" among T1 and T2, but does not
 		decay automatically. Ternary oprator is an expression and it does not have
-		return type but returns value, common type among T1 and T2.
+		return type but returns value, of common type among T1 and T2.
 
 1.4    Default Template Arguments
 		you can have default template arguments
