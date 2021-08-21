@@ -1,0 +1,18 @@
+address_of: 
+	some times might override operator&, so template function, which 
+	1. for object types(class, arry, union, ) first reinteprete cast<const volatile char&>
+		then to  &const_cast<char&> then to 
+	2. for function and ref types its just returning T& 
+	3. takding address of rvalue ref is = delete  in C++17
+
+Base-from-Member
+	1. if want to initialize derived member before base class. 
+	2. make a dummy class class for derived member and put it before base class in class declaration
+		class Derived : DummyDervMemberClass, BaseClass
+
+Calling Virtuals During Initialization
+	1. such derived overridden virt must not access any data members of derived, they are in invalid state
+	2. Use two phase initialization to call virt from init method
+	3. Use CRTP to call static or non static members
+
+
