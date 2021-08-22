@@ -1,4 +1,3 @@
-
 class/struct <attributes> alignas  <class name> <optionally qualified? , final> : Bases {}
 
 only declaration
