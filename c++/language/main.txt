@@ -1,0 +1,24 @@
+Can be just one
+
+int main_main(int argc, char *argv[], char *env[]) {
+
+output
+	/home/rahul/CLionProjects/Language/cmake-build-debug/Language
+	Static::Static globalStatic
+	Static::Static funcLocal
+	env : PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+	env : LC_MEASUREMENT=nl_NL.UTF-8
+	...
+	~Static::Static funcLocal
+	~Static::Static globalStatic
+
+1. only 1 main in global namespce, no overload, no recurisive
+2. can not be deleted, decl with c lang linkage, constexpr, consteval, inline, static
+3. implicit return 0. 
+4. std::exit gets called after main function. Frees global, global static(internal linkage), local statics in opposite order of initialization
+	remember you can only gurantee order of static initializations within single translation/compilation/.cpp unit
+5. main can not have auto return type. because It has default implicit return type int and value 0.
+6. main cant be coroutine
+
+main function-try-catch block does not catch exceptions of destructors of globals and statics called in std::exit
+
