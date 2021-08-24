@@ -1,0 +1,102 @@
+functions
+	noptr-declarator ( parameter-list ) cv(optional) ref(optional) except(optional) attr(optional) -> trailing	
+	
+	ref : & or && , call fun with rvalue ref or lvalue ref of "CV" type before it
+
+	noexcpet: 
+		1. Dynamic exception specification 
+			throw( )	// 1) Same as noexcept(true) in c++17, removed in c++20
+			throw(t1, t2, t3 ...)
+
+		2. noexcept == noexpect() == noexpect(true) or noexcept(expressoin)
+
+	May have requires cluase of concepts in c++20 at the end, its part of signature not of type
+	
+	function declarators can be mixed with variables
+
+class A
+{
+	virtual const int f1(), f2(int a); // both r virt, 
+	virtual const int f3(), a; // error, member cant be virt
+	int f4(), b; // b is int
+};
+
+cant return function type (function def) or array, but cant return ref or ptr to func or types
+
+attributes may appear 
+	before, after func name 
+		[[noreturn]] void f [[noreturn]] (); // okay: both attributes apply to the function f
+	after func params: definition is not affected. its only type
+		void f() [[noreturn]]; // error: this attribute has no effect on the function itself
+
+if auto is part of declspec-specifier of func, compiler deduces ret type from return statement
+	auto f() {return 0;} //  auto=int
+
+if decltype(auto) is used means ret type is same if ret statement would have been wrapped  in ()
+	int x = 1;
+	decltype(auto) f() { return x; }  // return type is int, same as decltype(x)
+	decltype(auto) f() { return(x); } // return type is int&, same as decltype((x))
+
+
+if ret type is deduced once, then recursive calls to same func below than assumes same return type
+
+if used auto as ret type .. i.e. ret type deducton ... cant return {1,4,4,5}; braced initializer list
+virt func and coroutines cant use auto ret types
+
+once you just declare auto ret type deduced func, 
+	then if you define func and ret type is deduced.
+	you cant redeclare same func event with same ret type, that is deduced.
+	but you can redeclare with auto ret type again.
+
+templates func other than user defined type conv operators can use auto. Type deduction only works at
+the time of instantiation, even if ret expresssion is not depedant on templ params. I think 
+as explained on cppreference, this is becasue of SFINAE
+
+specilizations of templates must use ret tpye placeholders .
+
+template<typename T> auto g(T t) { return t; } // #1
+template auto g(int);      // okay: return type is int
+//template char g(char);     // error: no matching template
+
+ template<> auto g(double); // okay: forward declaration with unknown return type
+ template<typename T> T g(T t) { return t; } // okay: not equivalent to #1
+ template char g(char);     // okay: now there is a matching template
+ template auto g(float);    // still matches #1
+ //void h() { return g(42); } // error: ambiguous
+
+params:
+	bounded/unbounded array , func, will be replaced by pointer
+	Top-level cv-qualifiers are dropped from the parameter type (This adjustment only affects the function type, but doesn't modify the property of the parameter: int f(const int p, decltype(p)*); and int f(int, const int*); declare the same function)
+
+
+Definition;
+	attr(optional) decl-specifier-seq(optional) declarator virt-specifier-seq(optional) function-body	
+	
+	body 
+		{}, try {} catch {} , = delete, 
+		= default (spl memb funcs or <=>, ==, <= ... etc operators)
+
+Use of deleted func is ill formated program, its an compilation error
+	explicit or implicit (constr, operators), taking address, ref,  etc
+	u cant even use deleted func in unevaluated expr, ie. decltype
+	in case of overload, resoluted selection of deleted func is compilation err
+	deleted funcs must be 1st func in the cpp file, you cant declr func as delete for already declared func
+
+every func has __func__, const static char* member
+
+In case of ambiguity between a variable declaration using the direct-initialization syntax and a function declaration, the compiler always chooses function declaration; see direct-initialization.
+int a(); // a is not int, but func decl == int a(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+

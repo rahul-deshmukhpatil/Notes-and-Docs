@@ -1,0 +1,13 @@
+attributes may appear 
+	before, after func name 
+		[[noreturn]] void f [[noreturn]] (); // okay: both attributes apply to the function f
+	after func params: definition is not affected. its only type
+		void f() [[noreturn]]; // error: this attribute has no effect on the function itself
+
+
+
+if decltype(auto) is used means ret type is same if ret statement would have been wrapped  in ()
+	int x = 1;
+	decltype(auto) f() { return x; }  // return type is int, same as decltype(x)
+	decltype(auto) f() { return(x); } // return type is int&, same as decltype((x))
+
