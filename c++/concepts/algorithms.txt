@@ -45,4 +45,14 @@ reduce : same as acc, it divides container into chunks. calculate result by addi
 		and then return single sum. I think ensure that initial sum is 0 for add, false for any_of, true for all_of ?
 		STL impl might have short cirtuite for the best scenario ie, true for any_of, false for all_of ? 
 
-		
+
+finding: min diff between any two ele in array
+		1. sort, adj_diff, min_element : uses extra mem
+		2. reduce ? maintain the prev element as mutable lambda member ,
+		3. inner_product : def binary op1=sum, binary op2=mult. in  op1(accumulate_init, op2(e1, e2));
+		3. inner_product ==  tranform reduce with must custom binary op1 and unary or binary op2, 
+
+Algorithms
+1. harder to debug
+2. might not be highly performant
+
