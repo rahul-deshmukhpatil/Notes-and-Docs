@@ -27,4 +27,22 @@ random_shuffle was removed in c++17
 	c++17: reduce, exclusiv/inclu scan/transform, 
 	Numberic algo : iota
 
+Accumualate: 
+		output is single accumulated value, op is binary with 1st element as current result. 
+		adds members to the initial val with default plus<T> as ops.
+		the result is of type T of inital value and involves casting if container value_type
+		is different.
+	
+		// multiplications of all
+		std::cout << "accumulate: " << std::accumulate(v.begin(), v.end(), 1.0, std::multiplies{}) << '\n';
 
+		// square all and add
+		std::cout << "accumulate: " << std::accumulate(v.begin(), v.end(), 0, [] (auto i, auto v) {
+				        return i + v*v;}) << '\n';
+
+
+reduce : same as acc, it divides container into chunks. calculate result by adding to intial value for each chunk
+		and then return single sum. I think ensure that initial sum is 0 for add, false for any_of, true for all_of ?
+		STL impl might have short cirtuite for the best scenario ie, true for any_of, false for all_of ? 
+
+		
