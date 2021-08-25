@@ -1,0 +1,30 @@
+CppCon 2019: Conor Hoekstra “Algorithm Intuition (part 1 of 2)”
+https://www.youtube.com/watch?v=pUEnO6SvAMo&t=2296s
+
+
+Find max diff between two elements in the vector
+	1. two iterations over vector
+	2. sort and then  v.back() - v.front();
+	3. min_element and max_element returns itr
+	4. [minIter, maxIter] = minmax_element(v.begin, v.end)
+		here complexity is same as 3, but more efficient
+	5. range based loop = [minIter, maxIter] = minmax_element(v)
+
+
+
+There is a family of functors which implements arithmatic ops for objects used
+by the algos for custom user defined objects
+	arith : plus, minus, mult, divides, modulus, negate ...
+	comp : equal_to, not_eq_to, greater, less ...
+	logical : logical_and, logical_or ...
+
+shuffle : was intro in C++17
+random_shuffle was removed in c++17
+
+4 Key algo before c++11 
+	pre C++11 : accumulate, partial sum, adj diff, inner_prod
+	c++11 : iota
+	c++17: reduce, exclusiv/inclu scan/transform, 
+	Numberic algo : iota
+
+
