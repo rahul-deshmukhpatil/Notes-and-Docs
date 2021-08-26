@@ -15,4 +15,25 @@ Calling Virtuals During Initialization
 	2. Use two phase initialization to call virt from init method
 	3. Use CRTP to call static or non static members
 
+Checked delete:
+	you can have ptr to incomplete type, which you try to delete. 
+	this behavior of calling deleter on incomplete type is undefined.
+
+	1. write checked_delete method, will faile to compile if T is undefined
+	template <T> void checked_delete(T* t)
+		constexpr auto is_complete = sizeof(T) >= 1 ? 1 : -1; 
+		delete x;
+
+	// functor for syntax similar to delete x
+	checked_deleter
+		void operatpr () (T* x) const
+			checked_delete(x);
+
+	2. auto_ptr has this bug
+
+Clear-and-minimize
+	when vector has lot of free space at end, just do std::vector<int>().swap (v); uses non-throwing swap
+	C++11 shrink_to_fit
+
+
 
