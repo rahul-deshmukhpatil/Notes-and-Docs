@@ -32,6 +32,7 @@ Accumualate:
 		adds members to the initial val with default plus<T> as ops.
 		the result is of type T of inital value and involves casting if container value_type
 		is different.
+		bydefault its a left fold operation. use reverse iterators for the right fold
 	
 		// multiplications of all
 		std::cout << "accumulate: " << std::accumulate(v.begin(), v.end(), 1.0, std::multiplies{}) << '\n';
@@ -44,15 +45,16 @@ Accumualate:
 reduce : same as acc, it divides container into chunks. calculate result by adding to intial value for each chunk
 		and then return single sum. I think ensure that initial sum is 0 for add, false for any_of, true for all_of ?
 		STL impl might have short cirtuite for the best scenario ie, true for any_of, false for all_of ? 
+		your binary op must be associative and commutative 
 
 
 finding: min diff between any two ele in array
 		1. sort, adj_diff, min_element : uses extra mem
 		2. reduce ? maintain the prev element as mutable lambda member ,
-		3. inner_product : def binary op1=sum, binary op2=mult. in  op1(accumulate_init, op2(e1, e2));
+		3. inner_product : default binary op1=sum, binary op2=mult. in  op1(accumulate_init, op2(e1, e2));
 		3. inner_product ==  tranform reduce with must custom binary op1 and unary or binary op2, 
 
 Algorithms
 1. harder to debug
-2. might not be highly performant
+2. might not be highly performant than hand written code
 
