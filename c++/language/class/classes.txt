@@ -41,15 +41,10 @@ namespace ns{
 // this might hide global ::Y and ::T as well.
 class Y f(class T p); // declares function ns::f and declares ns::T and ns::Y
 
-
-
 Local classes:
 	classes inside block or function scope.
 	Cant be accessed outside of the scope, cant have member templates
 	or friends as this class can not be accessed at all outside of class
 
 Lambdas are implemented as local classes, with exception that they may have template members
-with the auto parameter
-
-
-
+with the auto parameter, and by default lambda is not default constructible and its oper() is const

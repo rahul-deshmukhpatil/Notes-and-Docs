@@ -19,7 +19,7 @@ class D : private B {
 };
 class ED : private D<int> {
 	using myD = ED::D;
-	::B* b; // cant access/use B, use ::B as B is indirect private inherited base
+	::B* b; // cant access/use B, use ::B to access B is indirect private inherited base
 };
 
 
