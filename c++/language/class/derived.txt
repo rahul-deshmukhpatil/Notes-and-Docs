@@ -1,0 +1,68 @@
+Can have multiple base classes, but not same class as direct base twice.
+same class can be indirect base, but then u cant use static cast to base 
+as it will be ambiguous
+
+	class A : virtual private B, decltype(C{0.0}), public Temp<int> 
+
+    class A : virtual private B, C<char>
+	{
+		using Base = C; // C=C<Char> or is ambious if C<double> is also base 
+		using Base1 = B; // but child of A cant see B, as its private inherted
+		int a;
+
+		using Base::
+	};
+
+All virtual base subobjects are initialized before any non-virtual base subobject, 
+so only the most derived class calls the constructors of the virtual bases in its member initializer list:
+
+struct B {
+    int n;
+	    B(int x) : n(x) {}
+	};
+struct X : virtual B { X() : B(1) {} };
+struct Y : virtual B { Y() : B(2) {} };
+struct AA : X, Y     { AA() : B(3), X(), Y() {} };
+
+public inheritance:
+	IS-A relationship. you can use derived class and its ptr, ref inplace of base class anywhere
+
+protected inheritance:
+	its a controlled polyporphism 
+	IS-A relationship. you can use derived class and its ptr, ref inplace of base class anywhere
+
+	In case of protected and private inheritace, you case convert obj,ref,ptr of derv
+	to base inside class def, or its mem funcs, but Base is inaccesible via derv obj, ref,ptr outside
+	class definition
+
+	Also inside class definition of Derived, you can not access protected or private members
+	if Base class object, which is not its Base class subobject of *this
+
+
+
+private :
+	used for policy based design as policies are empty classes, and can use EBO
+
+	Can be used to impl Compoisition relation: Base class subobj is common impl detailed of derv
+	prefer to use pure compoisition by having member , gives better encapsulation over private inheritaance.
+
+	use private inheritance in case of 
+		: Base must be constructed first and destr last
+		, Need to access protected members
+		, Need to override virtual mem func of base
+		, want to use base public,protected methods without m-> or m. syntax
+		, need to share virtual base class, or control construction of virtual base class
+
+	Main use in templates:
+	When members are passed as template param pack of variadic types.
+	you cant have members with with type 
+		template<typename... Args>
+		class A {Args... args;}
+
+	Its also controlled polypmorhpism, Derived knows that its a Base. So IS-A relationship exists
+	But further child classes of Derived dont know about Base,
+
+	
+
+
+

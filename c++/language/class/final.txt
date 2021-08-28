@@ -1,0 +1,5 @@
+
+non-virtul functions cant be final
+you cant override final virtual function in base class
+
+you cant inherit final base class,
