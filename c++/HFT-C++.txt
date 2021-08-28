@@ -1,0 +1,39 @@
+
+1. Design : cache friendly seq processing, 
+			good algorithm O(log n), O(1)
+			avoid cal you dont need,
+			doing nothing is truly fast.
+			single threaded program,
+			avoid synchronization, no locks, use atomics if necesssary
+			avoid system calls
+			no file read/write once app starts
+
+2. C++ :	dont use costlier things
+			1. which allocate memory, new, malloc (might have lock)
+			2. things happenig in dynamic time, RTTI, dy_cast, virt
+			3. no exceptions in critical paths
+			4. user space locks.
+			5. use attributes for branch prediction
+			6. avoid local static vars in function
+				use (its checks if its initialised and uses lock to initialize first time
+			7. explicit alignment if needed
+			8. understand padding how it works
+
+2.1 STL:	1. uniq_ptr and shared_ptr are abstractions and they have cost
+			2. understand continers, use custom google, FB containers
+			3. understand algorithms
+			4. use good allocators
+
+3. Build :  1. optimization flags,
+			2. static libs,
+			2. compiler flags
+			3. build for target architecture
+			4. microbenchmark, cal whole latecy
+			5. do profiling of app
+			6. compiler with diff compilers, intel cc, clang
+			7. jmalloc, tcmalloc
+
+4. OS : tune OS and kernel, custom kernel,  
+
+5. HW : buy fast RAM, more cache, custom HW, boost freq
+		do trivial cal on FPGA, embed them on switch,
