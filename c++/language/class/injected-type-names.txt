@@ -1,0 +1,47 @@
+
+
+inside class referes name equivalent to class-name is treated a type.
+
+int X;
+struct X {
+	void f() {
+		X* p; // OK. X refers to the injected-class-name
+		::X* q; // Error: name lookup finds a variable name, which hides the struct name
+	}
+};
+
+You cant use type of indirect private inherited base 
+
+class B {};
+template<typename T>
+class D : private B {
+	B* b;
+};
+class ED : private D<int> {
+	using myD = ED::D;
+	::B* b; // cant access/use B, use ::B as B is indirect private inherited base
+};
+
+
+In class template/partial or full specializations
+If X is template class, any use of X is a template if
+	1. followed by  < ... params >
+	2. as arugment to another template class 
+	3. as end identitifier in friend declaration
+
+template<template<typename> class T> // T is a template type
+B { using T1 = T<int>} ;
+
+template<typename T>
+struct X : B1<X>, B<X> , B<X1> // 
+{
+	using myB1 = X::B1; //   myB == B1<X>, dont need to pass templ type params to B1
+	using myB = X::B; // ambiguos , dont know B<X> or B<X1>
+	using T1 = X<char>;
+
+	template<typename U>
+	friend class X; // any  X<.> instantiation is friend
+	
+	using T2 = D<X>; // X is template type not concrete type
+};
+

@@ -1,4 +1,6 @@
-class/struct <attributes> alignas  <class name> <optionally qualified? , final> : Bases {}
+class/struct
+
+<attributes> alignas  <class name> <optionally qualified? , final> : Bases {}
 
 only declaration
 class-key attr identifier ;
@@ -28,6 +30,18 @@ declartion may be <static/non-static> <data members, typedefs, enums, unions, fr
 6. deduction guides of member class templates
 
 7. Using-enum-declarations:
+
+
+struct S;
+namespace ns{
+	struct S; // hides ::S
+}
+
+// class keyword is used only at time of for declarations, 
+// this might hide global ::Y and ::T as well.
+class Y f(class T p); // declares function ns::f and declares ns::T and ns::Y
+
+
 
 Local classes:
 	classes inside block or function scope.
