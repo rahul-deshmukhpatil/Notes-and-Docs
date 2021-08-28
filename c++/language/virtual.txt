@@ -1,0 +1,31 @@
+virutal functions need
+	name
+	parameter type list (but not the return type)
+	cv-qualifiers
+	ref-qualifiers
+
+private virtual func can be overridden in derived
+
+virtual function called within class member func without pointer or ref
+is also virtually dispatched. i.e implcite this-> is amended before 
+call withing memb func to another memb func
+
+final : stops overdding of virtual func
+overrides : makes sure that its overriding base class func
+
+fucntion with same name but diff params hides base virt function.
+
+with qualfiied lookup you can call particular function  you want
+	d.B::f();
+	d.D::f();
+
+irrespecitve of virt function is hidden by overlaoding in intemediate class
+most derived class can see virt func in topmost base class.
+
+covariants
+	virt function overrident in derived class has return type convertible 
+	to base class virt func ret type and its less strict ie. non-const than the
+	base class ret type
+
+
+
