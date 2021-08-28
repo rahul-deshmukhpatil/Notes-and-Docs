@@ -1,0 +1,51 @@
+static : 
+	storage duration (auto till block/scope, static: till program, thread_local: till thread life)
+	and linkage(intern, extern, etc)
+
+Static members:
+	can be incomplete tpye in declration
+	but constexpr and inline must be complete type
+
+	struct Foo;
+	struct S
+	{
+		static int a[]; // declaration, incomplete type
+		static Foo x;   // declaration, incomplete type
+
+		//usecase MasterInstance; 
+		static S s; // declaration, incomplete type (inside its own definition)
+	};
+
+	definition needs complete type in .cpp file, no need of word static
+	int S::a[10]; // definition, complete type
+	struct Foo {};
+	Foo S::x;     // definition, complete type
+	S S::s;       // definition, complete type
+
+	can be private, public, prototected.
+	can be used with  type X::static_func or x_instance.static_func
+
+funcs:
+	static funcs can be virtual, const, volatile
+	can be stored in function pointer rathern than pointer to member func
+members
+	static data memb have external linkage if class has external linkage ie. 
+		class not in unnamed namespace
+		local classes : inside func, and unanemed classes cant have static data mmebers 
+	C++17 inline static members can have initializer and doesnot need out of class definition
+
+Const members (not volatile
+	can have intiailzer value inside class, 
+	otherwise , you must inititalize outside in cpp
+
+constexpr
+	must have intiailzer value inside class. 
+	C++11: need definition outside.
+	
+If non-inline const or constexpr is ODR used, i.e. address is taken then 
+	c++11, you must have definition in cpp file, which cant have intiailizer again 
+		if already provided in case of const, 
+		for  constexpr its must in class declartion.
+	c++17, Constexpr is now implicitely inline
+		empty definition is redudedant, not needed
+		and its definition is depricated. 
