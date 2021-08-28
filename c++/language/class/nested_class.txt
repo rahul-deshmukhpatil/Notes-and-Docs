@@ -1,0 +1,40 @@
+
+Nested class has acess to all private,prototeced static/non-static members of Enclosing class
+
+name lookup from a member function of a nested class visits the scope of the enclosing class after examining the scope of the nested class.
+	i.e. if x is not member/mem-func of nested class,
+		check if x is memb/memb-func of enclosing class
+		but u cant access enclosing class memb/-func wihtout object
+
+but nested class cant acess this* of enclosing class 
+	becasue Enclosing class might ahve multuple instances of nested class
+	or nested class instance ptr/ref can be part of multiple enclosing clases
+
+Friend within nested cant access private member of enclosing
+even though its own memebrs can access private of enclosing
+Enclosing can not access private members of the nested class
+
+Out-of-class definitions of the members of a nested class appear in the namespace of the enclosing class:
+
+Can have fw declataion inside body and may have definition outside body
+a private member class cannot be named outside the scope of the enclosing class, although objects of that class may be manipulated
+
+class enclose {
+	struct nested { // private member
+		void g() {}
+	};
+	public:
+	static nested f() { return nested{}; }
+};
+
+int main()
+{
+	//enclose::nested n1 = enclose::f(); // error: 'nested' is private
+
+	enclose::f().g(); // OK: does not name 'nested'
+	auto n2 = enclose::f(); // OK: does not name 'nested'
+	n2.g();
+}
+
+
+
