@@ -1,0 +1,16 @@
+unless [[no_unique_address]] specified for member
+
+every memb of class, or any object should have diff address
+except : Base class.
+
+some relation with the std layout obj:
+	that pointer to SLO converted using reinterpret cast should point to
+	first member of obj.
+	So SLO should have all non-static functions only in single class.
+	 as with EBO all empty base classes share starting address.
+	 Also first member of class must not be same as any of Base Classes in
+	 indirect or direct.
+
+EBO might be used by STL containers to store stateless allocator which is empty.
+	its saved along with the one of the reqquired data such as iterator begin.end
+	or capacity pointer  using the boost::compressed_string
