@@ -2,7 +2,11 @@ static :
 	storage duration (auto till block/scope, static: till program, thread_local: till thread life)
 	and linkage(intern, extern, etc)
 
+	Header : static const int x;
+	in an .hpp file then every translation unit that #include-s this .hpp will have its own private variable x.
+
 Static members:
+	class statics have global/extern linkage, while plain one dont have it
 	can be incomplete tpye in declration
 	but constexpr and inline must be complete type
 
@@ -26,8 +30,9 @@ Static members:
 	can be used with  type X::static_func or x_instance.static_func
 
 funcs:
-	static funcs can be virtual, const, volatile
-	can be stored in function pointer rathern than pointer to member func
+	static funcs cant be virtual, const, volatile
+	can be stored in function pointer rather than pointer to member func
+
 members
 	static data memb have external linkage if class has external linkage ie. 
 		class not in unnamed namespace
@@ -36,16 +41,16 @@ members
 
 Const members (not volatile
 	can have intiailzer value inside class, 
-	otherwise , you must inititalize outside in cpp
+	otherwise , you must inititalize outside in cpp at definitiion time
 
 constexpr
 	must have intiailzer value inside class. 
-	C++11: need definition outside.
+	C++11: need redundant definition outside in cpp.
 	
 If non-inline const or constexpr is ODR used, i.e. address is taken then 
 	c++11, you must have definition in cpp file, which cant have intiailizer again 
 		if already provided in case of const, 
 		for  constexpr its must in class declartion.
 	c++17, Constexpr is now implicitely inline
-		empty definition is redudedant, not needed
-		and its definition is depricated. 
+		empty definition is redudedant so not needed
+		its depricated in C++17. 
