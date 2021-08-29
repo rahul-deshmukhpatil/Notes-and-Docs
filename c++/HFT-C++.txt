@@ -1,12 +1,16 @@
-
 1. Design : cache friendly seq processing, 
 			good algorithm O(log n), O(1)
 			avoid cal you dont need,
 			doing nothing is truly fast.
 			single threaded program,
+			or use multithreading cuatiously with pinning cores on same numa core, 
 			avoid synchronization, no locks, use atomics if necesssary
 			avoid system calls
 			no file read/write once app starts
+			Cache warming
+			Allocated memory needed in intiailization routine of application
+			Keep memory in control, Do not free memory, just buy RAM,
+
 
 2. C++ :	dont use costlier things
 			1. which allocate memory, new, malloc (might have lock)
@@ -22,7 +26,8 @@
 2.1 STL:	1. uniq_ptr and shared_ptr are abstractions and they have cost
 			2. understand continers, use custom google, FB containers
 			3. understand algorithms
-			4. use good allocators
+			4. use good combination of allocators, local and global allocators
+			5. reserve memory for the data structures
 
 3. Build :  1. optimization flags,
 			2. static libs,
