@@ -117,7 +117,8 @@
 			is not complete, so it will be tried again the next time control enters the declaration. If control enters
 			the declaration concurrently while the variable is being initialized, the concurrent execution shall wait for
 			completion of the initialization. 88 If control re-enters the declaration recursively while the variable is being
-			initialized, the behavior is undefined."
+			initialized, the behavior is undefined.
+				ie. func/block static var initialization func foo calls the function iteself .. foo() { static i = bar(); //and bar calls foo}
 
 5. C++ silent function additions	
 		a.	If default constructor, copy constructor, operator=, destructor are not provided
