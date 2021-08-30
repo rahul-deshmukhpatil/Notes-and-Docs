@@ -36,10 +36,20 @@
 			where programmer really meant is while( (a * b) == c) 
 			with const assignment of 'c' to multiplication will not happen
 	
+		
 		Avoid duplication in const and non-const member function.
 		simply make non-const member function to call const function using double
-		type casting
+		type casting. 
+
+		with non-const overload you want non-const return as well
+		https://stackoverflow.com/questions/856542/elegant-solution-to-duplicate-const-and-non-const-getters
+
+			// will be called with const this, const obj, or const ref or const rref
+			// use const-cast to non-const at calling time to call other non-const overload
 			const dType& operator[] (int i) const;
+
+			// will be called with non-const this, non-const obj, or non-const ref/rref
+			// use const-cast to const at calling time to call other const overload 
 			dType& operator[] (int i)
 			{
 				return const_cast<dType &>
@@ -86,10 +96,10 @@
 			invoke the reference(to static members) in single threaded startup. 
 
 			Below is section about thread safe initialization of C++11 local static variables and guarantees
-				
+			https://stackoverflow.com/questions/17783210/when-are-static-and-global-variables-initialized	
 				Order is
 				1> compile time : Zero initialization before any initilization, static int i;
-				2> compile time : Const Initilization before entering into block, ie static int i = 0;
+				2> compile time : Const Initilization before entering into block, ie { static int i; // implcite i = 0; } 
 				3> Then other static variables (either early initalization permitted) or must do initalization at the time
 				of control reaches first time to declaration
 
