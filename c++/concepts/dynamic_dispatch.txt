@@ -1,0 +1,19 @@
+https://stackoverflow.com/questions/20187587/what-is-the-difference-between-dynamic-dispatch-and-late-binding-in-c
+https://softwareengineering.stackexchange.com/questions/200115/what-is-early-and-late-binding/200123#200123
+
+late binding
+types : have late binding in python, C++ is statically typed langauge
+	even though we have variants which might act as late binding with visit method. 
+	but still some check must be performed at compile time, i.e if lambda in visitor
+	calls method or uses member of variant, which is present in all types
+
+Static Dispatch: known, specific function or subroutine at compile time; it is unambiguous and matched by the signature
+Implemented as static functions; no method can have the same signature
+
+dynamic dispatch
+Implemented as static functions; no method can have the same signature
+functions: functions have dynamic dispatch, which might be called late binding for functions
+	the function call disptach is delayed at runtime, for which compiler writes some routine	
+
+multiple dispatch:
+There is also multiple [dynamic] dispatch, where input parameter types also help determine which function implementation to call. Because multiple types -- both the type of the instance and the type(s) of the parameter(s) -- influence which method implementation is selected, this approach is dubbed "multiple dispatch".

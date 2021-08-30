@@ -1,0 +1,17 @@
+hold obj of any time.
+
+small types should not use dynamic allocation if 
+its nothrow_move_constructible
+
+T any_cast<T>(any_obj) will retunr ptr if its the type stored.
+T make_any<T>(Args...) will return the any obj with value stored.
+
+any_cast<T> (any) : throws bad_cast if cant convert. No other way
+any_cast<T*> (any*) : returns null_ptr if fails
+
+emplace
+swap
+reset
+
+any.has_value()
+

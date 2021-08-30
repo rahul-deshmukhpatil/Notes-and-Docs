@@ -1,0 +1,17 @@
+Holds single value of template type T. 
+no dyamic allcoation
+only objects, no ref, no array
+
+
+has_value is operator bool
+has member T& op* and T* op-> even though object stored in by value
+
+can be intiialized to nullopt_t{};
+reset called to erase value
+	value().T::~T()
+
+
+
+
+
+
