@@ -45,7 +45,10 @@ Part I: The Basics
 				of template parameters. 
 				Basically checks only part that can be determined
 			2.	Instantiation Time
-				Check if all code is valid 
+				Check if all generated/instantiated code is valid 
+
+			https://stackoverflow.com/questions/44335046/how-does-the-linker-handle-identical-template-instantiations-across-translation/44346057
+			2.1 at link time remove duplicate copies
 		
 	1.1.4 Compile And Linking
 		Normal functions just needs declaration of function signature. 
