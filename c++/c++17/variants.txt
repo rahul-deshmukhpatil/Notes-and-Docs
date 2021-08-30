@@ -1,0 +1,25 @@
+
+better than union
+	holds only objects or pointers
+		array, void, ref are not allowed
+	
+	default constructible to first type in declaration
+		if 1st type is not constructible then variant is not def constructible
+
+	When intialized with list of objects, initialize  to first one.
+	
+	holds atleaset 1 type or use monostate to represent value less state 
+		i.e. when 1st type is not def constructigble
+	
+	can have same type twice or cv of same types 
+
+	get<type or index> : throws error at compile time for bad acess to non uniq or out of bound index.
+				: if type or index is not current value then vad access
+	
+	get_if<type or index> returns null in case of its not curretn value stored
+
+	variant_size :count of elements
+	variant_alternative_t<index> :  type at index.
+
+
+	visit(visistor vis, var1, var2) :  calls visitor lambda/functor given with variant values are param types and arguments.
