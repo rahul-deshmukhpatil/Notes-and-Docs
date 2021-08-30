@@ -193,9 +193,12 @@ Part I: The Basics
 		auto a = ::max(4, 7.2);                     // uses first template
 
 		# long double(RT) is different than T1 (deduced as double)
+		// first temp: T1 cant be deduced
 		auto b = ::max<long double>(7.2, 4);        // uses second template
 	
 		// ERROR: both function templates match
+		// T1 is deduced int, T2 as double : good
+		// RT is explicit deduced as int, T1 as int, T2 as double
 		// ensure only one among overloads matches 
 		auto c = ::max<int>(4, 7.2); 
 
