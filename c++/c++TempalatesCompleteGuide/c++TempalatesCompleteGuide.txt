@@ -249,13 +249,13 @@ Part I: The Basics
 
 2. Class Templates
 
-	2.1    Implementation of Class Template Stack
+	2.1 Implementation of Class Template Stack
 
 	2.1.1 Declaration of Class Templates
 		Like function templates class templates accepts type parmeter. In Stack<T>,
 		the template parameter T is required wherever it can not be deduced. Inside
 		template class definition, after initial two lines of class declaration,
-		Stack represents Stack<T>. But for member function definitions outside class
+		"Stack" keyword represents Stack<T>. But for member function definitions outside class
 		you must specify Stack<T>.
 			template<typename T>
 			void Stack<T>::operator ==(const Stack<T>& other) {}
@@ -298,6 +298,9 @@ Part I: The Basics
 			template <typename T>
 			struct Stack
 			{
+				// Stack<T> is a parameter type
+				// injected - class -names dont work  in case of friends last identifier.
+				// check cppreference
 				friend std::cout operator << (std::cout stream, const Stack<T>& );
 			};
 	
@@ -311,6 +314,7 @@ Part I: The Basics
 			template <typename T>
 			struct Stack
 			{
+				// its  templated friend function. you may define it as template outside
 				template<typename U>
 				friend std::cout operator << (std::cout stream, const Stack<U>& );
 			};
@@ -349,6 +353,12 @@ Part I: The Basics
 			Specilization full or partial might provide slight different interface and implementation
 
 	2.6    Partial Specialization
+			The order of deduction is checked
+				1. Check if full speiclization exists
+				2. Check if partial specializtaion exists which matches more
+					- If two of them match equally, then its ambiguity
+				3. Then go for base template definition 
+	
 			1. You can specilize stack for the pointer type.
 
 				template <typename T>
@@ -390,6 +400,8 @@ Part I: The Basics
 			template<typename T, typename Container=std::vector<T>>
 			class Stack	{};
 
+			// you do not need to care about 2nd default container type 
+			// at the tiem of definition
 			template<typename T, typename Container>
 			void Stack<T,Container>::top (T const&)  {}
 
@@ -438,7 +450,7 @@ Part I: The Basics
 				Stack stringStack{"bottom"};  // Stack<const char[7]> deduced
 				
 				But below is not valid, because, when using one argument constructor to copy
-				initialize(initialize using = at variable definition time), you can not pass
+				initialize(initialize using T a= var; at definition time), you can not pass
 				const char[7] where constructor expects std::string
 
 					Stack stringStack = "bottom";  // Stack<std::string> deduced, but still not valid
