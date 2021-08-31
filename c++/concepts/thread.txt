@@ -36,3 +36,25 @@ std::invoke(decay_copy(std::forward<Function>(f)), decay_copy(std::forward<ARGS>
 First constr is constructed and then f starts execution, ensured by memory_order.
 
 // get_id() != thread::id() i.e. joinable is true
+
+detach : detach and dont wait to join for thread. but thread might terminated by OS once main thread 
+		i.e. main func exits.
+
+
+	int task1(int i, int j, std::promise<int> res)
+	{
+		std::lock_guard l(mtx);
+		std::cout << "task1 " << i << " " << j << std::endl;
+		res.set_value(99);
+		return 99;
+	}
+
+
+
+		std::promise<int> t1_res;
+		std::future<int> t1_fut_res = t1_res.get_future();
+		std::thread t1(task1, 5, 10, std::move(t1_res));
+		t1_fut_res.wait();
+		std::cout << "task1 returned " << t1_fut_res.get() << std::endl;
+
+

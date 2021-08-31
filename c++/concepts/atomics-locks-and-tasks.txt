@@ -1,3 +1,19 @@
+============== Mutex vs Sempahore ==================
+Mutex : variable can give u lock to single resource. No communication with scheduler
+
+Semaphore: count, count of resources locks. Has more communication with scheudler of processes
+		wait : wait in Q: if count == 0 then wait by putting task into the queue
+						otherwise decrease count and give lock to process
+		signal : signal to Q : when wnat to give up semaphore, increase count and singal first process in queue
+			to run
+		sempahore might us4e mutext to synch access to counter
+
+
+spin locks might be complex, if multiple same spin locks are attempted by two threads
+it might run into deadlock
+But they are good for short time acquizition, when there is less prob of contention/competetion  
+=====================================================
+
 https://www.youtube.com/watch?v=o0i2fc0Keo8&t=2137s
 
 Data race
@@ -19,7 +35,8 @@ Critical Section
 		taken while entering.
 
 	1. keep only minimum req, race code inside critical section
-	2. Do not call any third party functions after taking lock.
+	2. Do not call any third party functions after taking lock. 
+		3rd party unknown code might sleep or take time to execute in present or future
 		Do only simple operations insid it otherwise called functions might sleep
 		or change implementation. This will break code in future
 	3. Lock inside lock is not a good idea.
