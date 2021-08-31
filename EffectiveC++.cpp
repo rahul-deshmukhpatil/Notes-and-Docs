@@ -135,7 +135,8 @@
 		a.	Some obejcts are uniq and you do not want the copying of them by the implicit
 			copy constructor or operator=, then make it private. 
 			 	I. But this will allow member functions or friend functions to call them. 
-				II. And generate the link time error. 
+				II. So, declare them but dont define and this will generate the link time error. 
+				III> why not to = delete them explicitly
 			So make it private in the base class Uncopyable, which will generate the
 			compile time error.
 				class Uncopyable {
@@ -151,11 +152,12 @@
 				Usually class at top hierarchy must be virtual, rather than some in middle order.
 	
 		b.	STL classes mostly do not have the virtual destructors, So do not inherite them
-			and try to destroy polymorphically.
+			and try to destroy polymorphically. You may inherit them using private inheritance
+			but dont provide any pointer conversion operator to base STL container.
 		
 		c.	Do not use virtual destructor in the classes which are just meant to be inherited
 			and do not contain any object of other than integral type, as data member.
-			eg Uncopyable/noncopyable. 
+			eg Uncopyable/noncopyable. Virtual destr calling is constlier 
 
 8. Prevent exception from leaving destructors
 		a.	Whenever exception is raised the objects on the stack are unwinded by calling the
