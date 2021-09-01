@@ -1,0 +1,146 @@
+https://en.cppreference.com/w/cpp/language/exceptions
+https://en.cppreference.com/w/cpp/language/throw
+
+When thrown from function call inside try block pass the control to the matching catch block at previous point in the class stack
+program will terminate any case if this throws and exception is not handled
+
+thrown by function, 
+		dynamic_cast, (if destinatoin new type is reference)
+		typeid, 
+		new, any std lib func or user code
+
+errors during excepction handling are handled by std::terminate or std::unexpected
+
+Usage: 
+1. error handling
+	failure to meet 
+		pre-cond, 
+		post-cond, 
+	failure to restablish class invaeriant : ie var/condition maintianing valid state of object
+
+2. exception safety
+	1. nothrow, noexcept(true), noexcpet, throw() guranteee : program will std::terminate if this throws and exception is not handled
+	2. strong: state of object is rolled back to state before calling exception 
+	3. basic: object will be in valid state, no mem leaks
+	4. no gurantee: obj will be in not valid, undefined state. 
+
+	4.1 neutral gurantee : if op on template param of func or class param of mem func throws then func will pass the same exception
+	to the caller
+
+Exception objects
+	complete type, cv pointers. 
+	all stl functions throw some direct or indirect inherited object from std::exception
+	usually caught by reference to prevent constlier copying and slicing objects
+	, though cathching by value is also possible
+
+
+Throw
+	with expression.
+	Event though it migh use move, copy intialization must be valid and destr must be accessible
+	for thrown object
+	{
+		T obj
+		throw T{}; // by move constr
+
+		throw obj; //  by move constr, only if obj is innermost block local var thats going to die soon
+		throw foo(); // move constr 
+	}
+
+	Two points
+	1. compund statement with matching type ? didnt get it
+
+	https://stackoverflow.com/questions/42848656/why-can-an-exception-occur-when-initializing-the-constructor-list-parameter
+	2. exceptions during constructors member initializer list are handled by the parent block of code calling the constructor rather than try-catch function block of the constructor itself. Even if try block is around memb-init-list, there is implicte throw at the end of constr-func-try-catch-block
+
+Rethrow: 
+	can be thrown only when currently handling the already thrown exception.
+		so it could be inside any function called inside catch block.
+	you may rethrow another type of exception. but then current exception object will be destroyed.
+	otherwise std::terminate is called.
+
+	catch( std::exception& ex)
+	{
+		throw; // goes out of current cascaded catch of current try
+		a = b ; // not executed
+	}
+	catch (std::bad_alloc& ex) {} // not executed
+
+Exception object:
+	Construction:
+		object is temporary object in the unspecified storage (could be on heap or on stack).
+			its object. no rvalue ref or lvalue ref. 
+			Though catching it by lvalue ref is allowed
+
+			https://stackoverflow.com/questions/3856445/can-someone-explain-rvalue-references-with-respect-to-exceptions
+			is cathching by rvalue ref is allowed? Not possible. Exception handling catch block must handle complete type only
+			Also even though exception obj is temp, catch block is not template function to support perfect forwarding.
+
+	Passing object: 
+		1. is auto or type decayed.  cv is removed, array/functions converted to pointers
+		2. if excp obj type is incomplete, its abstract class or its pointer to incompl type its compile error
+		any CV qualified pointer void is ok.
+		3. if its class type and copy-elision happens
+			still c++ rule is that copy/move constr and destr must be accessible for the class type
+
+		4. exception obj is always considered to be lvalue
+		5. can catch as lval ref, modify, rethrow . which means 
+
+	Catching
+		 a catch clause has exactly one argument or ...
+
+	Destruction only if not rethrown:
+		Excp obj is temprory so its destroyed 
+			1. when catch block is exited normaly after catch block 
+			2. or until the std::excpetion_ptr which references excption object is destoryed
+				as the last instr in the destr of std::exception_ptr before returning
+
+Stack Unwinding
+	destr of automic storage vars which are constructed fully called
+	in the reverse order of constr completion (always remember order of constr invokation is der2->der1->base but order of complition of constr base->der1->der2)
+	till matching catch is not found
+
+	if destr of local obj or temporary used for return raises exception, destr for return obj is also invoked
+	{
+		T a;
+		T b;
+		return b;
+		// implcite a.T::~T() raised // destroy b or return obj
+	}
+
+	exceptions from constr and (rare) destr of any storage duration, call destr for all non-static, non variant members
+	are called in rev order. so base class should not point to any member of der class, becse ~Derv is called before ~Base
+	
+	In case of variants or unions, if active memb is changed between intiialization and destr, behavior is undefined.
+	undefined bahvior : its most likely static time,  something known 
+	behavior is undefined : its most likely i guess run time
+
+	if delegated constr is complete then as well exception from delegating constr destroys obj
+	If new throws exception, matching delete or [] delete is called
+
+	If any top level function called directly (mostly destr or copy constr of exception obj if copy elision does not happen)
+		called directly after constr of exception obj
+		and before catch block
+			throws exception, which exits the  direct called destr function,
+			then std::terminate is called
+
+	std::terminate called for exception esacping
+		1. main
+		2. thread main func
+		3. global or func static constr or destr
+		4. constr or destr of thread local ie thread global
+
+	its implemenation defined if destrs are called for stack unwinding in case of the uncaught exceptions.
+
+
+
+If exception is thrown from destr of return obj or local obj of func,
+	does that same destr called again, because destr is not complete and that object is not yet completely destroyed
+
+If return obj , being copy-elisioned destroyed,
+	since copy elison constructs objects in the destination itself, the state of destination obj is valid or invalid
+
+What is catch clause parameter?
+The exception object persists until the last catch clause exits other than by rethrowing (if not by rethrowing, it is destroyed immediately after the destruction of the catch clause's parameter),
+
+
+
