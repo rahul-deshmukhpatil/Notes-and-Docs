@@ -301,7 +301,9 @@
 			garbage collectors in the java.
 	
 		e.	std::shared_ptr and std::auto_ptr use delete (and not delete []) in the destructors
-			so it is not possible to use arrays of the shared_ptr and auto_ptr.
+			so it is not possible to use arrays of auto_ptr. with C++17 shared_ptr now handle array
+			deletion correctly.
+			shared_ptr<int[]> sp(new int[10]);
 		
 		f.	In C++, vector and string, always could replace [] in C. so try to use these c++ stls. 
 			
@@ -454,7 +456,21 @@
 		b.	std::swap uses operator= of the class, and if operator= is doing deep copying which is expected
 			from it and other easy way of doing swap via pImp idom is possible, you should specialize the std::swap.
 		c.	Its ok to specialize the std:: contents. But is not ok to add any template class or function in the
-			std namespace.
+			std namespace. so define swap in namesspace of your custom class. Keoing/Arg dependant lookup will still 
+			find your custom defined swap.
+	
+			1. swap in namespace of T
+			2. swap on global namespace
+			3. explcit swap specialize in std
+			4. templ std::swap
+
+			Order of call binding
+			1. swap in namespace of T
+			2. swap with decl `using namespace::swap` ie. using std::swap
+			2. swap on global namespace
+			3. explcit swap specialize in std (if seen/declared till call is made)
+			4. templ std::swap
+
 		d.	Highly efficient swap are always based on operations on builtin types ie. pointers and operations
 			on builtin types do not throw
 
