@@ -501,16 +501,19 @@ Part I: The Basics
 		parameter to template class.
 
 3.2    Nontype Function Template Parameters
-		Simialar to class function templates accept value as template parameter. Could be used to pass 
-		function as parameter. Below, addValue parameter types are deduced when used. Function template
+		Simialar to class templates, function templates accept value as template value parameter. which Could be used to pass 
+		function/lambda as parameter. Below, addValue parameter types are deduced when used. Function template
 		deduction works only for immidiate calls. There is no such thing that only half of the parameters
 		are deduced and remaining will be deduced as they fit at the time of call
 
-		std::transform(s.begin(), s.end(), d.begin(), addValue<5, int>);
+		// std::transform(s.begin(), s.end(), d.begin(), addValue<5>); //error, specify type for the 2nd param as well.
+																		// it wont be dededuced to *s.begin()
+																		// later when you make actual call
+		std::transform(s.begin(), s.end(), d.begin(), addValue<5, int>);// you are passing func pointer here.
 
 
-3.3    Restrictions for Nontype Template Parameters
-		Floting point or class type objects cant be template parameter
+3.3    Restrictions for Non-type Template Parameters
+		Floting point values or class type objects values cant be template parameter
 		When passing pointer or references you can not pass string literals, temporories or data members
 		or other sub-objects
 
@@ -559,8 +562,6 @@ Part I: The Basics
 		Stack<int,3.14> sd;        // ERROR: Floating-point nontype argument
 
 		Note that, template<decltype(auto) N> is possible, which does instantiation of N as reference
-
-
 		template<decltype(auto) N> // do not decay
 		class C {};
 		int i;
