@@ -513,10 +513,19 @@ Part I: The Basics
 
 
 3.3    Restrictions for Non-type Template Parameters
+		Allowed : intergrals, pointer to fn/memb-func/members
+	
+		Not allowed : 
+		doubles and user defined objects
 		Floting point values or class type objects values cant be template parameter
-		When passing pointer or references you can not pass string literals, temporories or data members
+		When passing pointer or references to string literals, temporories or data members
 		or other sub-objects
 
+		* always remember you can only pass either rvalues or constexpr values
+			which are known at the compile time as value argument to templates
+		* you cant pass variables which have address, which change dynamically as template
+			arguments
+		
 		template<double VAT>         // ERROR: floating-point values are not
 		double process (double v)    //        allowed as template parameters
 
