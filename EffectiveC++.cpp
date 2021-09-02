@@ -98,10 +98,20 @@
 			Below is section about thread safe initialization of C++11 local static variables and guarantees
 			https://stackoverflow.com/questions/17783210/when-are-static-and-global-variables-initialized	
 				Order is
-				1> compile time : Zero initialization before any initilization, static int i;
-				2> compile time : Const Initilization before entering into block, ie { static int i; // implcite i = 0; } 
-				3> Then other static variables (either early initalization permitted) or must do initalization at the time
-				of control reaches first time to declaration
+				1> compile time : All statics and globals are zero initialization before any initilization, static int i;
+						with or without intializer/initializer function.
+
+				2> [Actually compile time] : Then initialize statics and globals with the values. ie. static int i = 100;
+					T t = initT();// if  initT is constexpr.
+					This step is compile time and values of statics are written in image of exececutable
+
+				3> Dynamic Runtime Intiailization: intialize statics and globals with non-constexpr intializing functions
+
+				Function Local statics :
+				2> [compile time permitted] : Const Initilization before entering into block, ie { static int i; // implcite i = 0; } 
+				3> Then other static variables (either early initalization permitted at compile time) or must do initalization at the time
+				of control reaches first time to declaration. This is lazy intiailization, checks if static is intialized 
+				every time func is called, takes lock to prevent multi threads  intiaialization
 
 			class with constexpr constructor or members initialized with brace or equal ie "static const auto a = T{}; static const T a{}" are constants
 			https://en.cppreference.com/w/cpp/language/constant_initialization
@@ -496,6 +506,8 @@
 			if derived class is virtual and base class is not. Derived class may contian the vptr at the start
 			of object. Directly converting pointer using c type cast from derived to base class pointer wont work here
 		i.  dynamic casts with 4+ level inheritance cause much delay with type checking via strcmp function
+				but they might be checked witht the typeid pointer comaprision which is vtable of the source obj
+				and typeid ptr for dest obj can be obtained vai its  global typeid variable
 		k.  static case converting objects (and not pointers, references) create new temp obj
 			static_cast<Base>(dervObj).func()
 
@@ -513,7 +525,7 @@
 			
 30.	Know the ins and outs of inlining
 		a.	Inline is smarter only if function code of calling and retruning is more than the function body.
-		b.	Function inlining is request.
+		b.	Function inlining is request. ALWAYS_INLINE macro usually for [[always_inline]] does it every time
 		c.	All functions declared inside class definition are inlined. This include friend functions.
 		d.	Even empty derived class constuctor has inlined base class constructor code. 	
 		e.	Inlining could result in more object code and instruction cache miss.
