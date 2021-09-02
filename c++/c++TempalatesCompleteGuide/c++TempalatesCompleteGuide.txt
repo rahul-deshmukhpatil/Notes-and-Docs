@@ -579,6 +579,99 @@ Part I: The Basics
 
 3.5    Summary
 
+4 VARIADIC TEMPLATES
+
+4.1    VARIADIC TEMPLATES
+
+4.1.1 VARIADIC TEMPLATES BY EXAMPLE
+
+
+	template<typename... Args>
+	void print(Args... args)
+	{
+		auto s = sizeof...(args);
+		// for empty args cout << ; is just ignored
+	    (std::cout << ... << args);
+	}
+
+
+4.1.2 OVERLOADING VARIADIC AND NONVARIADIC TEMPLATES
+	template<typename T>
+	T sum(T a)	{ return a; }
+
+	template<typename T, typename... Args>
+	T sum(T a, Args... args)
+	{
+	   return a*2 + sum((args*2)...);
+	   return a*2 + sum(std::forward<Args>(args*2)...);
+	}
+
+4.1.3 OPERATOR SIZEOF…
+	auto s = sizeof...(args);
+
+4.2    FOLD EXPRESSIONS
+	... + args => (args1 + args2) ... + argsN
+	args +  => args1 + (args2 ... + argsN)
+	op + ... + args => (op + args1) + args2 ... + argsN
+	... + args => args1 + args2 ... + argsN
+
+4.3    APPLICATION OF VARIADIC TEMPLATES
+	1. make_shared
+	2. thread
+	3. ref<T> vector.emplace_back(Args ...)
+
+4.4    VARIADIC CLASS TEMPLATES AND VARIADIC EXPRESSIONS
+
+4.4.1 VARIADIC EXPRESSIONS
+	print(args + args...); // (a1+a1, a2+a2, ...., an + an)
+
+	print(args + 1...); // error
+	print(args + 1 ...); // (a1+1, a2+a2, ...., an + an)
+	print((args + 1)...); // (a1+1, a2+2, ...., an + n)
+
+	Fold expression is when op acts on ...
+		(args + ...) //its fold op
+	Param passing is when  op is on args and ... is specified with space or as ()...
+		(args...)
+		(args+1 ...) => same as below
+		((args+1)...) => (a1+1, a2+1, a3+1) for every arg
+
+		// if all are same as T1?
+		(is_same_v<T1, args> && ...) ==> apply && ... &&  
+		(is_same_v<T1, args>...) ==> there is no && so  (isSame(a1), isSame(a2)) 
+
+4.4.2 VARIADIC INDICES
+	using variadic value params	
+
+	// whatever inside expl printIdx<> call is treated as index param
+	// while C is deduced by the argument
+	// so if idx is of same type of C ie.e C == size_t, the last index will be ignored.
+
+	template<size_t... idx, typename C>
+	void printIndex(C c)
+	{
+	    (std::cout << ... << c[idx]);
+	}
+
+4.4.3 VARIADIC CLASS TEMPLATES
+	std::tuple
+	std::variant
+
+	template<size_t... idx>
+	class Indices{};
+	
+	
+	template<typename C, size_t... Idx>
+	print(C c, Indices<Idx...> idx) { std::cout << c[idx] << ...; }
+
+	
+
+4.4.4 VARIADIC DEDUCTION GUIDES
+
+4.4.5 VARIADIC BASE CLASSES AND USING
+	send base classes as variadic base template 
+
+
 5 Tricky Basics
 
 5.1    Keyword typename
