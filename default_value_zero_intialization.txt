@@ -1,0 +1,78 @@
+https://stackoverflow.com/questions/2417065/does-the-default-constructor-initialize-built-in-types
+https://stackoverflow.com/questions/8106016/c-default-initialization-and-value-initialization-which-is-which-which-is-ca
+https://stackoverflow.com/questions/3803153/what-are-primitive-types-default-initialized-to-in-c
+
+//its c++ question
+https://stackoverflow.com/questions/6251707/default-initialization-in-c
+
+
+1. No initialization : builtins
+2. def initialize : user defined classes
+	T a; T* p= new T; 
+3. value intialize : 
+	T a = {}; or T a{}, T a = T();
+	T* p = new T{};  T* p = new T();
+	
+	if No def constructor then do zero intiialize
+3.1 ==>	3.1 Zero initialize : 
+		1. if there is no def constructor 
+		2. fall back to initialzier list constr
+		3. zero intialize every member.
+
+4. Arrays default construct each elements
+	int or T  arr[10]; // 10 elements def constr. builtins are garbage
+	int or T  arr[10] = {}; // 10 elements value constr. builtins are 0, nullptr
+	int or T  arr[10] = {1,2,3}; // 3  elements value constr. remaining are also value constr, (builtins are 0, nullptr)
+	
+
+Default intialization means:
+	calling default constructor. Any object is def constructed.
+	any default constructor from compiler constructs its subobjects by default construction
+	If constr does not provide base or member in initializer list, then base or memb is default constructed.
+	
+	Its just that builtin types do not have default constr. 
+	They contain indeterminate values because no initialization is done in thier case.
+	But if value zero initialized they are intiialied to 0, '\0', nullptr, nullptr (pointer or memb/-func) constructed
+
+	For virtuals vptr is populted by the default user or compiler defined funcs
+
+	globals/statics are two phase intialized
+		1. first zero intialized, see builtin contain 0 initialization 
+		2. def intiialized
+	
+
+	// call T() : may be default provided
+	T a; 
+	new T;
+
+
+
+	class  B {
+		int b;
+	};
+class T : public B {
+	int a;
+};
+
+int f(int i) {
+	if (i < 100000)
+		f(i+1);
+
+	T a;
+	T* p= new T;
+
+	T b = {};
+	T c{};
+	T d = T();
+
+	T* p1 = new T{};
+	T* p2 = new T();
+
+	return 0;
+
+
+
+
+	
+	
+
