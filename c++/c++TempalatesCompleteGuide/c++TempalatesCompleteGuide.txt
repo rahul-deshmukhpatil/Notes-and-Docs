@@ -677,7 +677,16 @@ Part I: The Basics
 5.1    Keyword typename
 		In ambigous example 
 		T::SubType* ptr;
-		If it is to be compiled as multiplication of static member T::SubType and ptr, where does ptr
+	
+		SubType could be
+			1. static data memb   : 
+			2. enclosed anon enum
+			3. using/type def
+
+				remb typename says its type
+				but there is no way to explct saying its data member or enum
+
+		If it is to be compiled as multiplication of static data member T::SubType and ptr, where does ptr
 		could be declared is not specified
 
 5.2    Zero Initialization
