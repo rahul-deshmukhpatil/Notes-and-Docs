@@ -689,6 +689,8 @@ Part I: The Basics
 		If it is to be compiled as multiplication of static data member T::SubType and ptr, where does ptr
 		could be declared is not specified
 
+		typename T::const_itr posItr; // typename is necessary, C++20 might remove it at obvious places
+
 5.2    Zero Initialization
 
 5.3    Using this->
