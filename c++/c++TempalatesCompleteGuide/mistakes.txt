@@ -97,6 +97,45 @@ Compile And Linking is not mentioned as  point 1.1.4
 
 5.4    TEMPLATES FOR RAW ARRAYS AND STRING LITERALS
 
+		page 73 
+
+		func(T&& x3)
+		{
+			//mention calls MyClass<T (&)[]>. Its perf forw
+			MyClass<declptye(x3)>::print() // 		}
+		}
+
+		You have never mentioned that there is no such thing as passing by
+		It should be always called as accepting as 
+		because, 
+
+		funct(int a) // Accepting as int, 
+		pass whatever you want i will make a copy of it on stack
+
+		funct(const int a) // Accepting as const int, 
+		pass whatever you want i will make a copy of it on stack
+		and call it const int
+
+		funct(int& a) // Accepting as ref to int, 
+		func(i);
+		func(ref_i);
+
+		func(const_i) // error cant bind const_i to non-const ref
+		func(const_ref_i) // error cant bind const_ref to non-const ref
+		func(std::move(i)) // error cant bind xvalue to non-const ref
+
+		funct(int const & a) // Accepting as const ref to int, 
+		// all above 5 versions are good.
+		func(std::move(i)) // Yes, you can bind xvalue to const ref
+
+		funct(int const&& a) // Accepting as rvalue ref to int, 
+
+		And there is no pointer to reference concept in the language
+		as ref is not an object. you can not address of ref, if you do, you get
+		address of object ref is pointing/reffering to.
+		You cant have arrays of refrences, whihc if allowed could be  converted into
+		the pointer to reference.
+
 5.5    MEMBER TEMPLATES
 
 5.5.1 THE .TEMPLATE CONSTRUCT

@@ -692,10 +692,30 @@ Part I: The Basics
 		typename T::const_itr posItr; // typename is necessary, C++20 might remove it at obvious places
 
 5.2    Zero Initialization
+		<template T>
+		class A {
+			T a; // for build-ins T is not initialized. 
+			T b(); // b is func
+			T c= T(); // build-ins 0,false,nullptr. Otherwise value initialze
+
+			// for both
+			T d{}; // value initialize, or call initializer list constr
+			T d=T{}; // build-ins 0,false,nullptr. Otherwise value initialze
+		}
 
 5.3    Using this->
 		Not mentioning if base class is not dependant on T, then does inherited member 'x' could be 
 		simply referred as 'x' or have to have use 'this->x' ?
+		<template T>
+		class A : B<T> {
+			void fun()
+			{
+				// only in cas of B depends on template param
+				bfunc();  // Does not call base func
+				this->bfunc();
+				B::bfunc();
+			}
+		}
 
 5.4    Templates for Raw Arrays and String Literals
 
