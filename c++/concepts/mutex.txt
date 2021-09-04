@@ -1,0 +1,38 @@
+mutex
+	lock
+	try_lock : returns bool
+	unlock
+
+	is undefined
+		loc/unlock attempt to acquiring mutex by same thread if its already locked
+		If threads die without freeing mutex 
+		mutex is destroyed while in use
+	
+	cant be copied and moved
+	used with lock_guard ( convenient RAII-style ), uniq_lock, scoped_lock, 
+
+lockguard : not copyablei, not copy constr
+std::scoped_lock offers a replacement for lock_guard that provides the ability to lock multiple mutexes using a deadlock avoidance algorithm.
+
+uniq_lock:
+	by def tries to lock it
+	otherwise 3 types of 2nd paramt o constr
+		1. differ_t : dont acq now
+		2. try_to_lock_t: if its mutex already locked then undef beh
+		3. adopt_t : assumes lock is acq already. 
+	4th constr : try to acq for next t time period or till its acq
+	5th constr : try to acq for until time t, or till its acq
+	is movable
+
+	owns_lock:
+	operator bool : both tell if lock is acq 
+
+lock: tries to lock,try_lock, unlock to multiple std::uniq_locks or lockable objects. 
+	if single lock is not acq all locks are freed. or in case of exception all acq locks are freed.
+
+scoped_lock: locks multiple mutexes in give order and unlocks them at the end of scope/block
+	using deadlock avoidance algorithm
+
+
+
+

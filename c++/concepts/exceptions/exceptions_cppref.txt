@@ -1,8 +1,8 @@
 https://en.cppreference.com/w/cpp/language/exceptions
 https://en.cppreference.com/w/cpp/language/throw
 
-When thrown from function call inside try block pass the control to the matching catch block at previous point in the class stack
-program will terminate any case if this throws and exception is not handled
+When thrown from function call inside try block pass the control to the matching 1st catch block at previous point in the class stack
+program will terminate any case if this throws and exception is not catched/handled
 
 thrown by function, 
 		dynamic_cast, (if destinatoin new type is reference)
@@ -18,36 +18,44 @@ Usage:
 		post-cond, 
 	failure to restablish class invaeriant : ie var/condition maintianing valid state of object
 
+2. Constr, op=, op<=> can only throw to signal error.
+	move must not know throw, its legit stealing of resource from rvalue ref, 
+	swap must not throw, its kind of move, stealing each other.
+
 2. exception safety
 	1. nothrow, noexcept(true), noexcpet, throw() guranteee : program will std::terminate if this throws and exception is not handled
 	2. strong: state of object is rolled back to state before calling exception 
 	3. basic: object will be in valid state, no mem leaks
 	4. no gurantee: obj will be in not valid, undefined state. 
 
-	4.1 neutral gurantee : if op on template param of func or class param of mem func throws then func will pass the same exception
-	to the caller
+	4.1 neutral gurantee : if op on template param T of func or class(or T dependant type), and func or mem func throws then func will pass the same exception to the caller
 
 Exception objects
-	complete type, cv pointers. 
+	complete type, may be with addition cv or cv pointers. 
 	all stl functions throw some direct or indirect inherited object from std::exception
+
 	usually caught by reference to prevent constlier copying and slicing objects
 	, though cathching by value is also possible
-
+	You cant not throw by reference you can accept by reference 
 
 Throw
-	with expression.
+	with expression (mean not rethrowing) 
+
 	Event though it migh use move, copy intialization must be valid and destr must be accessible
-	for thrown object
+	for any thrown object of type T
 	{
 		T obj
 		throw T{}; // by move constr
 
 		throw obj; //  by move constr, only if obj is innermost block local var thats going to die soon
+
+		T foo(); // func decl
 		throw foo(); // move constr 
 	}
 
 	Two points
-	1. compund statement with matching type ? didnt get it
+	1. compound statement with matching type ? didnt get it
+		means cascaded catch blocks throwing
 
 	https://stackoverflow.com/questions/42848656/why-can-an-exception-occur-when-initializing-the-constructor-list-parameter
 	2. exceptions during constructors member initializer list are handled by the parent block of code calling the constructor rather than try-catch function block of the constructor itself. Even if try block is around memb-init-list, there is implicte throw at the end of constr-func-try-catch-block
@@ -60,15 +68,26 @@ Rethrow:
 
 	catch( std::exception& ex)
 	{
-		throw; // goes out of current cascaded catch of current try
+		throw; // re-throw original parent object in prev throw not ex
+				// goes out of current cascaded catch of current try catch
+				// look for upper try blocks, catch handlers
 		a = b ; // not executed
 	}
 	catch (std::bad_alloc& ex) {} // not executed
 
+	try {
+	    std::string("abc").substr(10); // throws std::length_error
+		} i
+	catch(const std::exception& e) {
+		// throw e; // copy-initializes a new exception object of type std::exception
+		throw;   // rethrows the exception object of type std::length_error
+	}
+
+
 Exception object:
 	Construction:
 		object is temporary object in the unspecified storage (could be on heap or on stack).
-			its object. no rvalue ref or lvalue ref. 
+			its object or pointer. no rvalue ref or lvalue ref. 
 			Though catching it by lvalue ref is allowed
 
 			https://stackoverflow.com/questions/3856445/can-someone-explain-rvalue-references-with-respect-to-exceptions
@@ -89,26 +108,35 @@ Exception object:
 		 a catch clause has exactly one argument or ...
 
 	Destruction only if not rethrown:
-		Excp obj is temprory so its destroyed 
+		Excp obj caught by value or reference is temprory so its destroyed 
 			1. when catch block is exited normaly after catch block 
 			2. or until the std::excpetion_ptr which references excption object is destoryed
 				as the last instr in the destr of std::exception_ptr before returning
+		
+		Destruction : What if you do not catch/handle exception. 
+			No exception obj will be created 
+			Whats the use even if created.
+			Call stack unwinding is implemenation depen when exception is not caught
 
 Stack Unwinding
-	destr of automic storage vars which are constructed fully called
-	in the reverse order of constr completion (always remember order of constr invokation is der2->der1->base but order of complition of constr base->der1->der2)
-	till matching catch is not found
+	destr of automic storage vars on func stack, which are constructed fully is called
+		in the reverse order of constr completion (always remember order of constr invokation is der2->der1->base but order of complition of constr base->der1->der2)
+		till matching catch is not found
 
 	if destr of local obj or temporary used for return raises exception, destr for return obj is also invoked
 	{
 		T a;
 		T b;
 		return b;
+		// Copy elision of b if its temp, 
+			// or move b (its local automatic storage var), 
+			// and if that is not possible then copy b into exception obj and then call implcite b.T::~T() 
 		// implcite a.T::~T() raised // destroy b or return obj
 	}
 
 	exceptions from constr and (rare) destr of any storage duration, call destr for all non-static, non variant members
 	are called in rev order. so base class should not point to any member of der class, becse ~Derv is called before ~Base
+	Just dont use pointers in because there is 0.0000001 prob that they are refferring to derived class member which is already destroyed 
 	
 	In case of variants or unions, if active memb is changed between intiialization and destr, behavior is undefined.
 	undefined bahvior : its most likely static time,  something known 
@@ -117,21 +145,50 @@ Stack Unwinding
 	if delegated constr is complete then as well exception from delegating constr destroys obj
 	If new throws exception, matching delete or [] delete is called
 
-	If any top level function called directly (mostly destr or copy constr of exception obj if copy elision does not happen)
-		called directly after constr of exception obj
-		and before catch block
-			throws exception, which exits the  direct called destr function,
+				Constructor is itself two phase initializatoin
+				T ()
+				: Base(...) or T_delegated_constr(...)
+				, a()
+				// I am done, constr T is complete here or in T_delegated_constr itself
+				// below is pusdo post-constr , block
+				try
+				{ 
+					// I am just another init or post construction routine
+					// this is why exception here is handeled by this psudo init function catch block
+
+					// While exception in initilizer list is handled by upper try-catch block
+					// which called this constructor 
+				}
+				catch{}
+
+
+	If any top level function called directly in order to
+		1. Create exception obj. ie Exception objs constr . 
+		2. Destructor of func local automatic storage variable
+	before catch handling block
+			throws exception, which exits the direct called function,
 			then std::terminate is called
+	So destructors should now allow any exceptions to escapte
+		1. which are raised by themself
+		2. or raised by any sub-function they use
 
 	std::terminate called for exception esacping
 		1. main
-		2. thread main func
-		3. global or func static constr or destr
-		4. constr or destr of thread local ie thread global
+		2. threads first/start/main func
+		3. global static constr or destr.
+		4. func local static destr (for constr it must be handled by the caller...right)
+		5. constr or destr of thread local ie thread global
 
-	its implemenation defined if destrs are called for stack unwinding in case of the uncaught exceptions.
+	So main has a psudo catch(...) handler which calles std::terminate.
 
+	While std::thread which just forwards call to function threads main function.
+		might call a psudo start function 
+		1. which might call the actual thread start main function
+		2. but this pusdo start function might do catch(...) to catch any exception that thread start function throws
+		3. and set exception in the promise 
 
+	it is implemenation defined if stack unwinding is done in case of the uncaught exceptions.
+	it might be better to crash and log in the stack strace of crash where it given up
 
 If exception is thrown from destr of return obj or local obj of func,
 	does that same destr called again, because destr is not complete and that object is not yet completely destroyed
@@ -141,6 +198,4 @@ If return obj , being copy-elisioned destroyed,
 
 What is catch clause parameter?
 The exception object persists until the last catch clause exits other than by rethrowing (if not by rethrowing, it is destroyed immediately after the destruction of the catch clause's parameter),
-
-
 

@@ -1,0 +1,95 @@
+There is nothing such as "passing by ..."
+	correct version and there is only "acceting as ..."
+
+You cant not throw by reference you can accept by reference 
+
+Every complex object is made up of
+	[cv] build-in [*, &]  var_name [array];
+
+Default, value, zero initialization is: 
+	def, value, zero init of builtin 
+	+ def value, zero of complex members or bases
+
+Ref is not object but its something represents const pointer
+	but not relly eq to type const pointer.
+	you cant take its addr, pointer to ref or arrays of ref not possible
+
+The pure T* pointer is an object.
+	pass by value, ref, rvalue-ref,
+
+Constr, op=, op<=> can only throw to signal error.
+	move must not not throw, its legit stealing of resource from rvalue ref, 
+	swap must not throw, its kind of double move, stealing each others resource.
+
+
+(try,for, while, if, lambda,)'s braces i.e  {} ie. compound expressions.
+	are themselve like anon functions 
+		with separate stack.
+		but capture parent blocks vars by perfect type.
+
+First constr called is of derived class
+	but first constr completed is of base class
+First destr is called of derived class
+	and its the one completed first, and then base class destr called
+Destructors are called and completed, in reverse order of constr complition
+
+Pointers is not easy job. Use RAII. 
+	dealing with raw pointers is manually scavanging new and matching deletes.
+	Just dont use pointers in because there is 0.0000001 prob that they are refferring to derived class member which is already destroyed 
+
+Globals/Statics : zero initialzed, static(compile time)+const/constexpr intiailized, 
+			then dynamic initialized
+			then function statics are locally-lazy initialized.
+But they are destructed in reverse order.
+
+
+You can define the order of construction of
+	global, statics with default init
+	const/constr expr, static init
+	dynamic init : 
+		Except if it being intiailzed as part of complex func calls made with
+		if conditions to initialize another global static member
+		ie. global/static int i = fun(j_another_static) { return j_another_static
+															? k_using_another_static_func()
+															: l_using_another_static_func)
+															}
+
+		here k or l which one will be initialzied first? I dont know.
+		or if you use raw k and l, they might be un-initialized.
+
+	Only function statics are truly random constructed, but you can call all func
+	statics to initiazed them in one go in common globalStaticInit function
+
+What you cant control 
+	0. What linker you are using. Does it enforce any order 
+	1. order of compilation of cpp files to create lib
+	2. order of dynamic and static lib linking to create another lib
+	3. or to create new executable.
+But if you know all these varialbes you are good. 
+but you must be good always and ensure that this order does not change.
+But as lib vendor you do not have control over this order
+
+	
+undefined bahvior : its most likely static time,  something known, caught by compilers, static analyzers, strict compilation flags, turning on warnings 
+behavior is undefined : its most likely i guess run time
+
+
+Constructor is itself two phase initializatoin
+	T ()
+	: Base(...) or T_delegated_constr(...)
+	, a()
+	// I am done, constr T is complete here or in T_delegated_constr itself
+	// below is pusdo post-constr , block
+	try
+	{ 
+		// I am just another init or post construction routine
+		// this is why exception here is handeled by this psudo init function catch block
+
+		// While exception in initilizer list is handled by upper try-catch block
+		// which called this constructor 
+	}
+	catch{}
+
+
+If exception is thrown from destr of return obj or local obj of func,
+	does that same destr called again, because destr is not complete and that object is not yet completely destroyed
