@@ -1,4 +1,3 @@
-
 The noexcept-specification is a part of the function type and may appear as part of any function declarator.
 
 Throwing functions are
@@ -10,7 +9,6 @@ Throwing functions are
 	 unless:
 	 	all of its memb and its bases are non-throwing
 		default memb iniitalizer is non-throwing
-
 
 
 

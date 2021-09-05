@@ -1,0 +1,15 @@
+Stack unwinding first does namelook up for matching catch block signature.
+	call the first matching block till
+Probable C++ 26 feature:
+	1. its possible to return multiple exceptions or multiple objects
+	2. accepting exception as auto type? catch(...) does not catch any object.
+		not possible: auto exception means you need dynamic compilation
+		if we want to move in the direction of AI and ML, rewriting, JIT, tweaking code then we need dynamic compilation support.
+
+Syntax : either call with below syntax
+	throw(ExObj1, Obj2, Obj3); // passing multiple objects
+
+Catch(ExObj& ex, Obj2& ex2, Obj3 ex3) // its like function definition, but accepting by ravlaue ref is not allowed
+{}
+
+ 
