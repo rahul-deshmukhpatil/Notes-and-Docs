@@ -1,0 +1,26 @@
+https://en.cppreference.com/w/cpp/language/function-try-block
+
+T::T() try
+{
+} catch(SomeEx se)
+catch(Ex& e) // just caught as the base Ex
+{
+	// return // only works for destr. prevnt excp from leaving destr
+	throw Base(Ex); // explicit rethrow Base of Ex i.e Ex::Base.
+	//	throw; implicit throw original exception not Ex.
+}
+
+around constr or any function
+catches any excpetion in memb-init, delegating constr, or member body
+Any completly initialized member or base is destructed before catch starts execution.
+
+exception is implicitely re-thrown at the end of catch block if you dont
+throw it. so better to write it.
+
+Undef behavior :Dont use non-static member variables or base, in catch body.
+Catch cant have return statement, except Destructor to prevent rethrowing.
+
+Prim use : for constr and destr memb-init list
+For functions : catch block does not destroy func params by value. Its callers
+	exception handle job.
+for copy-move constr: func-try-catch block cant cache exceptions. Its handled in callers context
