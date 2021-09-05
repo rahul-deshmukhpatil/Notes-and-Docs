@@ -349,15 +349,38 @@ Function templates define a family of functions for different template arguments
 5.4    TEMPLATES FOR RAW ARRAYS AND STRING LITERALS
 
 5.5    MEMBER TEMPLATES
-
 5.5.1 THE .TEMPLATE CONSTRUCT
+		use .template construct, otherwise template parameter pack starting '<' could be confused by 
+		instance.template doSomething<int, float>(4, 7.2);
 
 5.5.2 GENERIC LAMBDAS AND MEMBER TEMPLATES
 
 5.6    VARIABLE TEMPLATES
 
-5.7    TEMPLATE TEMPLATE PARAMETERS
+		template<typename T = float>
+		constexpr T pi = {3.142723232};
 
+		you may have non type template parameters ie. int for size,
+		template<int N>
+		std::array<int, N> arr{}; // Value Zero initialization
+
+		template<typename T>
+		constexpr bool isSigned = numeric_limits<T>::is_signed;
+
+
+5.7    TEMPLATE TEMPLATE PARAMETERS
+		//Elem is optional and could be just given for documentation purpose
+		// template<typename T, template<typename Elem, typename Alloc> class Container = std::deque> // Pre-C++17
+		// template<typename T, template<typename Elem, typename Alloc = std::allocator<Elem>> class Container = std::deque> // Pre-C++17
+		template<typename T, template<typename Elem> typename Container = std::deque> // C++17
+		class Stack
+		{
+			Container<T> data;
+		}
+
+		template<typename T, typename<typename, typename> typename C>
+			template<typename T2, typename<typename, typename> typename C2>
+		Stack<T, C>& Stack<T,C>::opeartor=(const Stack<T2, C2>& s2){}
 5.8    SUMMARY
 
 6 MOVE SEMANTICS AND ENABLE_IF<>

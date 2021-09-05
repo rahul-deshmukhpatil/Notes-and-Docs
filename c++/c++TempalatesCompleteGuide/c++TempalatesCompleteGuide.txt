@@ -784,8 +784,8 @@ Part I: The Basics
 		So in order to define the full specilization of member function template and which could be used by
 		the all translation units, define them in the header files.
 
-		But each translation unit might create its own copy of the full specialized template. This will cause
-		linker error. To avoid this you can declare full specialization of the template as inline
+		But each translation unit .cpp file that includes this header might create its own copy of the full specialized template. 
+		This will cause linker error. To avoid this you can declare full specialization of the template as inline
 
 		class BoolString
 		{
@@ -808,6 +808,7 @@ Part I: The Basics
 
 		However remember, these template special members are not really special member functions and default
 		provided special member functions are still there for Stack<T1>.
+		Its because template members are instanciated only if they are called.
 
 		1. It might happen that these overloaded template might be better fit than the compiler provided special
 		member funcitons
@@ -830,7 +831,7 @@ Part I: The Basics
 			GenLamCompilerSpecName(); // only callable by compiler
 
 			template<typename T1, typename T2>
-			auto operator()(T1 x, T2 y) const {return x+y;}
+			auto operator()(T1 x, T2 y) implcite-const {return x+y;}
 		}
 
 
@@ -890,7 +891,6 @@ Part I: The Basics
 		you might want to pass the another template class(without actual template parameter types pack)
 		as stand alone type to new template.
 
-
 		Befor C++17, you could use only keyword 'class' for template template parameter
 		as well, TTP must match all of its parameter pack including default types
 		
@@ -909,8 +909,6 @@ Part I: The Basics
 		template<typename T, typename<typename, typename> typename C>
 			template<typename T2, typename<typename, typename> typename C2>
 		Stack<T, C>& Stack<T,C>::opeartor=(const Stack<T2, C2>& s2){}
-
-
 
 
 5.8    Summary
