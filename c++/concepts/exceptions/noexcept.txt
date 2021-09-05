@@ -1,0 +1,17 @@
+
+The noexcept-specification is a part of the function type and may appear as part of any function declarator.
+
+Throwing functions are
+	1. Default func() // def noexcept(false)
+	2. destr without explicite noexpect(true) specifier
+	2. constr, move, copy constr: 
+			which are implicetly declared by compiler
+			= defaulted on first declaration
+	 unless:
+	 	all of its memb and its bases are non-throwing
+		default memb iniitalizer is non-throwing
+
+
+
+
+
