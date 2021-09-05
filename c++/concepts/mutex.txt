@@ -11,10 +11,13 @@ mutex
 	cant be copied and moved
 	used with lock_guard ( convenient RAII-style ), uniq_lock, scoped_lock, 
 
-lockguard : not copyablei, not copy constr
-std::scoped_lock offers a replacement for lock_guard that provides the ability to lock multiple mutexes using a deadlock avoidance algorithm.
+https://softwareengineering.stackexchange.com/questions/330769/why-cant-i-check-whether-a-mutex-is-locked
+	You can't really reasonably check whether a mutex is locked, because one nanosecond after the check it can get unlocked or locked. So if you wrote if (mutex_is_locked ()) … then mutex_is_locked could return the correct result, but by the time the if is executed, it is wrong.
 
-uniq_lock:
+
+uniq_lock: Provides owns_lock functionality which mutex does not provide.
+https://stackoverflow.com/questions/21892934/how-to-assert-if-a-stdmutex-is-locked
+
 	by def tries to lock it
 	otherwise 3 types of 2nd paramt o constr
 		1. differ_t : dont acq now
@@ -22,10 +25,17 @@ uniq_lock:
 		3. adopt_t : assumes lock is acq already. 
 	4th constr : try to acq for next t time period or till its acq
 	5th constr : try to acq for until time t, or till its acq
-	is movable
+	is only movable
 
 	owns_lock:
 	operator bool : both tell if lock is acq 
+
+	lock, try_lock, unlock
+	try_lock_for(time_period)
+	try_lock_until(timestamp)
+
+lockguard : not copyablei, not copy constr
+std::scoped_lock offers a replacement for lock_guard that provides the ability to lock multiple mutexes using a deadlock avoidance algorithm.
 
 lock: tries to lock,try_lock, unlock to multiple std::uniq_locks or lockable objects. 
 	if single lock is not acq all locks are freed. or in case of exception all acq locks are freed.
@@ -34,5 +44,14 @@ scoped_lock: locks multiple mutexes in give order and unlocks them at the end of
 	using deadlock avoidance algorithm
 
 
+func()
+{
+	//std::mutex m; // wrong: this will be always free. its on stack.
+	
+	// so use global mutex;
+	gmutex.lock(); // wrong, gmutex might be acquried by same thread.
+
+	
+}
 
 
