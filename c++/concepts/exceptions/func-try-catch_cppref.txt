@@ -2,13 +2,29 @@ https://en.cppreference.com/w/cpp/language/function-try-block
 
 T::T() try
 {
-} catch(SomeEx se)
+} catch(SomeEx se) {}
 catch(Ex& e) // just caught as the base Ex
 {
-	// return // only works for destr. prevnt excp from leaving destr
+	// explcite return;// only works for destr so that you could prevnt excp from leaving destr
+
 	throw Base(Ex); // explicit rethrow Base of Ex i.e Ex::Base.
-	//	throw; implicit throw original exception not Ex.
+	//otherwise	at end implcite throw; // implicitly throw original exception not Ex.
 }
+
+T func() try
+{
+} catch(SomeEx se) {}
+catch(Ex& e) // just caught as the base Ex
+{
+	// throw
+	// throw Base(Ex); // explicit rethrow Base of Ex i.e Ex::Base.
+	// return T; return explicitely value in case of exception. allowed
+	
+	// return; // implicite return at the end of catch blocl, NO impliciti re-throw of original exception.
+	// If ret type T is void its ok, 
+	// otherwise undefined behavior . ie. no return value and its  
+}
+
 
 around constr or any function
 catches any excpetion in memb-init, delegating constr, or member body

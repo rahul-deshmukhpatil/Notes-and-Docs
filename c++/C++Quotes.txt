@@ -76,20 +76,31 @@ behavior is undefined : its most likely i guess run time
 
 Constructor is itself two phase initializatoin
 	T ()
+	try // can be only placed a
 	: Base(...) or T_delegated_constr(...)
 	, a()
 	// I am done, constr T is complete here or in T_delegated_constr itself
 	// below is pusdo post-constr , block
-	try
 	{ 
 		// I am just another init or post construction routine
 		// this is why exception here is handeled by this psudo init function catch block
 
-		// While exception in initilizer list is handled by upper try-catch block
+	}
+	catch{
+		// While exception in initilizer list is also handled by upper try-catch block
 		// which called this constructor 
 	}
-	catch{}
 
 
 If exception is thrown from destr of return obj or local obj of func,
 	does that same destr called again, because destr is not complete and that object is not yet completely destroyed
+
+
+Stack unwinding first does namelook up for matching catch block signature.
+	call the first matching block till
+Probable C++ 26 feature:
+	1. its possible to return multiple exceptions
+	2. accepting exception as auto type? catch(...) does not catch any object.
+		not possible: auto exception means you need dynamic compilation
+		if we want to move in the direction of AI and ML, rewriting, JIT, tweaking code then we need dynamic compilation support.
+

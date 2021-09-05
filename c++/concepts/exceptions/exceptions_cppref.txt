@@ -199,3 +199,14 @@ If return obj , being copy-elisioned destroyed,
 What is catch clause parameter?
 The exception object persists until the last catch clause exits other than by rethrowing (if not by rethrowing, it is destroyed immediately after the destruction of the catch clause's parameter),
 
+Handle exceptions catch block from more specific to least specefic
+
+try{}
+catch(D3) {}
+catch(D2) {}
+catch(D1) {}
+catch(B) {}
+
+
+
+
