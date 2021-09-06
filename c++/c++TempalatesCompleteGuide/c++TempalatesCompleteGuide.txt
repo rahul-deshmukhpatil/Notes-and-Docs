@@ -919,11 +919,11 @@ Part I: The Basics
 6.1    PERFECT FORWARDING
 		struct X{};
 
-		f(X) {}
+		f(X&) {}
 		f(X cosnt &) {}
 		f(X&&) {}
 
-		g(X x) {g(x);}   => f(X)
+		g(X& x) {g(x);}   => f(X&)
 		g(X const& x) {g(x);}  => f(X const &)
 		g(X&& x) {g(std::move(x()}; => Need std::move to call f(X&&)
 
@@ -940,10 +940,10 @@ Part I: The Basics
 		lvalue  and rvalue) 
 
 
-		g(X&& x) {g(std::move(x()}; => Need std::move to call f(X&&)
+		g(X&& x) {f(std::move(x()}; => Need std::move to call f(X&&)
 		
 		template<typename T>
-		g(T&& x) {g(std::forward<T>(x));}
+		g(T&& x) {f(std::forward<T>(x));}
 
 						Above X&& and T&& are not same
 						X&& : only bould to pr-values temprory or xvalue (std::move)
@@ -981,7 +981,7 @@ Part I: The Basics
 		Now template the first two constrs
 
 		template<typename STR>
-		P(STR&& n): name(std::forward(name)) {}
+		P(STR&& n): name(std::forward<STR>(name)) {}
 
 		P p1(s); // calls templ
 		P p2("xyz"); // calls teml, but STR == char const [4]
@@ -989,7 +989,7 @@ Part I: The Basics
 		P p3(p1); // ERROR  : template overload resolution takes place and
 				// templ function is better match than 3rd constr
 				// 3rd constructor is better match for const P not for non-const P
-				// and you can not copy non-const(or const) P into string P.n
+				// and you can not copy non-const(or for that matter const) P into string P.n
 		P p4(std::move(p1)); // calls 4
 
 		Solution: declare the non-const copy constr and const one 
@@ -1003,13 +1003,65 @@ Part I: The Basics
 
 		
 6.3    DISABLE TEMPLATES WITH ENABLE_IF<>
+		1. use enable if 
+			std::enable_if_t< (sizeof(T) < 4) > foo() {}
+
+		2. use enable if in the template params def as last "non-used" param
+			template<typename T, typename = std::enable_if_t< (sizeof(T) < 4)>
+
+		3. use higher variants and  using-template just like _v and _t definitions 
+			template<typename T>
+			constexpr bool IsSmall = sizeof(T) < 4;
+
+			template<typename T, typename = std::enable_if_t<IsSmall<T>>;
+
 
 6.4    USING ENABLE_IF<>
+		to define generic constr which accepts any type that is convertible
+			to its only member
+		// Compile time needs to be constexpr auto
+		template<typename T, typename Z>
+			constexpr auto IsConv = std::is_convertible_v<T, Z>;
+
+		template<typename T, typename Z>
+			using EnableIfIsConvType = std::enable_if_t<IsConv<T, Z>>;
+
+		template<typename T, typename = EnableIfIsConvType<T, std::string>>
+			A(T&& t)
+			: s(std::forward<T>(t)) {}
+
+
+		disable special memeber functions:
+		special member functions are preffered over the template once
+		so instread of defining 
+			A(const A&){std::cout << "A(const A&)\n";}
+
+		if you use const-volatile overload, it will not generate any other implicite variant of copy constr of above signature
+			A(const volatile A&){std::cout << "A(const A&)\n";}
+		
 
 6.5    USING CONCEPTS TO SIMPLIFY ENABLE_IF<> EXPRESSIONS
+		template<typename T, typename Z>
+		constexpr auto IsConv = std::is_convertible_v<T, Z>;
+
+		template<typename T, typename Z>
+		concept IsConvConcept = std::is_convertible_v<T, Z>;
+
+		template<typename T, typename Z>
+		using EnableIfIsConvType = std::enable_if_t<IsConv<T, Z>>;
+		
+		1 => template<typename T, typename = EnableIfIsConvType<T, std::string>>
+		template<typename T>
+		2 => requires std::is_convertible_v<T, std::string>
+		3 => requires IsConvConcept<T, std::string>
+
+		A(T&& t)
+		: s(std::forward<T>(t))
+		{
+			std::cout << "A(T&)\n";
+		}
 
 6.6    SUMMARY
-
 
 7 BY VALUE OR BY REFERENCE?
 
