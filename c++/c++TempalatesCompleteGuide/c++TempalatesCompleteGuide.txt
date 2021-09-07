@@ -1178,10 +1178,10 @@ Part I: The Basics
     passR(s);   // T is std::string& and same is arg
     passR(rvalueString());  // T is std::string, arg is std::string&&
     passR(std::move(s));    // T is std::string, arg is std::string&&
-    passR("hi");    // T and arg is const char[3]
+    passR("hi");    // T and arg is char const (&)[3]
 
     int a[3];
-    passR(arr); // T and arg is const int [4]
+    passR(arr); // T and arg is int const (&) [4]
 
     but once you pass const variables and T is deduced as const, then you will have
     to initiaize T's variables
@@ -1202,10 +1202,10 @@ Part I: The Basics
 
 
 7.3    USING STD::REF() AND STD::CREF()
-        std::ref and std::cref are the wrapper classes, which contain only reference
-        to the simple type and function for implicite conversion to simple type
+        std::ref and std::cref are the function templates, which returns referece_wrapper<T>
+		and reference_wrapper<const T> 
 
-        This is why T is deduced as a type std::cref<T>. In order to use std::cref<T>
+        This is why T is deduced as a type ref_wrapper<const T>. In order to use reference_wrapper<T>
         you will have to convert it back to T usually by calling another function
         which is called by implicite conversion to T.
 
