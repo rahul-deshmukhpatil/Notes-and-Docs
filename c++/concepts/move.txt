@@ -88,7 +88,7 @@ void swap(W& w) {}
 
 
 Default functions:  saying = default is treated as user defined function
-	1. Compiler generates move constr and =
+	1. Compiler generates move constr and move=
 		if no copy op or destr is user defined
 	2. Compiler generates copy constr and =
 		if no move op is user defined
@@ -175,7 +175,7 @@ A(T&& t)
 template<typename T>
 class A {
 A(T&& t) // t is always rvalue reference, this does not cause any serious issue but its wrong
-: b(std::forward(t)) // T is just a type, constructor param is not universal reference 
+: b(std::forward<T>(t)) // T is just a type, constructor param is not universal reference 
 }
 
 
