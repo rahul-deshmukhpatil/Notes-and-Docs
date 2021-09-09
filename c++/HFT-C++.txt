@@ -37,6 +37,12 @@
 			4. use good combination of allocators, local and global allocators
 			5. reserve memory for the data structures
 
+2.2 Custom C++:
+			1. use custom hash maps
+				flat map, set : sorted vector
+				flat unordered map, set : vector with just hash keys as its index, another vector having value for index
+			2. Use custom shared_ptr whos count can only go upto 15, If it reaches 15, its ptr is never freed
+
 3. Build :  1. optimization flags,
 			2. static libs,
 			2. compiler flags
@@ -47,6 +53,8 @@
 			7. jmalloc, tcmalloc
 
 4. OS : tune OS and kernel, custom kernel,  
+		Basic unit of sync,read from or write to next level, is current level cache line
+		Learn about cache, cache flushing, cache refreshing
 
 5. HW : buy fast RAM, more cache, custom HW, boost freq
 		do trivial cal on FPGA, embed them on switch,
