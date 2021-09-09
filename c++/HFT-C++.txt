@@ -11,6 +11,14 @@
 			Allocated memory needed in intiailization routine of application
 			Keep memory in control, Do not free memory, just buy RAM,
 
+1.1 Low Level Design
+			1. keep things used togather in one denormalized struct. 
+				anyways aligned structs have free mem to utilize
+				Instr = Id + priceTick + DecInQty
+			2. Try to noinline functions, which are not in hot path
+				ie. logging functions used to print log
+			3. Instr Cache: Try to help compiler and HW, branch predictor
+			4. Data Cache: Try to keep things together
 
 2. C++ :	dont use costlier things
 			1. which allocate memory, new, malloc (might have lock)
