@@ -36,6 +36,7 @@ Destructors are called and completed, in reverse order of constr complition
 Pointers is not easy job. Use RAII. 
 	dealing with raw pointers is manually scavanging new and matching deletes.
 	Just dont use pointers in because there is 0.0000001 prob that they are refferring to derived class member which is already destroyed 
+	imagine raw_pointers as data members in move constr. you must use memb intialized : ptr(exchange(other.ptr,nullptr)
 
 Globals/Statics : zero initialzed, static(compile time)+const/constexpr intiailized, 
 			then dynamic initialized
@@ -84,12 +85,15 @@ Constructor is itself two phase initializatoin
 	{ 
 		// I am just another init or post construction routine
 		// this is why exception here is handeled by this psudo init function catch block
-
+		// which will be re-thrown again
 	}
 	catch{
 		// While exception in initilizer list is also handled by upper try-catch block
 		// which called this constructor 
-	}
+
+		// No return, its constr, In destr its allowed to return in middle
+		// to signal/allow that destructor should not throw
+	} // implcite rethrow here if its not already rethrown in one of the catch blocks
 
 
 If exception is thrown from destr of return obj or local obj of func,
