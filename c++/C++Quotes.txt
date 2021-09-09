@@ -103,4 +103,3 @@ Probable C++ 26 feature:
 	2. accepting exception as auto type? catch(...) does not catch any object.
 		not possible: auto exception means you need dynamic compilation
 		if we want to move in the direction of AI and ML, rewriting, JIT, tweaking code then we need dynamic compilation support.
-
