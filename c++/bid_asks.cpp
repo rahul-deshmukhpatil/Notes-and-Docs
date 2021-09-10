@@ -1,5 +1,6 @@
 #include <bits/c++config.h>
 #include <set>
+#include <cassert>
 
 class SpreadTracker
 {
@@ -52,6 +53,10 @@ public:
 
 		auto firstItr = askSpreads.lower_bound(dummySpread);
 		
+		// this might be approximate ans
+		// if we have a quote that completely overlaps then
+		// it will always appear on different side in the sorted set
+		// So your ans might be approx.
 		return std::distance(firstItr, itr);
 	}
 
@@ -76,13 +81,13 @@ int main()
 {
 	SpreadTracker s;
 	s.add(1,3);
-	cassert(0 == s.count());
+	assert(0 == s.count());
 	s.add(2,9);
-	cassert(1 == s.count());
+	assert(1 == s.count());
 	s.add(3,5);
-	cassert(3 == s.count());
+	assert(3 == s.count());
 	s.add(4,6);
-	cassert(5 == s.count());
+	assert(5 == s.count());
 
 	return 0;
 }
