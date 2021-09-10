@@ -1,15 +1,17 @@
-1. Design : cache friendly seq processing, 
+1. Design : cache friendly sequential processing, 
 			good algorithm O(log n), O(1)
-			avoid cal you dont need,
+			avoid calls you dont need,
 			doing nothing is truly fast.
 			single threaded program,
 			or use multithreading cuatiously with pinning cores on same numa core, 
-			avoid synchronization, no locks, use atomics if necesssary
+			avoid synchronization, no locks, use atomics+memory_order if necesssary
 			avoid system calls
-			no file read/write once app starts
+			no disk file read/write once app starts
 			Cache warming
-			Allocated memory needed in intiailization routine of application
-			Keep memory in control, Do not free memory, just buy RAM,
+			Allocate memory needed in intiailization routine at the start of application
+			Keep memory in control, Do not free memory, just buy more RAM,
+				1. allocate : find free mem + bring cold metadata + cold free mem into cache
+				2. deallocte : return memory + might be freeing hot cache lines
 
 1.1 Low Level Design
 			1. keep things used togather in one denormalized struct. 
