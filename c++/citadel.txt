@@ -1,0 +1,87 @@
+Hang
+
+Circular queue : single reader/ writer
+	mutex lock
+	aotmic lock/user space lock
+	lockfree
+Should have told :
+	Bonus : mult reader, multi writer
+	Diff: STP implementations, book management
+		 STP case for discussion about exchange disconnection
+
+Mohit:	
+	Spread reader/writer
+	Your contributions to the work
+	Bonus: 
+		- Worked on problem after interview
+			- Log N solutions with approx results
+		- complexity in finding log n solution
+		- float prices vs internal Float design
+		- Exchange specific template impl
+
+Mike:
+	exceptions
+	HFT optimizations vs ultra latency HFT
+	assembly code, vector instructions
+	how to calcualte latency
+	typetraits/policy based design and work
+	How to find largest, 2nd largest, kth largest
+		and return type
+	Bonus : Should hv discussed more return types
+		, optimal finding methods
+		, more on loop unrolling
+		, short circuting in case of max or min res is known
+		, short circt and specialization in case of booleans
+
+Philip
+	Python PyVar impl: 
+		Should ahve given variant option
+		- should have asked explicitely if he knows variants methods
+	uniq vs shared
+		- Should  have given more usages for storing memb-pointers
+		- told about uniq/shared ptr function pointers 
+		- shared ptr blocks
+	design db for read heavy op : though explained should have approached like
+			typical sys design approach
+		- systems, Admin and consumer users, and API
+		- talked but should have more explained partitioning, mirroring/replications
+		- more on columar implementation
+		- more on indexing table
+		- pre-stored results for queries
+		- Meta dB in cache, Some use of key-value DB for impl
+		
+
+Mistakes:
+	Explicitely ask what do you expect at the end of interview
+		What do you wnat to test
+		- Leadership to design solution
+		- Leadership to implement
+		- Leadership for delivery
+		- Tech indepth of lang/tools
+		- Hw/Sw options 
+		- Want to know your
+				- own impl, achievements in prev job,
+				- opensource contr, prog language contr, talks in conferenc, internal talks
+				- your personal projects
+
+	Lead interview, answer every small tech question as well as design
+		- Give them some systematic answer
+			- Explain problem in depth
+			- Give simple answer
+				- couple of options to go into depth
+				- Either lead like ... 
+					- cond1, o/p will be 1.O, if its cond2 o/p: 2.0
+					- cond1 is diff to impl, can do in way1, good latency, 
+					- cond2 is easy to impl, can do in way2 , good throughput
+			- tell them to how you did in past
+			- Run time effect, Results, good practices.
+
+	Give interview and interviewer direction,
+		- content matters, 
+			- How quickly your deliver point
+			- in simple but tech exact words
+			- broad in coverage, depth in meaning
+			- Do not repeat points
+		- Take into certain direction 
+		- Usually interview should be broad and in depth
+		- Area of how broad * depth will determine probability of interview result, outcome
