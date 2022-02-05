@@ -1,0 +1,14 @@
+Part 1:
+	ETF creation, redemption,
+
+Part 2:
+	Trading mechanism
+	liquidity
+	ranking
+
+Part 3:
+	fair value calculation
+	commodity ETFs and varying strucuture ofETF
+	valuation process
+
+Global ETFs
