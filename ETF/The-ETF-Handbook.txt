@@ -12,3 +12,65 @@ Part 3:
 	valuation process
 
 Global ETFs
+
+Chapter1: How did we end up here.
+	CEF : closed eneded fund
+		- only initial allocated FIXED shares trade on  sec market
+		- price above or below NAV
+		- dont require fund to buy back CEF shares
+		- great freedom to invest in illiquide shares
+		- price is determined by demand, at premium or discount to NAV
+		- constituent are not published daily
+	
+	Mostly CEF trade at discount, so ETF are efficient.
+	Pressure of arbitrage on ETF and its constituents, protects investors
+
+	CEF trade at premium if its leveraged and investors expect high yeild.
+
+	ETF can be actively managed and leveraged
+
+Mutual funds: 18T in 2014 wrt 2T ETF
+	89% retail investors
+	Equity : 52% (20% index linked)
+	Bond   : 22%
+	Money Market: 19%
+	Hybrid Equity-Bond:  7%
+	You can only sell Mutual Fund at day close.
+
+
+ETFs: 90% index based and equity focussed
+	The growth of assets in exchange-traded products and the development of the ecosystem of businesses supporting that growth have been stunning in recent years. Numerous factors have contributed to this growth, from the Wall Street marketing engines to the regulatory changes providing for significant structural advantages to the growth of electronic trading. What is rarely mentioned, however, is that investors have simply been demanding a way to invest that is easy to understand and at a lower fee. The main tranche of the ETF market provides this, along with a level of transparency and other benefits unavailable in previous products. The market for financial products was ripe for disruption and ETFs are a tool for satisfying that demand.
+
+	Transperency:
+		ETFs disclose composition, MFs dont because mostly active MFs deploy properitery strategies fear of front running if they disclose composition before
+		There are active ETFs which disclose compositiion only after change
+
+	Exchange Listing:
+		1. standadization: hybrid equity-bond etf trades on same market
+		2. intraday trading
+		3. Liquidity
+
+		Many ETFs are trading 24hr in different markets internationally in diff tax regime
+		ETFs might have tighte spread than its underlyings basket. this mostly happens in high volume and international ETF as it has wide variety of participants trading it.
+
+		tighter spread is also because of arb opp, creation/redemption at day end
+	
+	Tax Efficiency:
+		MFs buying and speciialy selling, is taxable event as mutual fund has to sell equity. There are few management techniques, spare cash etc, to avoid this, but not much can be done.
+		ETF trades in two markets
+			1. Seconadry market, LP or MM will
+				1. buy ETF and sell underlying stocks
+				2. sell ETF and buy underlying stocks
+
+			2. Primary Market: Trades here are not taxable event 
+				1. redemption 
+				2. creation
+
+			MM may not do creation/redemption on daily basis as they may do opposite thing everyday.
+			Shorting stock has to pay fee, so its better to redemption at the day end
+
+	Lower Fees:
+		CEF has IPO and has to pay for IPO sales, so investor is at loss in IPO and CEF trades at discount later
+		MF has management fees of around 1%, so both CEF and MF at loss before any investment is made
+
+
