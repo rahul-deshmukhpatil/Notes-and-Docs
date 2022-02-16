@@ -17,7 +17,7 @@ Chapter1: How did we end up here.
 	CEF : closed eneded fund
 		- only initial allocated FIXED shares trade on  sec market
 		- price above or below NAV
-		- dont require fund to buy back CEF shares
+		- dont require fund manager to buy back CEF shares
 		- great freedom to invest in illiquide shares
 		- price is determined by demand, at premium or discount to NAV
 		- constituent are not published daily
@@ -74,3 +74,74 @@ ETFs: 90% index based and equity focussed
 		MF has management fees of around 1%, so both CEF and MF at loss before any investment is made
 
 
+Chapter 2:
+	ETF creation : 
+		1. whats underlying its exposed to
+		2. best wat to how to replicate the exposure
+	ETF:
+		1. Beta Product: either give good market acess to basket : Passive, index funds
+		2. Alpha Product: or have some advantage over basket: Active managed funds
+
+	Index creator and ETF creator are often different companies have diff concern. Index creator does not worry about ability to invest in underlyings, but ETF product dev team is creative to achive exposure via exotic products wherever they can movign towards actively managed funds.
+
+
+	ETF
+		1. might not contain securities with min capitalization
+		2. min float or liquidity
+		3. might be perfect replciation or optmized cut
+	similar index tracking funds compete in optmization cuts and have significant perf diff over the time
+
+	Narrow goal of specialized and small universe: less investors interested in ETF, illiquid ETFas underlyings are difficult to trade
+
+
+	Rebalancing and index challanges
+		frequent rebalancing has cost and cause mispricing/tracking error, over the time. If index is of few top stocks, then rest of stocks lose representation.
+
+		Perfectly replicated basket = least tracking error. Mainly tracking at rebalancing and management fees.
+		Index is not trading vechicle but ETF is, so its constitunet must be liquide in order to  ETF to be liquide and ETFs growth
+		Trade off between complexity and margnial added value of too many names in basket wrt how much you are willing to diverge from tracking perfection
+
+	ETF Basket
+		Creation Unit basket : published, transperency, liquidity, accessible, trackable
+		ETF does not benifit from too small or too large weightings.
+		There must be balance between liqquidity and weightings to minimize tracking and implemention costs
+
+	Creation Unit Determination:
+		Greater avg daily volumnes of constituents, greater liquide will be ETF. Greater will be easy to issue and redempt ETF.
+		
+		If the avg, daily volume is low, even if you trade 25% of ADV, you can create only few of creation units of ETF. Few CU means less liquid.
+		Even if ADV is high and % of weight in ETF is also high, creates imbalance of overwieghted stock in ETF
+
+		Viability of CU = wieghing and liquidity of stocks
+
+	AP: athorized participant/ LP or MM
+		only allowed to transfer ETF <=> shares with isseur at some cost, which it adjust into spread while trading.
+		Issuer fund or investor client of ETF does not bear these cost
+		creation and redemption is done at accounting level, its not trade.
+		clients may ask LP/AP to create/redempt on behalf
+
+	CU is high, but its divided into shares so easy for retail clients. But creation/redemption is done at CU level only?
+	
+	Investors might ask trading desk of LP to buy underlying basket and give the  ETF
+
+	NAV is calculated at closign price of basket. Intraday NAV is intraday indicative value IIV. 
+
+	Clients might ask AP to buy basket at VWAP and create ETF. or otherway.
+
+	Anyone can become AP, just paying intial, flat fee called processing fee paid to Issuer to create/redempt any number of ETF CUs.
+	Now, this cost is embeded into spreads for retail MM, while for agency trades usually client pays it to LP.
+	So, for low volume ETF, processing fee per CU traded is high, so high MM spread.
+	While for high volume ETF, usually transactions are squared off at the day end, so tight spread.
+
+	LP could charge clients/Agencies for creation/redemption in low volume ETF, but if positions gets squared off at day end its LPs profit as ETF and basket hedge position is flattened at the end.
+
+
+
+
+		
+
+	
+	
+
+	
+	
