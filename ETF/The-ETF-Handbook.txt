@@ -144,4 +144,107 @@ Chapter 2:
 	
 
 	
+Chapt3:
+	NYSE Arca : Top ETF market has Lead marker maker who brings new ETF into market
+	BATS : 3rd top ETF market 
+
+	Exchange may charge issuer for Listing ETF on exchange
+	ETF at beggining has introductory/inauguration period where investors just see how comfortable are they in particular ETF
+
+	Price and Trding wise Lead MM and other LPs/MM as same.
+	Lead MM earns from
+		- spread
+		- underlying basket arb
+		- receive stock loan fee
+		- rebate as official, designated MM
+	LMM provides enhanced liquidity in new ETFs in incubation period
 	
+	Seeding is initial investment and providing liquidity.
+	ETF needs seed money to financing trades by seeder
+
+
+	Seeding
+		in order to launch ETF it needs 100,000 shares oustanding with Issuer
+		Initially, when fewer ETFs were there, LPs were interested to earn on large spreads on ETFs and were willing to seed Issuer
+
+		While seeder needs to buy the underlying stocks basket and give it to the issuer in return of initial 1,00,000 shares
+
+		This intial creation is directional trade until ETFs are sold, but this but it may not be.
+
+		LMM used to use their own balance sheet to give basket to issuer in return of new ETFs.
+
+		But for the pure seeder, borrows stocks in order to create initial ETF and later return stock
+		Sometimes, this position of short of stocks given to issuer and long on ETF can be profitable from financing perspective
+
+		LMM/Seeders need to sit on ETF until its sold in the secondary market. once it ETF trades into market, seeders gradually
+		unwind the position of short stock and long ETF into no position.
+
+		There could be different seeder than LMM, non-LMM seeder. then seeder will lend ETF to LMM to trade on first day. If not, LMM will have to get into early creation/redemption process. In intiial days there is only buying demand for the ETF. Issuer, LMM, seeder have to understand this.
+
+		Many of new ETF need longer incubation period.
+
+		Seeding is really balance sheet rental. 
+
+		Seeding capital is shrunk by smaller creation unit to reduce cost of seeding.
+
+		If CU is 100,000 and LMM has sold 25000 shares it will not create ETF unit. It will borrow stocks from seeder.
+		borrowing fee is adjusted into LMM spreads.
+
+		Seeding risk
+			- if basket is not borrowable
+			- hedge is proxy causing tracking error
+		LMM do not buy initial ETFs first and take directional bet. They profit from spread and arb with basket.
+
+		Risk
+			- Borrow cost increase
+			- short basket gets called back
+			- ETF tracking error
+			- ETF AUM does not increase, and holding time increases
+
+		There may be some residual amoint with the issuer, part of the NAV of ETF CU, along with basket price
+
+		In the initial days, issuer is usually long on ETF uderlying basket, as it holds the basket of shares.
+		These shares have dividend, corporate actions. Issuer needs to adjust these changes.
+		Issuer pays dividend to ETF holders, and charges some fees everyday on predefined basis.
+		This fees is taken out from residual cash.
+
+		Some stocks might exit from ETF basket.
+		
+		ETF issuer is last one to get paid. Its hires building, employees, create index and issue ETF.
+	
+		ETF sales people educated investors. Investors buys ETF from tradng desks,MM, LP. 
+		LP after suffcient trades creates unit, and issuers gets creation fees and management fees as AUM increases.
+		Exchange gets trading fees, clearer gets clearing fees.
+
+
+
+
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
