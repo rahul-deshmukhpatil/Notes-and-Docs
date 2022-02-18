@@ -217,6 +217,21 @@ Chapt3:
 		Exchange gets trading fees, clearer gets clearing fees.
 
 
+	Closing ETF
+		ETF has costs
+			- business people, space
+			- listing
+			- rebalacning etc
+		usually small funds close because they dont generate money, AUM is small
+		usually niche funds which dont cover wide securities close
+
+	Selling ETF to another issuer 
+	Not taxable, 
+			Vs
+
+	closing etf 
+		Taxable, so usually investors are given time to get out of it 
+		at last date NAV at closing price is returned to investors
 
 
 			
