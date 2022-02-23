@@ -234,8 +234,38 @@ Chapt3:
 		at last date NAV at closing price is returned to investors
 
 
-			
+Chapter 4 Trading Volumes and ETF Liquidity
+	ETFs TRADE DRAMATICALLY DIFFERENT THAN STOCKS
+		unlike stocks, investors buys/sells ETF to LP/LMM rather than to another person withs opposite view
+		as ETF gets popular trading vol increases an LP/LMM doesnt quote as other MM crowd in to provide liq
 
+	A BRIEF LOOK AT EQUITY TRADING VOLUMES
+	A DETAILED LOOK AT ETF TRADING VOLUMES
+		There are both high and low liq/ADV etfs
+		Earlier Index ETFs had great volumes
+		new ETS are listed Mutual funds, with benigits of ETF structure
+		Most low AUM, 50% of total ETFs trade < 50K volume
+		liq of ETF = liq of underlyings
+
+
+	ETF MONEY FLOWS—DON'T JUDGE AN ETF BY ITS SIZE
+		AUM and ADV are diff things. high ADV because of retail investors does not cause, change in ETF
+		shares created/redemption, doesnt change AUM
+
+	WHERE MONEY FLOWS CAN STEER YOU WRONG
+		outstanding shares might increase but ETF price might decline
+
+	MONEY FLOWS OF THE BUYERS
+		LP either buys from another MM, creats by buying underlying, or hedge using correlating asset
+
+	MONEY FLOWS OF THE SELLERS
+		ETF can be shorted by investors.
+			investor will borrow those shorted ETFs from LP
+			LP will get those ETFs from issuer by giving them underlying basket.
+			So shorting increases assets in the fund
+
+	LOOKING AT CEF VS. ETF MONEY FLOWS
+	LOOKING AT MF VS. ETF MONEY FLOWS
 	
 	
 
