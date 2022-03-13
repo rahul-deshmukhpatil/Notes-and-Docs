@@ -269,8 +269,73 @@ Chapter 4 Trading Volumes and ETF Liquidity
 	
 	
 
+Chapter 5i	Volume ≠ Liquidity—Understanding ETF Implied Liquidity 
+	
+	ADV : is trade volume
+	Liquidity : amount available to trade.
+
+	US trades ETFs with basket of hongkong underlyings
+	Still it trades millions of ETF shares during US trading day
+	ETF liquidity is order of significance
+		1. ETF ADV
+		2. Underlying basket
+		3. Derivatives related to ETF and underlyings + swaps
+			of ETF futures and options
+			of underlyinng basket?
+		4. Correlated ETFs and any other instrumetns
+			EEM, VWO and DEM as are correlated emerging market ETFs
+			Nikkei future on CME, as hedge for US listed ETFs on Japanese Equity
+			to trade during US hours
+
+	ETF IMPLIED LIQUIDITY: IMPLIED DAILY TRADABLE SHARES
+		Bloomnberg IDTS : implied daily tradable shares,
+			looks at how many of underlying shares traded to predict ETF volume
+			its predicted no of shares can be traded
+	
+		Its because ETF adv might be 10M, but underlyings basket ADV might be 500M.
+		
+		
+	THE ETF BASKET IMPLIED LIQUIDITY SCALE (EBILS)
+		comparing liquidity (CU shares, ADV, IDTS, IDTS $Value) of ETFs with each other
 
 
+	ETF Market Maker tools
+		1. ETF and its basket product data
+		2. ETF and underlying market data
+		3. Corp Actions and dividends processing and DB system
+		4. Funding rates and stock availibility with stock loan
+		5. Tracking ETF cash balance and variables affecting NAV but not in creation/redemption basket
+			ie. creation, redemption fees, one of fees?
+		6. Exporting baskets for creation/redemption
+
+	Theoretical NAV Model
+		1. can calc NAV and IIV from basket and theo depth of basket
+		2. can display multuple ETFs based on multiple filters
+		3. fast quoting on ETF and underlyings
+		4. display halted stocks and LULD halts
+		5. click to trade facility for traders
+		6. connectivity with ETF and metadata,refdata DB
+		7. for off market hours pricing, pricing models with correlated instruments
+
+	ETF Trading System
+		1. ability to trade Fut, ETF, underlyings
+		2. trade multiple ETFs, collective hedges, OMS for tracking positions and adjust according to market dynamics
+		3. single stock delta from incomplete orders
+		4. market spray func: ability to spray basket and fut over ECNS based on target ETF qty
+	
+	Risk Management and Profit and Loss (PnL) Monitoring System
+		1. ability to show the ETF/Fut delta in terms of the single stock.
+		2. Also recognize all exposures fixed income, currency, commodities
+		3. shows daily funding, stock loan, dividends, fair value
+		4. seperate risk books for index, sector funds etc
+		5. PnL breakdown between ETF and  basket/future analysis
+		6. Manual trades for customers, brokers
+		7. realtime delta and PnL for all positions
+	
+	Client OMS
+		1. sends orders to exchange and fills to strategies
+		2. func for ISO and Reg NMS
+		3. feeds orders to RMS
 
 
 
