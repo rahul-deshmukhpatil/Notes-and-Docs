@@ -1,0 +1,62 @@
+
+
+--- Enlist 
+
+q)))(1; 2.4; 4;)
+enlist[1;2.4;4;]
+q)))(1; 2; 4;)
+enlist[1;2;4;]
+q)))(1; 2; 4)
+1 2 4
+
+
+q)))1 2.4 4
+1 2.4 4
+q)))(1 2.4 4)
+1 2.4 4
+
+---- needs homogenous for below syntax to be list
+q)))(1; 2.4; 4)
+1
+2.4
+4
+
+--- concat with ,
+q)))l:1 2 3
+q)))m:2,3,4
+q)))l,m
+1 2 3 2 3 4
+q)))m,l
+2 3 4 1 2 3
+
+--- new list with number of elements
+q)))15#1 2 3
+1 2 3 1 2 3 1 2 3 1 2 3 1 2 3
+q)))0#1 2 3
+`long$()
+q)5#5.2 2 3
+5.2 2 3 5.2 2
+
+
+--- add two lists or add to list
+q)))1 2 3 + 4 5 6
+5 7 9
+q)))1 2 3 + 4
+5 6 7
+
+--- & and | operators to all lists with single result / or result at each step \
+q)))(&/) 50 30 40 20
+20
+q)))(&\) 50 30 40 20
+50 30 30 20
+
+
+--- symbols list
+q)(`one; `two; `three)
+`one`two`three
+
+
+--- til
+q)3 + til 4
+3 4 5 6
+
