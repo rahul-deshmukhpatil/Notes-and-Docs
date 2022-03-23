@@ -1,5 +1,3 @@
-
-
 --- Enlist 
 
 q)))(1; 2.4; 4;)
@@ -59,4 +57,76 @@ q)(`one; `two; `three)
 --- til
 q)3 + til 4
 3 4 5 6
+
+
+1.1 Starting q
+1.2 Variables
+1.3 Whitespace
+1.4 The Q Console
+1.5 Comments
+1.6 Assignment
+1.7 Order of Evaluation
+1.8 Data Types 101
+1.9 Lists 101
+
+	#slicing list
+		q)4#til 10
+		0 1 2 3
+		q)-4#til 10
+		6 7 8 9
+
+	# empty list 
+		q)0#til 3
+		`long$()
+		q)0#til `
+		`symbol$()
+
+	# indexing list
+		q)L:til 10
+		q)L[0]
+		0
+		q)L[9]
+		9
+		q)L[10]
+		0N   ======> Something, not present
+		
+	# & and | over two lists
+		q)1 2 100 & 90 100 101
+		1 2 100
+		q)1 2 100 | 90 100 101
+		90 100 101
+
+	# Dont bother to know below
+		q))L:{x*x}
+		q))(L\) til 3
+		0 1 2         
+		0 1 4         
+		0 1 16        
+		0 1 256       
+		0 1 65536     
+		0 1 4294967296
+		0 1 0         
+
+1.10 Functions 101
+	functions could be
+		1. explcite infix functions 
+			L:{x*y} [3;4] == L:{[x;y] x*y;}  L[3;4]
+		2. inbuilt binary operators
+
+1.11 Functions on Lists 101
+1.12 Example: Fibonacci Numbers
+1.13 Example: Newton’s Method for nth Roots
+1.14 Example: FIFO Allocation
+1.15 Dictionaries and Tables 101
+1.16 q-sql 101
+1.17 Example: Trades Table
+1.18 File I/O 101
+1.19 Interprocess Communication 101
+1.20 Example: Asynchronous Callbacks
+1.21 Websockets 101
+
+
+
+
+
 
