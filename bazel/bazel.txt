@@ -1,0 +1,25 @@
+has rules, func and macros in .bzl files
+
+Phases
+	load
+	analysis
+	execution
+
+Uses starlark language similar to python
+	- without class (use struct function)
+	- dict, list : mutable
+	- int, none, string  same as python
+	- exception keywords => use fail for fatal error
+	- instead of 'is' use  ==
+	- for loop only at top level, no recrusion
+	- global vars are immutable
+	- most of python builtin methods and functions are NOT availalbe
+
+Macros:
+	might contain chain of calls to rules
+
+Rule creation: 
+	- impl function
+	- attrs
+	- must have executable=True
+	  or must have explicite test=True ===> rule name must have suffix  "_test"
