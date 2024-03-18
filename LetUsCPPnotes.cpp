@@ -56,6 +56,7 @@ Rules
 	  char *& rToCharPtr;
 	D> variable can have multiple references.
 	E> array of references is not possible unlike array of pointers
+	F> you can not dis-associate reference from varible it is referring to
 References help to write readable code while achieving object of passing object by address.
 
 RETURING BY REFERENCE
@@ -132,7 +133,12 @@ This is new addition to C++
 		There is no connection between function being inline and static. Or function templates should be inline.
 	Though recursive inline calls could be really replaced by actual recurisive function code till certain depth.
 
-	inlining like macro is source code copying.
+	inlining like macro is source code copying, without typical drawbacks of copy-paste errors
+	or flaws of modification at one place.
+
+	Inlining might not always recommended,
+		might increase cache miss
+		might increase binary size
 
 =================================================================================================
 =================================================================================================
@@ -152,7 +158,7 @@ Intro:
 1> CLASSES and CONSTRUCTORS
 	Construcotor is a function executed everytime when object is created.
 	Construcor has same name as of class signfies that it is construtor to the compiler.
-	No  return type is construtor as it is only called AUTOMATICALLY when object is created, and returning 
+	There is no return type for construtor as it is only called AUTOMATICALLY when object is created, and returning 
 	value doesnt make sense.
 	Compiler provids default zero argument construtor even when we dont define any argument constructor.
 	If we define a one or more argument constructor then its must to define a 0 argument constructor.
@@ -168,7 +174,7 @@ Intro:
 	Trivial					: No virtual func/base class
 							: all members and base are trivial
 							: no user defined special member functions
-							: t occupies a contiguous memory area. 
+							: T occupies a contiguous memory area. 
 							: It can have members with different access specifiers. In C++, the compiler is free to choose how to order members in this situation. Therefore, you can memcopy such objects but you cannot reliably consume them from a C program. 
 
 
@@ -189,7 +195,15 @@ Intro:
 						: if static/thread local object : zero initialize
 						: Calls default constructor if has any. Otherwise object is not initialized
 
-	Value initialization : T a(); T a{}; new T(); new T{}, Class::Class : T(){},Class::Class : T{} {} 
+	Value initialization : T a(); T a{}; new T(); new T{}, 
+							Class::Class
+								: T()
+							{
+							},
+							Class::Class
+								:T{} 
+							{
+							} 
 						: if 
 							no constructor(no implicitly declared default (in case of const or const reference data member), 
 							deleted default
