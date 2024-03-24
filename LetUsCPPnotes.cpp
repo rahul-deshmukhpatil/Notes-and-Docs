@@ -34,7 +34,7 @@ C++ doesnt do typecasting automaticaly like C. There are to methods of typecasti
 	B> intA = 8 * int (charB)
 
 VOID POINTER
-unlike C, u cannot assign void pointer to other type of pointer, u need to add explicite typecasting
+unlike C, u cannot assign void pointer to other type of pointer, u need to add explicit typecasting
 to convert void pointer to destination type.
 
 THE :: Operator
@@ -54,6 +54,7 @@ Rules
 	B> once initialised cannot refer to other variable i.e. they act very closly constant pointers
 	C> can create reference to pointer
 	  char *& rToCharPtr;
+	C.1> like pointer to pointer **, you can not create reference to the refernce, rvalue reference && is diff concept in c++
 	D> variable can have multiple references.
 	E> array of references is not possible unlike array of pointers
 	F> you can not dis-associate reference from varible it is referring to
@@ -62,6 +63,9 @@ References help to write readable code while achieving object of passing object 
 RETURING BY REFERENCE
 Do not return local variable by reference, as local variables are decalred on stack which may
 get overwritten after returning and reference may refer to variable in overwritten memory.
+
+In general do not take address of the reference or variable unless you do a new,
+the reference might get invalidated but pointer has unlimited lifetime.
 
 CONST QUALIFIER
 Const qualifier helps to replace #define macros as well as to control the scope of variable.
@@ -88,6 +92,8 @@ This is new addition to C++
 	Must declare function before using as c++ is a strong type check languagae.
 	Declaration as well has scope.
 
+	in C defualt prototype of funtion if not provided is `int func(...);`
+
 2> FUNCTION OVERLOADING
 	Function with same name must differ atleast in type, number or order of the parameters they
 	accept. Even const and non-const functions versions are overloaded
@@ -99,6 +105,12 @@ This is new addition to C++
 	B> Suppose we add a new parameter to the function and extend functions capability and dont want
 	to change older calls to the function, then older calls may use default values.
 	C> Default values are needed only in declaraion, Do not need to be specefied in definition
+		you can have multiple declarations with default values
+		each time you can specify more default values from right to left
+		f(a,b,c=1)
+		f(a,b=2,c)
+		f(a=3,b=2,c)
+
 	D> Since you can have multiple declarations in different scopes, but with same signature. Each declaration
 	could have different default value.
 
@@ -164,26 +176,30 @@ Intro:
 	If we define a one or more argument constructor then its must to define a 0 argument constructor.
 		
 	Default constructor is not generated if T has
-	1> Member is reference without default initializer list
+	1> Member is reference without default initializer list 
+			i.e  MemberT& memRef; // without = {}; ?
+			or T (){} ; // No constr intitalizer list?
 	2> Member is const without default initializer list or default constructor
-	3> Member does not have default constructor ( T()= delete; deleted def constr) 
+	3> Class member variable does not have default constructor ( T()= delete; deleted def constr) 
 	4> ambiguous constructor (another construtor with all params having default value)
 	5> Direct or virtual base does not have Constructor or destructor accessible or deleted.
 	
 
-	Trivial					: No virtual func/base class
+	Trivial (Trivially copied to read from C++, no user defined default logic)
+							: No virtual func/base class
 							: all members and base are trivial
-							: no user defined special member functions
+					===>	: no user defined special member functions
 							: T occupies a contiguous memory area. 
 							: It can have members with different access specifiers. In C++, the compiler is free to choose how to order members in this situation. Therefore, you can memcopy such objects but you cannot reliably consume them from a C program. 
 
 
-	standard layout			: No virtual func/base class
+	standard layout (Layout does not depend on the compiler ordering of public/private/protected and Base/Dervied/Virtual orderingin memory)
+							: No virtual func/base class
 							: all members and base are standard layout 
-							: all non-static data members have same access control
+					===>	: all non-static data members have same access control
 							: It is memcopy-able and the layout is sufficiently defined that it can be consumed by C programs. 
 							: Standard-layout types can have user-defined special member function
-							: Either most derived class has a non-static members or only one of the base can have non-static data memebers
+					===>	: Either most derived class has a non-static members or only one of the base can have non-static data memebers
 
 	POD						: When it is both standard layout and trivial it is POD. 
 							: therefore contiguous and each member has a higher address than the member that was declared before it, so that byte for byte copies and binary I/O can be performed on these types.
@@ -421,7 +437,12 @@ Intro:
 	. object created at predetemined location must be delete by placement destructor and vice-versa.
 	. Use of placement new, could help in scenario when hardware talks with software via mem-location.
 	. As well it is faster than conventional new and delete.
-	
+
+
+Rule Of 3: if you need 1 of 3 custom impls, you need all among (destr, copy constr, copy assignment operator)
+Rule of 5: if you provide any of rule of 3 functions or default or delete them, it deletes implicit move constr and copy assignment operator
+Rule of 0: either custom define none or all of 5
+
 =================================================================================================
 =================================================================================================
 
@@ -441,8 +462,8 @@ Intro:
 	
 3> CONST MEMBER FUNCTION
 	These will never modify any data member of the class.
-	costant objectsi could only call const member functions.
-	You can modify static and mutable data into the static function.
+	costant objects could only call const member functions.
+	You can modify static data into the static function.
 
 4> CONST MEMBER FUNCTION ARGUMENTS
 	Genrerally functions which pass variable by reference should pass it as const so that original
@@ -455,7 +476,7 @@ Intro:
 
 6> OVERLOADED ASSIGMENT OPERATOR and COPY CONSTRUCTOR
 	c1 = c2;	// default provided assignment operator
-	<class name>	c3 = c2;	// default copy construtor
+	<class name> c3 = c2;	// default copy construtor
 	if you want to perform more complex actions while using assignment operator or copy construtor just override them.
 	Overloaded = operator
 	1> takes reference of the object(declare it as const) as argument so time is not wasted in copying object
@@ -469,7 +490,7 @@ Intro:
 	by reference.
 
 	2> Doesnt return anything as it is constructor
-		syntax:         one::one(one&)
+		syntax:         one::one(const one&)
 
 7> DATA CONVERSION:
 	BASIC to USER_DEFINED
@@ -492,12 +513,11 @@ Intro:
 	int operator =(one &); it will search for "int" cast operator in userdefined class. So we define 
 	int cast operator in user defined class.
 
-
 	IN SOURCE CLASS
 	define a cast operator
 
 	IN DEST CLASS
-	define a one argument constructor
+	define a one argument constructor, copy assignment operator
 =================================================================================================
 =================================================================================================
 
