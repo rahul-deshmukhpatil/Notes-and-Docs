@@ -205,11 +205,36 @@ Intro:
 							: therefore contiguous and each member has a higher address than the member that was declared before it, so that byte for byte copies and binary I/O can be performed on these types.
 
 
+	https://abseil.io/tips/146
+	value initialization is
+		// first zero initialization
+		// then default initialization
+		
+	There are 3 categories of constructors
+		1. class Foo {}; // implicit default, i.e no contr defined
+				// T t; // default init, nothing intialized
+				// T t{} // value init
+		2. Foo() = default; // "Used-declared", NOT "user-provided".
+				// T t; // default init
+				// T t{} // value init
+		3. Foo() {} //  "user-provided".
+			// all members are always default initalized
+
+
+
 
 	Default initization : 	T a; 
 							auto a = new T;
 						: if static/thread local object : zero initialize
 						: Calls default constructor if has any. Otherwise object is not initialized
+
+	In simple terms
+			T t; => is default initialized, some members without default initializers will be uninitialized
+			// note T t(); is a function declaration;
+			T t{}; or auto t = T{} or auto t = T();
+					=> value initialized,
+					that is first zero initialize
+					then default initialize
 
 	Value initialization : T a(); T a{}; new T(); new T{}, 
 							Class::Class
@@ -228,6 +253,7 @@ Intro:
 						: if implicitly declared construtor: 
 							first zero intialize then default initialize
 						: if user declared call it  
+							first zero intialize then default initialize
 						: if array : initialize each element by value initialization 
 
 	zero initialization : static or thread-local storage duration that is not subject to constant initialization, before any other initialization.
@@ -429,7 +455,7 @@ Intro:
 		c> destructor
 		d> delete
 
-5> Objects at predetermined location
+5> Placement  constructor: Objects at predetermined location:
 	. new(ptr) class_name(); will create object of class_name at ptr location.
 	. There is no concept of placement delete, that you will have to override :  
 	. you will have to use placement destructor to delete same object 
@@ -482,7 +508,15 @@ Rule of 0: either custom define none or all of 5
 	1> takes reference of the object(declare it as const) as argument so time is not wasted in copying object
 	2> returns reference of the calling object using this pointer so that time is not wasted in returing value also
 		= operator chained like c4 = c3 = c2 = c1 etc.
-		syntax:         one& one::operator =(const one&)
+		syntax:         one& one::operator =(const one&) 
+			// Do not return by const one&. returning by const ref is bad idea as its allowed to bind temp
+			// and its life is only exteneded till ref lives, i.e the catching const ref variable life.
+			// and you might accidently return temporary for which compiler might not warn
+			// but if your return non-const ref to temprary/local var, compiler will make it hard 
+			// in general returning by ref is fragile specially if 
+			// 			returning local var // absolutly avoid
+			//			returning temp // return/catch by const ref, but its recursive refernces copy might hold to dangling reference
+			
 
 	Copy  constructor
 	1> takes reference of the object as argument so time is not wasted in copying object, also if u pass it by
@@ -510,7 +544,7 @@ Rule of 0: either custom define none or all of 5
 		int a; one obj;
 	   	a = obj; 
 	compiler will search for overloaded = operator, when it finds that int class doesnt contain
-	int operator =(one &); it will search for "int" cast operator in userdefined class. So we define 
+	int& operator =(one &); it will search for "int" cast operator in userdefined class. So we define 
 	int cast operator in user defined class.
 
 	IN SOURCE CLASS
