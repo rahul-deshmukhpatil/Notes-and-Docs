@@ -219,8 +219,15 @@ Intro:
 				// T t{} // value init
 		3. Foo() {} //  "user-provided".
 			// all members are always default initalized
+		4. class Foo {
+			Foo()
+			: v()
+			{} //  "user-provided".
 
-
+			int v;
+		  }
+			// T t{} // default init, but v is in with zero init
+			// T t{} // default init, but v is in with zero init
 
 
 	Default initization : 	T a; 
@@ -702,6 +709,8 @@ mutable:
 	Despite of object being constat you may want some of the data members to be changed. Declare such members as
 	a mutable. mutable are allowed to manipulate in the const members functions, the only functions could be called
 	by const objects after constructor and destructors.
+
+	This does not allow to edit const member of non-const object
 	
 namespace:
 	1> definition is same as of class, except last semicolon
@@ -713,13 +722,13 @@ namespace:
 
 typeid:
 	1> typeid of derived class is different from base
-	2> include typeinfo for  using typeid
+	2> include typeinfo for using typeid
 	3> typeid(obj).name prints the type of obj
 
 dynamic_cast:
 	1> source must not be void*
 	2> source must be polymorphic
-	3> source and destination could be out of hierarchy
+	3> source and destination could be out of hierarchy i.e Y shape hierarchy and source and destination could be on the opposite branch side
 	4> have to put the if(ptrConvertedIntoDestination) before using the pointer
 	5> Normally used to convert base class * to derived class
 
@@ -808,6 +817,9 @@ Template Class:
 	4> If some of the functionality of a template does not depend upon type, it can be put in common base.
 
 	5> Template shoud be used while creating typesafe class which could  operate on data of any type.
+
+	1. How template function argument converion happens for const/non-const params
+	2. how matching partial specialization is choosen
 
 =================================================================================================
 =================================================================================================
