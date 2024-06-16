@@ -13,14 +13,15 @@ Fixtures
 	: paramterize
 	: --durations=5 : top 5 durations test took
 
+	--lf, --last-failed - to only re-run the failures.
+	--ff, --failed-first - to run the failures first and then the rest of the tests.
+
 pytest-randomly: run tests randomly to detect any state dependancy
 
 Coverage report
 	pip install coverage
 	coverage run -m pytest --durations=5 
 	coverage report -m
-
-
 
 https://docs.pytest.org/en/8.2.x/how-to/usage.html
 Specifying which tests to run
@@ -123,6 +124,9 @@ Fixtures
 		function scope fixtures are destroyed at the end of test
 		session: the fixture is destroyed at the end of the test session.
 
+	@pytest.mark.fixt_data(42)
+	marker = request.node.get_closest_marker("fixt_data")
+
 	Teardown/Cleanup (AKA Fixture finalization)
 		1. yield fixtures (recommended)
 			return is swapped out for yield.
@@ -162,7 +166,7 @@ Fixtures
 			def empty_mailbox():
 				receiving_user.clear_mailbox()
 
-				request.addfinalizer(empty_mailbox)
+			request.addfinalizer(empty_mailbox)
 			return _email
 
 Running multiple assert statements safely
@@ -295,3 +299,53 @@ Override a fixture with direct test parametrization
 Using fixtures from other projects
 	define pytest_plugins in app/tests/conftest.py pointing to that module.
 	pytest_plugins = "mylibrary.fixtures"
+
+
+
+Monkeypatching functions
+
+
+	def getssh():
+		"""Simple function to return expanded homedir ssh path."""
+		return Path.home() / ".ssh"
+
+
+	def test_getssh(monkeypatch):
+		# mocked return function to replace Path.home
+		# always return '/abc'
+		def mockreturn():
+			return Path("/abc")
+
+		# Application of the monkeypatch to replace Path.home
+		# with the behavior of mockreturn defined above.
+		monkeypatch.setattr(Path, "home", mockreturn)
+
+		# Calling getssh() will use mockreturn in place of Path.home
+		# for this test with the monkeypatch.
+		x = getssh()
+		assert x == Path("/abc/.ssh")	
+
+Global patch example: preventing “requests” from remote operations
+	 monkeypatch.delattr("requests.sessions.Session.request")
+
+Monkeypatching environment variables
+	@pytest.fixture
+	def mock_env_missing(monkeypatch):
+    	monkeypatch.delenv("USER", raising=False)
+
+	# notice the tests reference the fixtures for mocks
+	def test_upper_to_lower(mock_env_user):
+		assert get_os_user_lower() == "testinguser"
+
+Monkeypatching dictionaries
+	monkeypatch.setitem can be used to safely set the values of dictionaries to specific values during tests.
+	@pytest.fixture
+def mock_test_database(monkeypatch):
+    """Set the DEFAULT_CONFIG database to test_db."""
+    monkeypatch.setitem(app.DEFAULT_CONFIG, "database", "test_db")
+
+
+@pytest.fixture
+def mock_missing_default_user(monkeypatch):
+    """Remove the user key from DEFAULT_CONFIG"""
+    monkeypatch.delitem(app.DEFAULT_CONFIG, "user", raising=False)
