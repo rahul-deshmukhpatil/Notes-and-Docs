@@ -1,0 +1,297 @@
+Unittest has setUp and tearDown methods, pytest has fixtures
+
+Fixtures
+	: conftest.py
+	: fixture can call fixutre
+	: available in parent and subdirs without import
+
+	: monkeypatch
+	: pytest.mark : provide marks in pytest.ini
+		pytest -m "network or large"
+
+	: skip, xfail, skip_if
+	: paramterize
+	: --durations=5 : top 5 durations test took
+
+pytest-randomly: run tests randomly to detect any state dependancy
+
+Coverage report
+	pip install coverage
+	coverage run -m pytest --durations=5 
+	coverage report -m
+
+
+
+https://docs.pytest.org/en/8.2.x/how-to/usage.html
+Specifying which tests to run
+	pytest -k 'MyClass and not method'
+	pytest tests/test_mod.py::TestClass::test_method
+	pytest tests/test_mod.py::test_func[x1,y2]
+
+	Run tests from packages
+		pytest --pyargs pkg.testing
+	
+	Read arguments from file
+		pytest @tests_to_run.txt
+
+	pytest --fixtures  # show available builtin function arguments
+
+Managing loading of plugins
+	pytest -p mypluginmodule
+	pytest -p pytest_cov
+	pytest -p no:doctest
+
+Asserts
+		Alternate form (legacy)
+			pytest.raises(ValueError, func, x=-1)
+
+		@pytest.mark.xfail(raises=IndexError)
+
+	    with pytest.raises(RuntimeError) as excinfo:
+		        foo()
+		assert excinfo.type is RuntimeError
+
+		def test_match():
+		    with pytest.raises(ValueError, match=r".* text in exception str .*"):
+			        myfunc()
+
+		def test_exception_in_group_at_given_depth():
+		    with pytest.raises(ExceptionGroup) as excinfo:
+				raise ExceptionGroup(
+						"Group message",
+						[
+						RuntimeError(),
+						ExceptionGroup(
+							"Nested group",
+							[
+							TypeError(),
+							],
+							),
+						],
+						)
+			assert excinfo.group_contains(RuntimeError, depth=1)
+			assert excinfo.group_contains(TypeError, depth=2)
+			assert not excinfo.group_contains(RuntimeError, depth=2)
+			assert not excinfo.group_contains(TypeError, depth=1)
+
+
+Warns
+	pytest.warns(expected_warning, func, *args, **kwargs)
+	pytest.warns(expected_warning, "func(*args, **kwargs)")
+
+	with pytest.warns(RuntimeWarning) as record:
+	    warnings.warn("another warning", RuntimeWarning)
+
+	# check that only one warning was raised
+	assert len(record) == 1
+	# check that the message matches
+	assert record[0].message.args[0] == "another warning"
+
+Defining your own explanation for failed assertions
+	Any conftest file can implement this hook.
+	# content of conftest.py
+	from test_foocompare import Foo
+
+
+	def pytest_assertrepr_compare(op, left, right):
+		if isinstance(left, Foo) and isinstance(right, Foo) and op == "==":
+			return [
+				"Comparing Foo instances:",
+				f"   vals: {left.val} != {right.val}",
+			]
+
+Assertion introspection details
+	assert failure : texts are computed before the asserts are actually run
+
+Fixtures
+	Fixtures are reusable
+	A test/fixture can request more than one fixture at a time
+	Fixtures can be requested more than once per test (return values are cached)
+	Autouse fixtures (fixtures you don’t have to request)
+
+	Scope: sharing fixtures across classes, modules, packages or session
+		// called only once for all tests within same module
+		// saves time
+		// values for scope are: function, class, module, package or session.
+
+		@pytest.fixture(scope="module")
+		def smtp_connection():
+		    return smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
+
+	Fixture scopes
+		Fixtures are created when first requested by a test, and are destroyed based on their scope:
+		function scope fixtures are destroyed at the end of test
+		session: the fixture is destroyed at the end of the test session.
+
+	Teardown/Cleanup (AKA Fixture finalization)
+		1. yield fixtures (recommended)
+			return is swapped out for yield.
+			Any teardown code for that fixture is placed after the yield.
+			Once the test is finished, pytest will go back down the list of fixtures, but in the reverse order, taking each one that yielded, and running the code inside it that was after the yield statement.
+
+			@pytest.fixture
+			def mail_admin():
+				return MailAdminClient()
+
+
+			@pytest.fixture
+			def sending_user(mail_admin):
+				user = mail_admin.create_user()
+				yield user
+				mail_admin.delete_user(user)
+
+		   @pytest.fixture
+		   def receiving_user(mail_admin):
+				user = mail_admin.create_user()
+				yield user
+				user.clear_mailbox()
+				mail_admin.delete_user(user)
+
+			def test_email_received(sending_user, receiving_user):
+				email = Email(subject="Hey!", body="How's it going?")
+				sending_user.send_email(email, receiving_user)
+				assert email in receiving_user.inbox
+
+		2. Adding finalizers directly
+
+		@pytest.fixture
+		def email(sending_user, receiving_user, request):
+			_email = Email(subject="Hey!", body="How's it going?")
+			sending_user.send_email(_email, receiving_user)
+
+			def empty_mailbox():
+				receiving_user.clear_mailbox()
+
+				request.addfinalizer(empty_mailbox)
+			return _email
+
+Running multiple assert statements safely
+	fixtures inside class
+
+	class TestLandingPageSuccess:
+    @pytest.fixture(scope="class", autouse=True)
+    def login(self, driver, base_url, user):
+        driver.get(urljoin(base_url, "/login"))
+        page = LoginPage(driver)
+        page.login(user)
+
+	class TestLandingPageBadCredentials:
+		@pytest.fixture(scope="class")
+		def faux_user(self, user):
+			_user = deepcopy(user)
+			_user.password = "badpass"
+			return _user
+
+		def test_raises_bad_credentials_exception(self, login_page, faux_user):
+			with pytest.raises(BadCredentialsException):
+				login_page.login(faux_user)
+
+
+Using markers to pass data to fixtures
+	@pytest.fixture
+	def fixt(request):
+		marker = request.node.get_closest_marker("fixt_data")
+		if marker is None:
+			# Handle missing marker in some way...
+			data = None
+		else:
+			data = marker.args[0]
+
+		# Do something with the data
+		return data
+
+	
+	// 42 will be used as arg to calculate fixture
+	@pytest.mark.fixt_data(42)
+	def test_fixt(fixt):
+		assert fixt == 42
+
+Factories as fixtures
+	fixture instead returns a function which generates the data. This function can then be called multiple times in the test
+
+	@pytest.fixture
+	def make_customer_record():
+		created_records = []
+
+		def _make_customer_record(name):
+			record = models.Customer(name=name, orders=[])
+			created_records.append(record)
+			return record
+
+		yield _make_customer_record
+
+		for record in created_records:
+			record.destroy()
+
+
+	def test_customer_records(make_customer_record):
+		customer_1 = make_customer_record("Lisa")
+		customer_2 = make_customer_record("Mike")
+		customer_3 = make_customer_record("Meredith")
+
+
+Parametrizing fixtures
+	will cause all tests using the fixture to run twice
+
+	@pytest.fixture(scope="module", params=["smtp.gmail.com", "mail.python.org"])
+	def smtp_connection(request):
+		smtp_connection = smtplib.SMTP(request.param, 587, timeout=5)
+		yield smtp_connection
+		print(f"finalizing {smtp_connection}")
+		smtp_connection.close()
+
+
+Use fixtures in classes and modules with usefixtures
+	You can specify multiple fixtures like this:
+	@pytest.mark.usefixtures("cleandir", "anotherfixture")
+
+	and you may specify fixture usage at the test module level using pytestmark:
+	pytestmark = pytest.mark.usefixtures("cleandir")
+
+	@pytest.mark.usefixtures("cleandir")
+	class TestDirectoryInit:
+		def test_cwd_starts_empty(self):
+			assert os.listdir(os.getcwd()) == []
+			with open("myfile", "w", encoding="utf-8") as f:
+				f.write("hello")
+
+		def test_cwd_again_starts_empty(self):
+			assert os.listdir(os.getcwd()) == []
+
+	It is also possible to put fixtures required by all tests in your project into an ini-file:
+	# content of pytest.ini
+	[pytest]
+	usefixtures = cleandir
+
+Override a fixture on a folder (conftest) level
+Override a fixture on a test module level
+Override a fixture with direct test parametrization
+	tests/
+    conftest.py
+        # content of tests/conftest.py
+        import pytest
+
+        @pytest.fixture
+        def username():
+            return 'username'
+
+        @pytest.fixture
+        def other_username(username):
+            return 'other-' + username
+
+    test_something.py
+        # content of tests/test_something.py
+        import pytest
+
+        @pytest.mark.parametrize('username', ['directly-overridden-username'])
+        def test_username(username):
+            assert username == 'directly-overridden-username'
+
+        @pytest.mark.parametrize('username', ['directly-overridden-username-other'])
+        def test_username_other(other_username):
+            assert other_username == 'other-directly-overridden-username-other'
+
+
+Using fixtures from other projects
+	define pytest_plugins in app/tests/conftest.py pointing to that module.
+	pytest_plugins = "mylibrary.fixtures"
