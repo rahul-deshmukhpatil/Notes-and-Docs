@@ -3,7 +3,7 @@ Unittest has setUp and tearDown methods, pytest has fixtures
 Fixtures
 	: conftest.py
 	: fixture can call fixutre
-	: available in parent and subdirs without import
+	: available to use in parent and subdirs without import
 
 	: monkeypatch
 	: pytest.mark : provide marks in pytest.ini
@@ -38,15 +38,16 @@ Specifying which tests to run
 	pytest --fixtures  # show available builtin function arguments
 
 Managing loading of plugins
+	If multiple plugins have dependencies on each other, early loading allows controlling the order in which they are loaded.
 	pytest -p mypluginmodule
 	pytest -p pytest_cov
 	pytest -p no:doctest
 
 Asserts
+		@pytest.mark.xfail(raises=IndexError)
+
 		Alternate form (legacy)
 			pytest.raises(ValueError, func, x=-1)
-
-		@pytest.mark.xfail(raises=IndexError)
 
 	    with pytest.raises(RuntimeError) as excinfo:
 		        foo()
@@ -106,9 +107,14 @@ Assertion introspection details
 
 Fixtures
 	Fixtures are reusable
+
 	A test/fixture can request more than one fixture at a time
+	Autouse fixtures (fixtures you don’t have to explicitly call or request)
 	Fixtures can be requested more than once per test (return values are cached)
-	Autouse fixtures (fixtures you don’t have to request)
+		using for fixture called setup_data 
+			def test_multiple_calls(request):
+		    setup_data = request.getfixturevalue("setup_data")
+			new_setup_data = request.getfixturevalue("setup_data")
 
 	Scope: sharing fixtures across classes, modules, packages or session
 		// called only once for all tests within same module
@@ -136,7 +142,6 @@ Fixtures
 			@pytest.fixture
 			def mail_admin():
 				return MailAdminClient()
-
 
 			@pytest.fixture
 			def sending_user(mail_admin):
