@@ -9,10 +9,19 @@ Fixtures
 	: pytest.mark : provide marks in pytest.ini
 		pytest -m "network or large"
 
-	: skip, xfail, skip_if
-	: paramterize
-	: --durations=5 : top 5 durations test took
+	5 markers
+		pytest.mark.paramterize : dont run it
+		pytest.mark.skip : dont run it
+		pytest.mark.skip_if: dont run if condition
+		pytest.mark.xfail : run but it is going to fail most likely
+		pytest.mark.usefixtures("cleandir", "anotherfixture")
+	
+		CUSTOM_MAKRERS and acessing the markers args
 
+	pytest.fail("test failed due to..."): fail explicitely and stop executing test if cond or exception riased
+
+	args
+	--durations=5 : top 5 durations test took
 	--lf, --last-failed - to only re-run the failures.
 	--ff, --failed-first - to run the failures first and then the rest of the tests.
 
