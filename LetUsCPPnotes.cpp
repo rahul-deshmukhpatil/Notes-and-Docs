@@ -7,7 +7,10 @@
 	Ways to refer identifier belonging to some specefic namespace
 	A> namespace::identifier	
 	B> using namespace <name_of_namespace>;	
+
 	endl is a output manipulator function
+		its \n + flush data : so slower than raw \n
+
 	iostream.h contains declarations needed by the cin and cout
 
 FUNCTION PROTOTYPE
@@ -54,17 +57,19 @@ Rules
 	B> once initialised cannot refer to other variable i.e. they act very closly constant pointers
 	C> can create reference to pointer
 	  char *& rToCharPtr;
-	C.1> like pointer to pointer **, you can not create reference to the refernce, rvalue reference && is diff concept in c++
+		C.1> like pointer to pointer **, you can not create reference to the refernce, rvalue reference "&&" is diff concept in c++
 	D> variable can have multiple references.
 	E> array of references is not possible unlike array of pointers
+		E.1> you can impl your own custom `CustomRef { const T *ptr; auto operator->() {return ptr;}`, but you can not override `dot` operator for exact behavior;
 	F> you can not dis-associate reference from varible it is referring to
 References help to write readable code while achieving object of passing object by address.
 
 RETURING BY REFERENCE
 Do not return local variable by reference, as local variables are decalred on stack which may
 get overwritten after returning and reference may refer to variable in overwritten memory.
+in general return by reference, is bad idea (specificlly non-class functions which does not return any large cached golden copy object)
 
-In general do not take address of the reference or variable unless you do a new,
+In general do not take address of the reference(i.e. variable) unless object is created dynamically using new,
 the reference might get invalidated but pointer has unlimited lifetime.
 
 CONST QUALIFIER
@@ -124,6 +129,7 @@ This is new addition to C++
 	. (member selection)
 	.* (member selection with pointer-to-member)
 	:: (scope resolution)
+	: (access or inheritance specifier, range, goto, ternary, bitfield specifier)
 	sizeof (object size information)
 	typeid (object type information)
 	static_cast (casting operator)
@@ -152,6 +158,8 @@ This is new addition to C++
 		might increase cache miss
 		might increase binary size
 
+	Inline functions are usually in the header files
+	but they could be in source .cpp files if gcc -flto Link Time optimization is enabled
 =================================================================================================
 =================================================================================================
 
@@ -173,7 +181,7 @@ Intro:
 	There is no return type for construtor as it is only called AUTOMATICALLY when object is created, and returning 
 	value doesnt make sense.
 	Compiler provids default zero argument construtor even when we dont define any argument constructor.
-	If we define a one or more argument constructor then its must to define a 0 argument constructor.
+	If we define a one or more argument constructor then default construcotr is not generated and we must to define a 0 argument constructor.
 		
 	Default constructor is not generated if T has
 	1> Member is reference without default initializer list 
@@ -365,7 +373,7 @@ Intro:
 
 2> Free store exaustion:
 	. when maximum memory is already allocated, new returns NULL.
-	. To handler this scenario, c++ internally maintains a function pointer _new_handler.
+	. To handle this scenario, c++ internally maintains a function pointer _new_handler.
 	. new_handler could be set using set_new_handler(void (*fp)());
 	  where fp could be pointing to any memWarning/mem freeing function function.
 	. ideally memWarning should free some memory so new could return some memory and program continue. 
@@ -473,7 +481,10 @@ Intro:
 
 
 Rule Of 3: if you need 1 of 3 custom impls, you need all among (destr, copy constr, copy assignment operator)
-Rule of 5: if you provide any of rule of 3 functions or default or delete them, it deletes implicit move constr and copy assignment operator
+Rule of 5: if you 
+			1. provide any of rule of 3 functions 
+			2. or default or delete them,
+		it deletes implicit move constr and copy assignment operator
 Rule of 0: either custom define none or all of 5
 
 =================================================================================================
@@ -505,7 +516,8 @@ Rule of 0: either custom define none or all of 5
 5> CONST OBJECTS
 	Only const member functions could be called with the const objects, as they guarntee that they
 	will not modify any of data member.
-	Only constructor and destructor allows to modify the data members of const functions.
+	Only constructor and destructor are automitcally called non-const functions for a const declared object
+		- constr and destr both are non-const functions
 
 6> OVERLOADED ASSIGMENT OPERATOR and COPY CONSTRUCTOR
 	c1 = c2;	// default provided assignment operator
@@ -516,7 +528,10 @@ Rule of 0: either custom define none or all of 5
 	2> returns reference of the calling object using this pointer so that time is not wasted in returing value also
 		= operator chained like c4 = c3 = c2 = c1 etc.
 		syntax:         one& one::operator =(const one&) 
-			// Do not return by const one&. returning by const ref is bad idea as its allowed to bind temp
+			// Do not return by const one&. 
+					the obj calling = op is not const 
+					returning by const ref is bad idea as its allowed to bind temp
+
 			// and its life is only exteneded till ref lives, i.e the catching const ref variable life.
 			// and you might accidently return temporary for which compiler might not warn
 			// but if your return non-const ref to temprary/local var, compiler will make it hard 
