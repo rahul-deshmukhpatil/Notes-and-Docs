@@ -198,14 +198,14 @@ Intro:
 							: all members and base are trivial
 					===>	: no user defined special member functions
 							: T occupies a contiguous memory area. 
-							: It can have members with different access specifiers. In C++, the compiler is free to choose how to order members in this situation. Therefore, you can memcopy such objects but you cannot reliably consume them from a C program. 
+							: It can have members with different access specifiers. In C++, the compiler is free to choose how to order members in this situation. Therefore, you can memcopy such objects but you cannot reliably consume them from a C program or C++ programs compiled with another compiler. 
 
 
 	standard layout (Layout does not depend on the compiler ordering of public/private/protected and Base/Dervied/Virtual orderingin memory)
 							: No virtual func/base class
 							: all members and base are standard layout 
 					===>	: all non-static data members have same access control
-							: It is memcopy-able and the layout is sufficiently defined that it can be consumed by C programs. 
+							: It is memcopy-able and the layout is sufficiently defined that it can be consumed by C or C++ programs compiled with diff compiler. 
 							: Standard-layout types can have user-defined special member function
 					===>	: Either most derived class has a non-static members or only one of the base can have non-static data memebers
 
@@ -346,10 +346,21 @@ Intro:
 		While if derived class is declared class then base class inherited privatly.
 	
 8> ODR-use
-	Informally, an object is odr-used if its value is read (unless it is a compile time constant) or written, its address
-	is taken, or a reference is bound to it; a reference is odr-used if it is used and its referent is not known at
-	compile time; and a function is odr-used if a function call to it is made or its address is taken. If an object,
-	a reference or a function is odr-used, its definition must exist somewhere in the program; a violation of that
+	
+	Informally, an object is odr-used if 
+		its value is read (unless it is a compile time constant) 
+		or written
+		or its address is taken,
+		or a reference is bound to it;
+
+	a reference is odr-used if 
+		it is used and its referent is not known at	compile time; 
+
+	a function is odr-used if
+		a function call to it is made 
+		or its address is taken. 
+
+	If an object, a reference or a function is odr-used, its definition must exist somewhere in the program; a violation of that
 	is usually a link-time error.
 		
 =================================================================================================
@@ -477,7 +488,9 @@ Intro:
 		ptr->~class_name.
 	. object created at predetemined location must be delete by placement destructor and vice-versa.
 	. Use of placement new, could help in scenario when hardware talks with software via mem-location.
-	. As well it is faster than conventional new and delete.
+	. As well it is faster than conventional new and delete 
+		so you could use pre-allocated memory
+		or implement object store
 
 
 Rule Of 3: if you need 1 of 3 custom impls, you need all among (destr, copy constr, copy assignment operator)
