@@ -520,7 +520,6 @@ Rule of 0: either custom define none or all of 5
 3> CONST MEMBER FUNCTION
 	These will never modify any data member of the class.
 	costant objects could only call const member functions.
-	You can modify static data into the static function.
 
 4> CONST MEMBER FUNCTION ARGUMENTS
 	Genrerally functions which pass variable by reference should pass it as const so that original
