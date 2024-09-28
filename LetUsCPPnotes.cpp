@@ -625,7 +625,8 @@ Rule of 0: either custom define none or all of 5
 
 		If base classes contain function with same name, compiler tried to inherite both of these functions 
 		which creates ambiguity. Then to resolve the ambiguity just declare which function among two to use
-		by saying			base_class_name :: function_name; in the class definition.
+		by saying			
+				base_class_name :: function_name; in the class definition.
 
 		Constructors: In case of multiple inheritance. constructors of the base called are called first in
 					the order used in the class declaration. There calls are not depend upon order in constructor
@@ -687,7 +688,7 @@ OVERLOADED << and >>
 		public:
 			friend ostream& operator << (ostream& , one&)
 	}
-	ostream& operator << (ostream& o, one& x)
+	ostream& operator << (ostream& o, const one& x)
 	{
 		o << x.i;
 	}
@@ -769,7 +770,7 @@ static_cast:
 		But otherway conversion is as well possible without any compile time error, however, 
 		it is undefined behavior to static_cast down a hierarchy to a type that isn't actually the type of the object.
 
-cost_cast:
+const_cast:
 	1> convert const object into non-const type
 	
 reinterpret_cast
@@ -843,7 +844,7 @@ Template Class:
 
 	4> If some of the functionality of a template does not depend upon type, it can be put in common base.
 
-	5> Template shoud be used while creating typesafe class which could  operate on data of any type.
+	5> Template shoud be used while creating typesafe class which could operate on data of any type.
 
 	1. How template function argument converion happens for const/non-const params
 	2. how matching partial specialization is choosen
