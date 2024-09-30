@@ -1,3 +1,10 @@
+bitand  // using bin = std::bitset<8>; bin1 & bin2
+bitor
+bool
+break
+case
+
+
 1. alignas
 
 struct s1 final {};
