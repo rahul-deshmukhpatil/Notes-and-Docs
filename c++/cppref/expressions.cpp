@@ -1,12 +1,13 @@
 Expressions
 	has operand and operator
 
-	produce output which
+	produce output
+	value
 	value category	: lvalue, rvalue
 	type 			: int, double, class type
 
 
-	operators percedence
+	operators
 		conversions:
 			special operators : with name
 			casts

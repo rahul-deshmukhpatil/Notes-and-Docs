@@ -1,5 +1,5 @@
 
-its a command, performs an actiod, doesnt have return type like expression
+its a command, performs an action, doesnt have return type like expression
 
 Linguistic analogy: In natural languages, a statement is a complete thought or idea. Similarly, in programming, a statement represents a complete instruction or action for the computer to execute.
 
