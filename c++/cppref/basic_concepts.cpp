@@ -34,3 +34,60 @@ ADL argument dependant lookup
 
 	then for all candidates it find, it does the overload resolution
 
+Elaborated type specifier
+	specify the keyword explicitely class or enum to unhide from variable of same name as of class
+
+		class T
+		{
+		public:
+			class U;
+		private:
+			int U;
+		};
+ 
+		int main()
+		{
+			int T;
+			T t; // error: the local variable T is found
+			class T t; // OK: finds ::T, the local variable T is ignored
+			T::U* u; // error: lookup of T::U finds the private data member
+			class T::U* u; // OK: the data member is ignored
+		}
+
+	if you specify something as class, and class definition is not available, then that is declaration
+	of class definition exists somewhere afterwards.
+	eg.
+		main () { class A a; } // declaration of A and def of a
+		class A {};
+
+	cant apply to template typeparameter T below.
+
+	template<typename T>
+	class Node
+	{
+		friend class T; // error: type parameter cannot appear in an elaborated type specifier;
+						// note that similar declaration `friend T;` is OK.
+	};
+ 	
+	
+
+Address of an overloaded function
+	void f(int){}
+	void f(double){}
+
+	struct A{ void f(int){}; void f(double)};
+
+	void (*pf)(int) = f; // f(int) choosen
+	void (&rf)(double) = f; // f(double) choosen
+	
+	void (A::&rmf)(int) = f; // A::f(int)
+	void (A::*rmf)(double) = f; // A::f(double)
+
+	void g(ptr_if, ptr_df); // declare
+	g(f,f); // f(int), f(double)
+	
+	template<void (*pf)(int)>
+	Temp {};
+	Temp<f> a; // pf = f(int)
+	
+
