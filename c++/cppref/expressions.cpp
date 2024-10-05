@@ -1,19 +1,23 @@
 value category
-	ravlue: prvalue (pure rvalues)
+	ravlue:
+			prvalue: (pure rvalues)
 				literals or temprary single expression result
 				dont have mem address
-				not on stack, only in registers 
+				not on stack, only in registers
 				only
-			xvalue (expiring values)
+			xvalue: (expiring values)
 				may have stack address not heap
 				rvalue ref types T&&
 				can std::move
 
-	glvalue: 
+			xvalue: is part of both glvalue and rvalue
+
+	glvalue: generalized lvalue
 			lvalue:
 				can appear on left side of expression
 				have stack or heap address
 				func call returning Ref, has a lvalue
+
 
 
 Expressions
