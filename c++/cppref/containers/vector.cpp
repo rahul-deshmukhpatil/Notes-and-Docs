@@ -13,6 +13,8 @@ difference-type ptrdiff_t, can have negative value
 
 reverse iterator begin == std::prev(frontit).
 
+resize : might erase elements if shortened due to small new size
+
 assign 
 assign_range
 
