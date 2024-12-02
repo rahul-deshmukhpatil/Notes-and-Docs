@@ -18,7 +18,7 @@ c++ is strong type checked lang i.e prototype of function must be known before c
 
 FLEXIBLE DECLARATIONS
 declare variables at the time of using them, not neccessory to declare them at starting of code block.
-Eases the code reading as variables are declared where they are used.
+eases the code reading as variables are declared where they are used.
 As well you do not need to initialize variables if control does not reach there use point.
 
 STRUCTURE ENUM and UNION SYNTAX
@@ -185,8 +185,7 @@ Intro:
 		
 	Default constructor is not generated if T has
 	1> Member is reference without default initializer list 
-			i.e  MemberT& memRef; // without = {}; ?
-			or T (){} ; // No constr intitalizer list?
+			i.e  MemberT& memRef; // without default init value = {}; ?
 	2> Member is const without default initializer list or default constructor
 	3> Class member variable does not have default constructor ( T()= delete; deleted def constr) 
 	4> ambiguous constructor (another construtor with all params having default value)
@@ -235,8 +234,6 @@ Intro:
 			int v;
 		  }
 			// T t{} // default init, but v is in with zero init
-			// T t{} // default init, but v is in with zero init
-
 
 	Default initization : 	T a; 
 							auto a = new T;
@@ -269,7 +266,7 @@ Intro:
 							first zero intialize then default initialize
 						: if user declared call it  
 							first zero intialize then default initialize
-						: if array : initialize each element by value initialization 
+						: if array: initialize each element by value initialization 
 
 	zero initialization : static or thread-local storage duration that is not subject to constant initialization, before any other initialization.
 						: As part of value-initialization sequence for non-class types and for members of value-initialized class types that have no constructors, including value initialization of elements of aggregates for which no initializers are provided.
@@ -298,7 +295,6 @@ Intro:
 			(since C++11)
 			Every direct base of T has a trivial default constructor
 			Every non-static member of class type has a trivial default constructor
-
 
 3> OVERLOADED OPERATORS
 	They enable use to use +, - , && like operators, which could be used with inbuilt data types, 
