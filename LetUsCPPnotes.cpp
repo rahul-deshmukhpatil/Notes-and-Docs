@@ -515,7 +515,7 @@ Rule of 0: either custom define none or all of 5
 	
 3> CONST MEMBER FUNCTION
 	These will never modify any data member of the class.
-	costant objects could only call const member functions.
+	constant objects could only call const member functions.
 
 4> CONST MEMBER FUNCTION ARGUMENTS
 	Genrerally functions which pass variable by reference should pass it as const so that original
@@ -526,6 +526,8 @@ Rule of 0: either custom define none or all of 5
 	will not modify any of data member.
 	Only constructor and destructor are automitcally called non-const functions for a const declared object
 		- constr and destr both are non-const functions
+		- ie. the object is const: its constr and destr can call non-const methods
+		- ie. the data member is const: they cant modify it
 
 6> OVERLOADED ASSIGMENT OPERATOR and COPY CONSTRUCTOR
 	c1 = c2;	// default provided assignment operator
