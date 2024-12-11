@@ -101,6 +101,34 @@ Object – Scope – Lifetime
 		
 
 Definitions and ODR
+	decl is def except
+		func without body
+		extern
+		non inline static member
+		constexpr inline static member in cpp file
+		class Y func(class T t); // Y and T might be incomplete decls of class
+		enum Color : int;
+		typedef and aliasing ; // of might be incomplete types
+
+	Inheriting constructors
+		all overloads of Base::Base inherited
+		members default init values could be func
+			class A{ int a=func();};
+		D: B1, B2 { using B1:B1;}; // first intialize args of B1::B1 and then 
+								// B2 and D are default intialized
+	
+	ODR:
+		two levels
+		1. translation unit level
+			fn, var, template, class, enum can have only 1 defn in 1 translation unit
+		2. global level
+			non-inline func and non-inline var can have only 1 defn across program
+
+		Odr used : if you must know address or address matters during runtime
+		var: read(except compile time constants), written, address taken
+		ref: referent is not known at compile time
+		func: called or address taken
+
 Name lookup
     qualified – unqualified (ADL)
 	As-if rule
