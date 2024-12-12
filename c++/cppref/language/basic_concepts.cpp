@@ -130,6 +130,17 @@ Definitions and ODR
 		func: called or address taken
 
 Name lookup
+	std::cout << std::endl; // endl is passed as callable fn arg.
+		multiple decls in std::namespace for operator <<
+		search in std::ostream::operator <<
+	
+	for fn and fn templates:
+		- ADL
+		- template arg deduction
+	Then do overload resolution for all the definitions found
+	And then apply member access checks, so if private fn is used after overload resolution 
+	compilation error will be thrown
+
     qualified – unqualified (ADL)
 	As-if rule
 	Undefined behavior (UB)
