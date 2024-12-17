@@ -11,7 +11,8 @@ Incomplete type T, vector<T> if allowed if allocator is complete type
 
 difference-type ptrdiff_t, can have negative value
 
-reverse iterator begin == std::prev(frontit).
+*rbegin() == *std::prev(std::end()).
+but reverse and forwared iterators are diff types
 
 resize : might erase elements if shortened due to small new size
 
