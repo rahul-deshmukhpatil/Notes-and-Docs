@@ -28,3 +28,13 @@ append_range
 swap: swaps the memory data ptr, iterators remain valid pointing to original vector
 
 three way operator.
+
+erase and remove idom
+	remove: does not erase but shifts the elements
+	erase: truncates the vector
+	
+	std::erase(
+		/* from */
+		std::remove(v.begin(), v.end(), [](const auto x){ return x%2 == 0;}),
+		/* till */
+		v.end());
