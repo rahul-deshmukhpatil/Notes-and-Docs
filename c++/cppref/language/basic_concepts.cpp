@@ -142,7 +142,27 @@ Name lookup
 	compilation error will be thrown
 
     qualified – unqualified (ADL)
-	As-if rule
+
+As-if rule : 
+	This is about compiler reording the instructions to optimize 
+	such that behavior of program is not resonably altered
+	1. volatile : for volatile variables
+		a. all writes are complete before seq point
+		b. no read is started before seq point
+		c. multiple volatile varibles ops are not inter mingled
+	2. file and output text
+		a. before termination all files are written
+		b. text is displayed before blocking wait to receive input
+
+	Compiler 
+	1. external libs: cant optimize these calls as it cant analyze code
+	2. std lib: it can replace, remove, add calls
+	3. static libs: does LTO
+
+	Exceptions: copy ellision and user defined new(replaceble allocation function)
+		might remove calls even if those have visible side effects
+
+
 	Undefined behavior (UB)
 	Memory – Multithread (C++11)
 	Character sets and encodings
