@@ -144,6 +144,8 @@ Name lookup
     qualified – unqualified (ADL)
 
 As-if rule : 
+	Allows any and all code transformations that do not change the observable behavior of the program.
+
 	This is about compiler reording the instructions to optimize 
 	such that behavior of program is not resonably altered
 	1. volatile : for volatile variables
@@ -164,6 +166,67 @@ As-if rule :
 
 
 	Undefined behavior (UB)
+		program can be
+		1. ill-formatted : syntax error, compiler throws warning
+		2. ill-formatted : ODR rule violated, link time error
+		3. implementation defined : type of size_t
+		4. unspecified behavior: compiler dependant, but compiler not required to disclose/document it
+		5. undefined behavior:
+				data race
+				mem access out of array bounds
+				signed int overflow
+				more than 1 modification of same scalar
+				Compilers are not required to
+					dignose
+					do anything meaningful for the UB
+
+			UB and optimization:
+				If you compile program with UB, compiler usually optimize programs
+
+				int foo(int x)
+				{
+					// compiler optimizes to return 1 always, even though for MAX_INT, it should be false
+				    return x + 1 > x; // either true or UB due to signed overflow
+				}
+
+
+				std::size_t f(int x)
+				{
+				    std::size_t a;
+					if (x) // either x nonzero or UB
+						a = 42;
+					// compiled optimizes to always returns 42
+					return a;
+				}
+
+			Clang compiles and does not cause any runtime error for below
+			but GCC causes SIGSEGV
+				int foo(int* p)
+				{
+					int x = *p;
+					if (!p)
+						return x; // Either UB above or this branch is never taken
+					else
+						return 0;
+				}
+
+				int bar()
+				{
+					int* p = nullptr;
+					return *p; // Unconditional UB
+				}
+
+			clang optimizes the nullptr access and returns default value
+			foo(int*):
+					// always return 0
+			        xor     eax, eax
+					        ret
+			bar():
+					//return random value in output reg
+					ret
+
+
+			
 	Memory – Multithread (C++11)
 	Character sets and encodings
 	Phases of translation
