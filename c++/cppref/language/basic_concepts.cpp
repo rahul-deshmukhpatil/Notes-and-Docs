@@ -227,7 +227,26 @@ As-if rule :
 
 
 			
-	Memory – Multithread (C++11)
+	Multithread (C++11)
+		std::thread, std::async,
+		std::jthread (could be cancelled or stopped any time)
+
+		Container Data race:
+			parallel modify of content of elements except std::vector<bool>
+			is data race free
+
+		Memory order
+			relaxed, consume, aquire etc
+
+		Trivial infinite loops
+
+		for/while(empty or const-expr-true) { /*empty*/ }
+
+		implementation could add std::thread_yeild() call in loop.
+		which will give its timeslice to other thread or
+
+
+
 	Character sets and encodings
 	Phases of translation
 	The main function
