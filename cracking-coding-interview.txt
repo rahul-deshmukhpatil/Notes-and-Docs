@@ -1,0 +1,30 @@
+Steps:
+	Listen : 	any uniq condition
+	Example: 	simple, dont use special case which doesnt cover edge cases
+
+	Brute Force: just solve it
+	Optimize:	optimize bottleneck, Unnecessary and Duplicate work
+		
+	Implement:	
+	Test	:	test with 0,1,2,3,4 elements
+
+
+Optimize
+	BUD: bottleneck, Unnecessary and Duplicate work
+	Optimize: reset result or return or break if certain cond says its not possible
+	Base base: solve for 1, then 2,3,4... elements
+	DS Brainstorm: Heap for median
+	Best Conceivable Runtime: Min runtime you need.
+
+Good Code:
+	Correct
+	Efficient
+	Simple
+	Clean and Readable
+
+Use
+	Proper DS
+	Code Resuse: functions
+	Moduler
+	Robust and Generic functions
+
