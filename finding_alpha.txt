@@ -1,0 +1,16 @@
+
+stat arb
+	- there could be estimation error
+	- or overfitting of params for stat arb
+
+CAPM = Market component + idiosyncratic returns
+
+Existence of alpha
+	Effiicient market hypothesis
+	but not all info is consumed by all participants at same time
+
+Participants
+	Long term: scalable positions, risk apetite
+	Short term, day, HFT: leverage, risk, volatality, drawdown
+
+
