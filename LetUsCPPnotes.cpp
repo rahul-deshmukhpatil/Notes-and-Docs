@@ -530,14 +530,14 @@ Rule of 0: either custom define none or all of 5
 	Only constructor and destructor are automitcally called non-const functions for a const declared object
 		- constr and destr both are non-const functions
 		- ie. the object is const: its constr and destr can call non-const methods
-		- ie. the data member is const: they cant modify it
+		- ie. if the data member is const: they cant modify it
 
 6> OVERLOADED ASSIGMENT OPERATOR and COPY CONSTRUCTOR
 	c1 = c2;	// default provided assignment operator
 	<class name> c3 = c2;	// default copy construtor
 	if you want to perform more complex actions while using assignment operator or copy construtor just override them.
 	Overloaded = operator
-	1> takes reference of the object(declare it as const) as argument so time is not wasted in copying object
+	1> takes const reference as argument so time is not wasted in copying object
 	2> returns reference of the calling object using this pointer so that time is not wasted in returing value also
 		= operator chained like c4 = c3 = c2 = c1 etc.
 		syntax:         one& one::operator =(const one&) 
@@ -584,6 +584,11 @@ Rule of 0: either custom define none or all of 5
 
 	IN SOURCE CLASS
 	define a cast operator
+	// return type is implicite
+	// const func
+	operator Target() const { 
+		return Target{this->i}; // just templ
+	}
 
 	IN DEST CLASS
 	define a one argument constructor, copy assignment operator
