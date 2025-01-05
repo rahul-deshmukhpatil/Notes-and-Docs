@@ -1,3 +1,5 @@
+================================================================
+Chapter 2
 
 stat arb
 	- there could be estimation error
@@ -13,4 +15,4 @@ Participants
 	Long term: scalable positions, risk apetite
 	Short term, day, HFT: leverage, risk, volatality, drawdown
 
-
+================================================================
