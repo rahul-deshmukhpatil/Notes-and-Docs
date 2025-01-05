@@ -193,6 +193,7 @@ Intro:
 	5> Direct or virtual base does not have Constructor or destructor accessible or deleted.
 	
 
+	mem-copyable = No-virtual/No user defined funcs
 	Trivial (Trivially copied to read from C++, no user defined default logic)
 							: No virtual func/base class
 							: all members and base are trivial
@@ -201,11 +202,12 @@ Intro:
 							: It can have members with different access specifiers. In C++, the compiler is free to choose how to order members in this situation. Therefore, you can memcopy such objects but you cannot reliably consume them from a C program or C++ programs compiled with another compiler. 
 
 
+	c/c++ accessible: all members in one class
 	standard layout (Layout does not depend on the compiler ordering of public/private/protected and Base/Dervied/Virtual orderingin memory)
 							: No virtual func/base class
 							: all members and base are standard layout 
 					===>	: all non-static data members have same access control
-							: It is memcopy-able and the layout is sufficiently defined that it can be consumed by C or C++ programs compiled with diff compiler. 
+							: the layout is sufficiently defined that it can be consumed by C or C++ programs compiled with diff compiler. 
 							: Standard-layout types can have user-defined special member function
 					===>	: Either most derived class has a non-static members or only one of the base can have non-static data memebers
 
@@ -287,7 +289,7 @@ Intro:
 	Destructors do not have return type also they dont take any argument as philosophy says there is only one way to
 	destroy any object.
 		
-		Trivial default constructor
+		Trivial default constructor : does nothing 
 		The default constructor for class T is trivial (i.e. performs no action) if all of the following is true:
 			The constructor is not user-provided (i.e., is implicitly-defined or defaulted on its first declaration)
 			T has no virtual member functions
@@ -494,7 +496,7 @@ Rule Of 3: if you need 1 of 3 custom impls, you need all among (destr, copy cons
 Rule of 5: if you 
 			1. provide any of rule of 3 functions 
 			2. or default or delete them,
-		it deletes implicit move constr and copy assignment operator
+		it deletes implicit move constr and move assignment operator
 Rule of 0: either custom define none or all of 5
 
 =================================================================================================
