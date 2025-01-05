@@ -9,7 +9,8 @@
 	B> using namespace <name_of_namespace>;	
 
 	endl is a output manipulator function
-		its \n + flush data : so slower than raw \n
+		std::endl = "\n" + flush data 
+		so slower than raw \n
 
 	iostream.h contains declarations needed by the cin and cout
 
