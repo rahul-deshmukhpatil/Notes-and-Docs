@@ -104,8 +104,8 @@ Definitions and ODR
 	decl is def except
 		func without body
 		extern
-		non inline static member
-		constexpr inline static member in cpp file
+		non inline static member, // def in c++ file
+		constexpr inline static member in cpp file // def in hpp file
 		class Y func(class T t); // Y and T might be incomplete decls of class
 		enum Color : int;
 		typedef and aliasing ; // of might be incomplete types
