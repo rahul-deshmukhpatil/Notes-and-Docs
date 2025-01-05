@@ -775,6 +775,7 @@ static_cast:
 	5> Normally used to covert derived class * to base class. which is uneccessory.
 		But otherway conversion is as well possible without any compile time error, however, 
 		it is undefined behavior to static_cast down a hierarchy to a type that isn't actually the type of the object.
+		CRTP uses Base to Derived conversion using static cast
 
 const_cast:
 	1> convert const object into non-const type
