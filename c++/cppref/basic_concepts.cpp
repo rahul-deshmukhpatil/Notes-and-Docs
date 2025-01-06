@@ -65,6 +65,7 @@ Elaborated type specifier
 	template<typename T>
 	class Node
 	{
+		// this might be because T is already declared `typename` i.e. class above
 		friend class T; // error: type parameter cannot appear in an elaborated type specifier;
 						// note that similar declaration `friend T;` is OK.
 	};
