@@ -1,0 +1,19 @@
+move symantics
+	possible to have uniq_ptr vector now
+	uniq_ptr does not allow implicite move like auto_ptr, may be its move constr is explicit
+
+rvalue ref
+	int x = 1
+	int& xl = x;
+	int&& xr = x; // error, cant bind rvalue ref to lvalue
+	int&& xr = int{2};
+
+	void f(int& x)
+	void f(int&& x)
+
+	f(xl): int& x: 1
+	f(xr): int& x: 2
+	f(3): int&& x: 3
+	f(std::move(x)): int&& x: 1
+
+
