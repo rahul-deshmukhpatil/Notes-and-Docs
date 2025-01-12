@@ -17,3 +17,55 @@ rvalue ref
 	f(std::move(x)): int&& x: 1
 
 
+perfect fw or universal fw
+	template<typename T>
+	void f(T& );
+	T& & becomes T&
+	T& && becomes T&
+
+	void f(T&& );
+	T&& & becomes T&
+	T&& && becomes T&&
+
+	you cant bind rvalue ref to the lvalue:
+		rvalue ref is permission to utilize the passed on object
+	you cant bind the lvalue ref to the temp
+		temp is going to automatically destroyed, 
+			so if you bind it to lvalue 
+				and return it to parent func or pass it on to further functions
+			copy use its interval allocated resources
+				they are going to automatically going to be destroyed
+
+	int&& z = 0; // NOTE: `z` is an lvalue with type `int&&`.
+	f(z); // T is int&, deduces as f(int& &&) => f(int&)
+	f(std::move(z)); // T is int, deduces as f(int &&) => f(int&&)
+
+
+inititalizer list
+	int iter_and_sum(const std::initializer_list<int>& list)
+	{
+		return std::accumulate(list.begin(), list.end(), 0);
+	}
+	
+	std::initializer_list<int> list = {1, 2, 3, 4, 5};
+	iter_and_sum(list);
+
+
+Variadic templates
+	template<typename... Args>
+	class A{
+		public:
+		static void size()
+		{
+			std::cout << sizeof...(Args) << std::endl;
+		}
+	};
+
+	template<typename F, typename... Args>
+	auto foo(const F f, const Args... args) -> decltype(f)
+	{
+		const auto list = std::initializer_list<F>{f, args...};
+		return std::accumulate(list.begin(), list.end(), F{0});
+	}
+
+	
