@@ -94,3 +94,34 @@ lambda
 		return j;
 	}
 
+decltype: with cv and ref qualification
+	int i = 1;
+	int& ilr = i;
+	decltype(ilr) ir = ilr; // int&
+
+	int&& j = 1;
+	decltype(j) jrr = j; // int&&
+
+type aliases
+	template<typename T>
+	using cache = std::map<int, T>;
+
+nullptr:
+	of type nullptr_t
+	is not implicitely convertible to bool unlike 
+
+	f(int)
+	f(char *)
+	
+	f(NULL) // ambiguous
+	f(nullptr); // calls f(int*)
+
+Strongly-typed enums
+	enum class Color : int32_t
+	{
+		INVALID = 0,
+		RED = 1,
+		MAX = std::numeric_limits<std::underlying_type<Color>>::max(),
+	};
+
+
