@@ -78,4 +78,19 @@ auto
 	auto add(X x, Y y) -> decltype(x + y);
 
 
+lambda
+	its a implicit unnamed class object with
+	1. ref capture : 
+			are always non-cost ref
+			but can be declared std::as_const
+	2. value capture:
+			are const data memebers
+			unless lamda is mutable making all value capture non-const
+
+
+	auto add10 = [i,&j = std::as_const(j)] () mutable -> decltype(i) {
+		i += 10; // allowed because labmda is mutable
+		j += 10; // Error: because j is a const-ref
+		return j;
+	}
 
