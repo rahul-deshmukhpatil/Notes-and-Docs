@@ -68,4 +68,14 @@ Variadic templates
 		return std::accumulate(list.begin(), list.end(), F{0});
 	}
 
-	
+Static assertions
+	with constexpr var or expresions
+
+auto
+	auto&& ir = i; // int &
+	auto&& irr = 5; // int &&
+
+	auto add(X x, Y y) -> decltype(x + y);
+
+
+
