@@ -1,6 +1,8 @@
 move symantics
-	possible to have uniq_ptr vector now
-	uniq_ptr does not allow implicite move like auto_ptr, may be its move constr is explicit
+	possible to have uniq_ptr vector now, 
+		as auto_ptr transferred ownership automatically upon copying
+		uniq_ptr does not allow implicite move like auto_ptr
+		may be its move constr is explicit
 
 rvalue ref
 	int x = 1
@@ -33,8 +35,8 @@ perfect fw or universal fw
 		temp is going to automatically destroyed, 
 			so if you bind it to lvalue 
 				and return it to parent func or pass it on to further functions
-			copy use its interval allocated resources
-				they are going to automatically going to be destroyed
+				copy use its interval allocated resources
+			they are going to automatically going to be destroyed
 
 	int&& z = 0; // NOTE: `z` is an lvalue with type `int&&`.
 	f(z); // T is int&, deduces as f(int& &&) => f(int&)
@@ -124,4 +126,62 @@ Strongly-typed enums
 		MAX = std::numeric_limits<std::underlying_type<Color>>::max(),
 	};
 
+constexpr
+	if possible do it at compile time,
+	but result of function or op must be same everytime its called.
+	compile time or run time
+
+delegating constructors
+	constructors calling another constr
+	A(int i): A(i, 0) {}
+
+User-defined literals
+
+override:
+	throw error if funciton is not declared virtual in base class
+
+final:
+	dont allow any further child class to override it
+
+default: functions
+	use the compiler provided definition
+	user declared but not user defined
+
+delete:
+	disables the functions from using
+
+Range-based for loops:
+	for (auto i: {1,2,3}) // auto=int
+	// auto &= const int&, as std::initializer_list are immutable  
+	for (auto& i: {1,2,3})
+
+move functions
+
+Converting constructors
+	but prefers the init_list constr
+	A a = {1}
+	A a(1);
+	A a = A{1}
+	A a = {1.0} // Error, no implcite narrowing of double to int
+
+Explicit conversion functions
+	explicit operator bool(const A& a);
+
+	if (a) // works
+	bool _a = a; // error, its explcit
+
+Inline namespaces
+	if A has B and C namespace, you can access all decls in B and C
+	as part of A;
+
+	// this allows versoning
+	namespace A {
+		namespace V1 { int version() { return 1;} }
+		namespace V2 { int version() { return 2;} }
+	}
+
+
+
+
+	
 
