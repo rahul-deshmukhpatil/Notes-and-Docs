@@ -496,7 +496,9 @@ Rule Of 3: if you need 1 of 3 custom impls, you need all among (destr, copy cons
 Rule of 5: if you 
 			1. provide any of rule of 3 functions 
 			2. or default or delete them,
-		if you define one of move operations
+
+		move operations are stricter operations than copy
+		so, if you define one of move operations
 			1. copy operations are generated
 			2. but disabled with = delete;
 Rule of 0: either custom define none or all of 5
