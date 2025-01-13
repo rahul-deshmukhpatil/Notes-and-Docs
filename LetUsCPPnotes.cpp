@@ -497,6 +497,9 @@ Rule of 5: if you
 			1. provide any of rule of 3 functions 
 			2. or default or delete them,
 		it deletes implicit move constr and move assignment operator
+		if you define one of move operations
+			1. copy operations are generated
+			2. but disabled with = delete;
 Rule of 0: either custom define none or all of 5
 
 =================================================================================================
