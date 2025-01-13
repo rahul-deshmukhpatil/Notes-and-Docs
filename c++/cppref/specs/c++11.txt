@@ -215,3 +215,14 @@ Trailing return types
 	template<typename T)
 	decltype(T{} + T{}) add(T a, T b);
 	auto add(T a, T b) -> decltype(a + b);
+
+noexcept specifiers
+	
+	void f() noexcept; // does not throw
+	void f() noexcept(true); // does not throw
+	void f() throw; // old way, does not throw
+
+	void f() noexcept(false); // may throw 
+
+	noexcept function may call throwing funtions
+	but as soon as exception reaches outer noexcept block, std::terminate is called 
