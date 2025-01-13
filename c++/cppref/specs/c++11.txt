@@ -156,9 +156,11 @@ Range-based for loops:
 	for (auto& i: {1,2,3})
 
 move functions
+	A(A&& a);
+	A& operator =(A&& a);
 
 Converting constructors
-	but prefers the init_list constr
+	// a = {} syntax prefers the init_list constr
 	A a = {1}
 	A a(1);
 	A a = A{1}
@@ -202,6 +204,8 @@ Ref-qualified member functions
 			ptr = nullptr;
 			return tmp_ptr;i
 		}
+
+		int* get() const &&; 
 	};	
 
 	A{}.get(); // get &&
