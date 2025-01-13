@@ -181,7 +181,37 @@ Inline namespaces
 	}
 
 
+	A::version(); // calls A::V2::version();
 
-
+Non-static data member initializers
+	default constr uses these valus
 	
+	struct A {
+		int a = 5;
+	};
 
+Right angle brackets
+	std::map<int, std::pair>> m; // prev >> was treated as extraction operator
+
+Ref-qualified member functions
+	struct A {
+		int* get() {return ptr;}
+		int* get() const& {return ptr;}
+		int* get() && { 
+			tmp_ptr = ptr;
+			ptr = nullptr;
+			return tmp_ptr;i
+		}
+	};	
+
+	A{}.get(); // get &&
+
+	const A& a = ...;
+	a.get(); // get &&
+	std::move(a).get(); // get const &&
+	std::move(a).get() // get &&
+
+Trailing return types
+	template<typename T)
+	decltype(T{} + T{}) add(T a, T b);
+	auto add(T a, T b) -> decltype(a + b);
