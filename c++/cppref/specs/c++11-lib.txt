@@ -1,0 +1,78 @@
+std::move
+	resources might have moved
+	
+	template<typename T>
+	typename std::remove_reference_t<T>::type&& move(T&& t)
+	{
+		return static_cast<typename std::remove_reference_t<T>::type&&>(t);
+	}
+
+std::forward
+	template<typename T>
+	T&& forward(std::remove_reference_t<T>::type& t)
+	{
+		return static_cast<T&&>(t);
+	}
+
+std::thread
+	auto v = {std::thread(f, 1)};
+
+	// std::thread may not be copyable
+	v.emplace_back(f, 2);
+
+
+std::to_string
+	std::to_string(1.2)
+	std::to_string(1)
+
+type traits
+	std::is_same_v<int, int>
+
+smart pointers
+	std::uniq_ptr p = std::move(uniq_ptr1);
+	std::uniq_ptr p = std::make_uniq<A>(arg1,arg2);
+	std::shared_ptr p = std::make_shared<A>(arg1,arg2);
+
+std::chrono
+tuples
+	auto t = std::make_tuple(1,2,'c');
+	std::get<0>(t); // 1
+	std::get<1>(t); // 2
+	std::get<2>(t); // c
+
+std::tie
+	creates tuple of lvalue references.
+	std::ignore to skip the binding of value 
+
+	int a,b;
+	char c;
+	std::tie(a,std::ignore,c) = std::make_tuple(1,2,'c');
+
+std::array
+	std::array<int, 5> a = {1,2,3,4,5}
+	std::sort(a.begin(), a.end());
+	for(int& i : a) { ...}
+
+unordered containers
+	unordered_map
+	unordered_multimap
+	unordered_set
+	unordered_multiset
+
+std::make_shared
+	shared_ptr has control block and actual pointer to object
+	control block has lock and counter of object
+
+	make_shared allocates both control block and object at single location
+	also, frees them in single call with custom deleter
+		1. less new calls
+		2. less memory fragmentation
+		3. improved cache locality
+	
+
+	
+
+std::ref
+memory model
+std::async
+std::begin/end
