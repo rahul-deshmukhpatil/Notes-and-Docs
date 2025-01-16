@@ -70,9 +70,19 @@ std::make_shared
 		3. improved cache locality
 	
 
-	
-
 std::ref
+	used to store refs in containers
+	or to store the mutable ref data members in class
+	
+	std::reference_wrapper<T> x_ref = std::ref(x);
+	std::reference_wrapper<const T> x_cref = std::cref(x);
+
+
 memory model
 std::async
+
 std::begin/end
+	auto l = {1,2,3,4};
+	std::count_if(l.begin(), l.end(), [](const auto x){
+	        return x % 2;
+	});
