@@ -1,0 +1,70 @@
+// variable templates
+template<typename T>
+T pi = T(3.14L);
+
+// [[deprecated]] attribute
+[[deprecated("use pi<int> variable instead")]]
+int pi_func()
+{
+    return int(3.14L);
+}
+
+[[deprecated("use non-copyable instead")]]
+class A {
+    public:
+    A(const A&) = delete;
+    A& operator =(const A&) = delete;
+};
+
+
+auto mult10(int x)
+{
+    return x * 10;
+}
+
+// decltype(auto) return_ref(int& x)
+// same as below
+// int& return_ref(int& x)
+
+const int& return_ref(int& x)
+{
+    return x;
+}
+
+int main()
+{
+// binary literals
+    int a = 1'000'000;
+    int b = 0b1010'1010;
+
+// generic lambda expressions
+    auto add = [](auto a, auto b) -> auto { return a + b; };
+    std::cout << "add(1.1, 2.2)" << ": " << add(1.1, 2.2) << std::endl;
+
+// lambda capture initializers
+// return type deduction
+    auto x = 1;
+    auto add_x10 = [x=mult10(x)] () -> auto { return x + 10; };
+
+// decltype(auto)
+    // auto removes the reference and the cv qualifiers
+    // decltype(auto) preserves the reference and the cv qualifiers
+
+x = 10;
+// decltype(auto) : diff between capture of const int& and int&
+// v1 is not captured as reference
+// v2 is not captured as const reference
+auto v1 = return_ref(x);
+decltype(auto) v2 = return_ref(x);
+auto& v3 = return_ref(x);
+x = 20;
+PRINT(x);
+PRINT(v1);
+PRINT(v2);
+PRINT(v3);
+
+v1 = 30;
+// v2 = 40;  // Error v2 is const int&
+// v3 = 40;  // Error v3 is const int&
+
+// relaxing constraints on constexpr functions
