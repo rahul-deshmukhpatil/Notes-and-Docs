@@ -10,7 +10,7 @@ declaring non-type template parameters with auto
 	
 folding expressions
 	a = (... + args)
-	a = (args + ... + args)
+	a = (e1 + ... + e2) // where only 1 of e1 and e2 could be variadic arg?
 
 new rules for auto deduction from braced-init-list
 	auto a{1}; // int not initializer_list<int>
