@@ -1,0 +1,18 @@
+std::variant
+	can have same types,
+	can provide same type with diff cv qualification
+
+	default contr of 1st element
+
+	all types are allocated within std::variant
+	no dynamic allocation
+
+	better than union can tell you which type is stored
+
+	index
+	std::get<int or index> : throws error if type or index is not stored
+	std::get_if<int>  : returns pointer
+
+	std::variant_size
+	std::holds_alternative<T>(v); 
+	std::variant_alternative
