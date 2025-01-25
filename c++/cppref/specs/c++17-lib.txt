@@ -37,3 +37,25 @@ std::any
 	x.emplace()
 	make_any(4);
 	int x = std::any_cast<int>(x);
+
+std::visit
+	std::variant<int, double, std::string> x;
+    x = 5;
+	// calls labmda(int x);
+	std::visit([](auto&& x) { std::cout << "Lambda: " << x << "\n"; }, x);
+
+std::invoke
+	int add(int x, int y);
+	std::invoke(add, 1, 2); // returns 3
+	
+	template<typename... Args>
+	foo callAdd(Args&&... args)
+	{
+		// Args could be lvalue or rvalue
+		// std::move is std::static_cast<std::remove_reference_t<T>&&>(t);
+		// T&& std::fw(std::remove_reference_t<T>& t) { return std::static_cast<T&&>(t) };
+		std::invoke(add, std::forward<Args>(args)...);
+	}
+
+std::apply
+	std::apply
