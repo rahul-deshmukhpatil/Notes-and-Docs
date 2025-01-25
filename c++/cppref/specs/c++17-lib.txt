@@ -16,3 +16,15 @@ std::variant
 	std::variant_size
 	std::holds_alternative<T>(v); 
 	std::variant_alternative
+
+std::optional
+	default contr of 1st element
+
+	all types are allocated within std::optional
+	no dynamic allocation
+
+	throws bad optional access if optional is not set
+	*x 
+	x.value()
+	if (x) // is bool(x) or x.has_value()
+
