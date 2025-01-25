@@ -28,3 +28,12 @@ std::optional
 	x.value()
 	if (x) // is bool(x) or x.has_value()
 
+std::any
+	std::any x;
+	x = 5;
+	x = 5.5;
+	x.has_value()
+	std::any_cast<std::string>(&x)
+	x.emplace()
+	make_any(4);
+	int x = std::any_cast<int>(x);
