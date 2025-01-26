@@ -42,7 +42,7 @@ std::visit
 	std::variant<int, double, std::string> x;
     x = 5;
 	// calls labmda(int x);
-	std::visit([](auto&& x) { std::cout << "Lambda: " << x << "\n"; }, x);
+	std::visit([](auto&& x) { std::cout << "Lambda for variant type: " << x << "\n"; }, x);
 
 std::invoke
 	int add(int x, int y);
