@@ -70,4 +70,6 @@ std::string_view
 	auto sv = "Hello"sv or std::string() or "Hello";
 
 
-
+std::clamp
+	clamp(v, x,y); v=x of v<x, v=v, or v=y if v>y
+	std::clamp(10, 20, 30, std::less<int>{})); // returns 20
