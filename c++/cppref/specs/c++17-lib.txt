@@ -62,8 +62,12 @@ std::apply
 
 std::bind
 	using std::pacement_strategy::_1;
-	std::func<void(string, int)> f = std::bind(foo, "some value", _1)
+	std::function<void(string, int)> f = std::bind(foo, "some value", _1)
 
 	f(99); // calls std::bind(foo, "some value", 99)
+
+std::string_view
+	auto sv = "Hello"sv or std::string() or "Hello";
+
 
 
