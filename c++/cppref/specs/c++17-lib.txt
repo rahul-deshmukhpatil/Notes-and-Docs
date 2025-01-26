@@ -58,4 +58,12 @@ std::invoke
 	}
 
 std::apply
-	std::apply
+	std::apply(foo, std::tuple(1,2));
+
+std::bind
+	using std::pacement_strategy::_1;
+	std::func<void(string, int)> f = std::bind(foo, "some value", _1)
+
+	f(99); // calls std::bind(foo, "some value", 99)
+
+
