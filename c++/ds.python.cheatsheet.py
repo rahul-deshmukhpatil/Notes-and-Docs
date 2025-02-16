@@ -119,3 +119,75 @@ d | other: Creates new dict merging d and other. Example: merged_dict = dict1 | 
 
 d |= other: Updates d with keys and values from other. Example: my_dict |= {'new_key': 'new_value'}
 replace value in destination if already exits
+
+=====================================================================================================
+namedtuple(): Creates tuple subclasses with named fields.
+
+python
+Person = namedtuple('Person', ['name', 'age'])
+p = Person('Alice', 30)
+print(p.name, p.age)  # Output: Alice 30
+deque: Efficient list-like container for appending and popping from both ends.
+
+d = deque(['a', 'b', 'c'])
+d.appendleft('z')
+print(d)  # Output: deque(['z', 'a', 'b', 'c'])
+
+ChainMap combines multiple dictionaries or mappings into a single, updateable view. Its particularly useful for managing multiple contexts or configurations.
+
+Usage example:
+
+    python
+    from collections import ChainMap
+
+    defaults = {'color': 'red', 'user': 'guest'}
+    user_prefs = {'color': 'blue'}
+    combined = ChainMap(user_prefs, defaults)
+
+    print(combined['color'])  # Output: blue
+    print(combined['user'])   # Output: guest
+    Key features:
+
+    Lookup priority: Searches mappings from left to right.
+
+    Updates and deletions only affect the first mapping.
+
+    Useful for simulating nested scopes, like in command-line arguments or configuration management.
+
+
+Counter: Counts hashable objects.
+c = Counter('abracadabra')
+print(c['a'])  # Output: 5
+
+OrderedDict: Remembers the order of inserted key-value pairs.
+
+od = OrderedDict([('a', 1), ('b', 2)])
+od['c'] = 3
+print(list(od.items()))  # Output: [('a', 1), ('b', 2), ('c', 3)]
+defaultdict: Automatically supplies default values for missing keys.
+
+dd = defaultdict(int)
+dd['key'] += 1
+print(dd['key'])  # Output: 1
+UserDict: Wrapper for easier dictionary subclassing.
+
+class MyDict(UserDict):
+    def __setitem__(self, key, value):
+            super().__setitem__(key.upper(), value)
+            d = MyDict({'a': 1})
+            print(d)  # Output: {'A': 1}
+            UserList: Wrapper for easier list subclassing.
+
+class MyList(UserList):
+    def append(self, item):
+            super().append(item.upper())
+            l = MyList(['a', 'b'])
+            l.append('c')
+            print(l)  # Output: ['a', 'b', 'C']
+            UserString: Wrapper for easier string subclassing.
+
+class MyString(UserString):
+    def upper(self):
+            return UserString(self.data.lower())
+            s = MyString("Hello")
+            print(s.upper())  # Output: hello
