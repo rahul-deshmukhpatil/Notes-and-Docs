@@ -166,6 +166,12 @@ od['c'] = 3
 print(list(od.items()))  # Output: [('a', 1), ('b', 2), ('c', 3)]
 defaultdict: Automatically supplies default values for missing keys.
 
+use lambda or function for custom defined value
+get_A = lambda: A()
+def get_A()
+    return A()
+default_dict(get_A)
+
 dd = defaultdict(int)
 dd['key'] += 1
 print(dd['key'])  # Output: 1
