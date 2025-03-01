@@ -145,7 +145,8 @@ final:
 
 default: functions
 	use the compiler provided definition
-	user declared but not user defined
+	inside class: user declared but not user defined
+	outside class: user defined
 
 delete:
 	disables the functions from using
@@ -179,7 +180,7 @@ Inline namespaces
 	// this allows versoning
 	namespace A {
 		namespace V1 { int version() { return 1;} }
-		namespace V2 { int version() { return 2;} }
+		inline namespace V2 { int version() { return 2;} }
 	}
 
 
