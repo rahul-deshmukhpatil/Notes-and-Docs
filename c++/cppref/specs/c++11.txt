@@ -19,7 +19,7 @@ rvalue ref
 	f(std::move(x)): int&& x: 1
 
 
-perfect fw or universal fw
+perfect fw or universal fw (via unfolding references)
 	template<typename T>
 	void f(T& );
 	T& & becomes T&
@@ -74,7 +74,7 @@ Static assertions
 	with constexpr var or expresions
 
 auto
-	auto&& ir = i; // int &
+	auto&& ir = i; // int &, tried to bind rvalue ref to lvalue, but compiler automatically unfolded refs
 	auto&& irr = 5; // int &&
 
 	auto add(X x, Y y) -> decltype(x + y);
@@ -181,6 +181,10 @@ Inline namespaces
 	namespace A {
 		namespace V1 { int version() { return 1;} }
 		inline namespace V2 { int version() { return 2;} }
+
+		// if more inline namspace defined with same functions or symbols
+		// it will be ambigous reference between V2 and V3
+		// so only 1 inline namespace with uniq symbols allowed
 	}
 
 
