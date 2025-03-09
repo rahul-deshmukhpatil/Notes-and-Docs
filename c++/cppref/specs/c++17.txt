@@ -41,8 +41,8 @@ structured bindings
 	const auto& [x,y] = pair_xy;
 	
 selection statements with initializer
-	if (int x = foo; x > 10) {}
-	switch (int x = foo; x) {}
+	if (int x = foo(); x > 10) {}
+	switch (int x = foo(); x) {}
 
 constexpr if
 	if constexpr(std::is_integral_v<T>)
