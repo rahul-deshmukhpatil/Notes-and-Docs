@@ -33,7 +33,7 @@ std::any
 	x = 5;
 	x = 5.5;
 	x.has_value()
-	std::any_cast<std::string>(&x)
+	std::any_cast<std::string>(&x) // throws bad_any_cast if x doesnt have std::string
 	x.emplace()
 	make_any(4);
 	int x = std::any_cast<int>(x);
