@@ -21,11 +21,16 @@ constexpr lambda
 	auto l = [] () constexpr {}
 
 lambda capture this by value
-	auto byref_impl = [*this] { return x; };
-	auto by_value_impl = [this] { return x; };
+	// old way was only by reference
+	auto by_ref_impl = [this] { return x; };
+	// new by value implementation
+	auto by_value_impl = [*this] { return x; };
 	
-inline variables
-	global or static inline variables in headers
+inline variable s (replacement for extern linkage variables)
+	they can replace global or static inline variables in headers which we have define with extern linkage
+	inlines have extern linkage implicitely
+	they can be non-const
+	compiler at link time just keeps 1 copy of the inline variable as per ODR
 	constexprs are implicitely inline
 
 nested namespaces
