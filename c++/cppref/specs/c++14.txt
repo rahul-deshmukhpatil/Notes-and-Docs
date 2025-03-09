@@ -2,7 +2,8 @@
 template<typename T>
 T pi = T(3.14L);
 
-// [[deprecated]] attribute
+// [[deprecated]] attribute with warning message
+
 [[deprecated("use pi<int> variable instead")]]
 int pi_func()
 {
@@ -10,11 +11,7 @@ int pi_func()
 }
 
 [[deprecated("use non-copyable instead")]]
-class A {
-    public:
-    A(const A&) = delete;
-    A& operator =(const A&) = delete;
-};
+class custom_noncopy_with_deleted_constr_and_assign_op
 
 
 auto mult10(int x)
@@ -22,11 +19,13 @@ auto mult10(int x)
     return x * 10;
 }
 
-// decltype(auto) return_ref(int& x)
-// same as below
-// int& return_ref(int& x)
+Auto return type : decltype(auto)
 
-const int& return_ref(int& x)
+decltype(auto) => returns as same as actual type of as of return value with cv ref 
+
+decltype(auto) return_ref(const int& x)
+# same as below
+const int& return_ref(const int& x)
 {
     return x;
 }
