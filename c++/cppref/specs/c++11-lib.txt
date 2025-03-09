@@ -8,6 +8,12 @@ std::move
 	}
 
 std::forward
+	// std::move does not accept type as parameter, but this one does
+	// since param accepted is not T or T&& or T&, 
+	// template param deduction wont take place
+	// you will get compilation error 
+	// if explcit template initialization is not done
+
 	template<typename T>
 	T&& forward(std::remove_reference_t<T>::type& t)
 	{
