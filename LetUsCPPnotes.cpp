@@ -158,7 +158,8 @@ This is new addition to C++
 	Inlining might not always recommended,
 		might increase cache miss
 		might increase binary size
-
+	
+	Functions defined in headers are implicitely inline
 	Inline functions are usually in the header files
 	but they could be in source .cpp files if gcc -flto Link Time optimization is enabled
 =================================================================================================
@@ -492,13 +493,18 @@ Intro:
 		or implement object store
 
 
-Rule Of 3: if you need 1 of 3 custom impls, you need all among (destr, copy constr, copy assignment operator)
-Rule of 5: if you 
+Rule Of 3:  for pre C++11, its just suggestion, not requirement
+	if you need 1 of 3 custom impls, you need all among (destr, copy constr, copy assignment operator)
+
+Rule of 5:  after c++11
+		if you 
 			1. provide any of rule of 3 functions 
 			2. or default or delete them,
+		then, implcite move copy/assign are not generated  
 
 		move operations are stricter operations than copy
-		so, if you define one of move operations
+		so, 
+		if you define one of move operations
 			1. copy operations are generated
 			2. but disabled with = delete;
 Rule of 0: either custom define none or all of 5
