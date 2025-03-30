@@ -2,6 +2,9 @@
 template<typename T>
 T pi = T(3.14L);
 
+usage 
+	auto a = pi<int> + pi<double>;
+
 // [[deprecated]] attribute with warning message
 
 [[deprecated("use pi<int> variable instead")]]
@@ -52,7 +55,7 @@ int main()
 x = 10;
 // decltype(auto) : diff between capture of const int& and int&
 // v1 is not captured as reference
-// v2 is not captured as const reference
+// v2 is captured as const reference
 auto v1 = return_ref(x);
 decltype(auto) v2 = return_ref(x);
 auto& v3 = return_ref(x);
