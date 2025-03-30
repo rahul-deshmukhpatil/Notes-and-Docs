@@ -65,8 +65,12 @@ direct-list-initialization of enums
 
 [[fallthrough]], [[nodiscard]], [[maybe_unused]] attributes
 
+if ([[likely]] x == 5) {}
+
 [[nodiscard]] int getVal();
+
 int func([[maybe_unused]] int x);
+
 [[fallthrough]]
 case 1: 
 	[[fallthrough]]
