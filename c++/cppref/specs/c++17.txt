@@ -65,10 +65,15 @@ direct-list-initialization of enums
 
 [[fallthrough]], [[nodiscard]], [[maybe_unused]] attributes
 
+[[nodiscard]] int getVal();
+int func([[maybe_unused]] int x);
+[[fallthrough]]
+case 1: 
+	[[fallthrough]]
+case 2:
+
 __has_include
 
 class template argument deduction
 	std::vector v{1,2,3};
 	auto l = std::lock(mutex);
-
-
