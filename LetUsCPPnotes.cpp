@@ -337,8 +337,6 @@ Intro:
 
 7> OBJECT SIZE
 	sizeof  will return size of the object of class.
-	Member fuctions are common among all objects of the classes so when object is created they are
-	not allocated memory.
 	struct and class are same, only differance is 
 	1> default members	are private in class while they are public in struct.
 	2> While inheriting if access specifier is not provided to base class,
