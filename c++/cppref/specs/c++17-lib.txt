@@ -33,10 +33,14 @@ std::any
 	x = 5;
 	x = 5.5;
 	x.has_value()
+
+	x.type() returns the typeid of the contained value
 	std::any_cast<std::string>(&x) // throws bad_any_cast if x doesnt have std::string
-	x.emplace()
+
 	make_any(4);
 	int x = std::any_cast<int>(x);
+
+	x.emplace(2.0) // changes contained object
 
 std::visit
 	std::variant<int, double, std::string> x;
@@ -45,6 +49,14 @@ std::visit
 	std::visit([](auto&& x) { std::cout << "Lambda for variant type: " << x << "\n"; }, x);
 
 std::invoke
+	Unified way to call any callable
+		lambda
+		member function
+		function pointer
+
+	To call member function, call it with member object or pointer as first param
+	just like "c++ this calling convention"
+	
 	int add(int x, int y);
 	std::invoke(add, 1, 2); // returns 3
 	
@@ -67,8 +79,11 @@ std::bind
 	f(99); // calls std::bind(foo, "some value", 99)
 
 std::string_view
-	auto sv = "Hello"sv or std::string() or "Hello";
+	auto sv = "Hello"sv
 
+	std::string s;
+	std::string_view sv = s; 
+	std::string_view sv = "Hello";
 
 std::clamp
 	clamp(v, x,y); v=x of v<x, v=v, or v=y if v>y
