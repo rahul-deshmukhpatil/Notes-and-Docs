@@ -494,7 +494,7 @@ Intro:
 Rule Of 3:  for pre C++11, its just suggestion, not requirement
 	if you need 1 of 3 custom impls, you need all among (destr, copy constr, copy assignment operator)
 
-Rule of 5:  after c++11
+Rule of 5:  after c++11 rule of 3 becomes rule of 5
 		if you 
 			1. provide any of rule of 3 functions 
 			2. or default or delete them,
@@ -505,7 +505,13 @@ Rule of 5:  after c++11
 		if you define one of move operations
 			1. copy operations are generated
 			2. but disabled with = delete;
-Rule of 0: either custom define none or all of 5
+
+Rule of 0: 
+	if your class manages resource like pointer, then prefer RAII by using smart pointers
+	this way, default functions provided by compiler automatically take care of the resource
+	management by automatically freeing memory in while destroying
+
+	so provide none or all of 5 functions for the resource
 
 =================================================================================================
 =================================================================================================
