@@ -525,6 +525,7 @@ Rule of 0:
 	memory for static members is allocated only once.
 
 2> STATIC MEMBER FUNCTION 
+	You can call private constr, destr and other functions from static member functions
 	Used to manipulate static data only.
 
 	Could be called like <class_name>::<static_function>, which is the correct way, as we call these
