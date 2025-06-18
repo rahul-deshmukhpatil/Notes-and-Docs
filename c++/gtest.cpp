@@ -45,6 +45,7 @@ ASSERT_STRCASEEQ(str1, str2)	Fails if strcasecmp(str1, str2) != 0.
 ASSERT_STRCASENE(str1, str2)	Fails if strcasecmp(str1, str2) == 0.
 
 EXPECT_THAT(value1, StartsWith("Hello"));
+EXPECT_THAT(value1, HasSubstr("Hello"));
 EXPECT_THAT(value2, MatchesRegex("Line \\d+"));
 ASSERT_THAT(value3, AllOf(Gt(5), Lt(10)));
 
@@ -93,4 +94,18 @@ Generalised Matcher	EXPECT_THAT(value, matcher)
 ASSERT_THAT(value, matcher)	Passes if value matches the given matcher (from GoogleMock).
 
 
+Advance Topics
 
+GTEST_SKIP() << "Skipping single test";
+
+void SetUp() override {
+GTEST_SKIP() << "Skipping all tests for this fixture";
+}
+
+// Tests for SkipFixture won't be executed.
+TEST_F(SkipFixture, SkipsOneTest) {
+FAIL();  // Won't fail; it won't be executed
+}
+
+Parameterized tests
+Testing private members
