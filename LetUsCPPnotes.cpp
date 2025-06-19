@@ -409,9 +409,7 @@ Intro:
 				return mem;
 			}
 
-			std::new_handler nh = set_new_handler(0);
-			set_new_handler(nh);
-		   
+			std::new_handler nh = get_new_handler();
 			if(nh)
 			{
 				(*nh)(); 
