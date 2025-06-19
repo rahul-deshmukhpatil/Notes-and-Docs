@@ -120,7 +120,10 @@ This is new addition to C++
 	D> Since you can have multiple declarations in different scopes, but with same signature. Each declaration
 	could have different default value.
 
-	Default values could be const, global variable or a function call.
+	Function arguments default value could be const, global variable or a function call.
+	f(v=10);
+	f(v=global_v);
+	f(v=get_v());
 
 4> Operator overloading
 	Teaches normal c++ operators how to act on userdefined data types.
@@ -312,7 +315,7 @@ Intro:
 	B> To return self reference/value of the object for which member function is called.
 
 5> UNARY OPERATOR OVERLOADING
-	Return the object by referance so the epressions like following wont give any compilaton problem
+	Return the object by referance so the expressions like following wont give any compilaton problem
 	declaration : One& operator ++();
 	Use			: newObj = ++oldObj;
 	Postfix
