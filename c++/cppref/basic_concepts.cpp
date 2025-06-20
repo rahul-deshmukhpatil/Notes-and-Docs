@@ -18,7 +18,7 @@ ADL argument dependant lookup
 	- only occurs for the unqualified namespace lookup
 
 	- compiler searches for symbol in current or parent and global scope
-		if non function entity is found
+		if non function entity i.e variable, class or enum, is found
 			ADL is not performed
 	
 	- if nothing or function is found in current/parent/global namespace
@@ -27,7 +27,7 @@ ADL argument dependant lookup
 	ADL does the search in
 		- namespaces of each argument 
 			- namespace of base classes of arguments
-		- if its template func and type is class member,
+		- if its template func and type is class member i.e declared within class as using DervT = ... etc,
 			- search in the class namespce
 		- for class templates, the namespaces of template arguments
 		- for pointers arrays, in the class of underlying element
