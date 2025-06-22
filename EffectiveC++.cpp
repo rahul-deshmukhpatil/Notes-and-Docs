@@ -15,6 +15,7 @@
 		d. macros do not make sense when arguments passed is complex expression
 		e. step deugging is not possible in case of macro code snippet
 		f. always replace macros with the template inline or inline functions
+		g. macro could be redefined with new value
 
 		c++ requires definition of anything that you use. But class static
 		const member of integral type could be used with just declration,as long as
@@ -37,7 +38,8 @@
 			with const assignment of 'c' to multiplication will not happen
 	
 		
-		Avoid duplication in const and non-const member function.
+		Avoid duplication in const and non-const member function where their return types are diff
+		based on the only const-ness of the object.
 		simply make non-const member function to call const function using double
 		type casting. 
 
@@ -220,7 +222,7 @@
 		b.	Even run time type identification, dynamic_cast and typeid
 			does not work in constructor and in destructor.
 
-		c.	If virtual function being called from base class ctor or dtor
+		c.	If virtual function being called directly or indirectly from base class ctor or dtor
 			is pure in base class, it will result in runtime abort.
 
 		d.	To prevent this calling of virtual function, pass the result
