@@ -138,7 +138,7 @@ delegating constructors
 User-defined literals
 
 override:
-	throw error if funciton is not declared virtual in base class
+	throw compile tiem error if funciton is not declared virtual in base class
 
 final:
 	dont allow any further child class to override it
