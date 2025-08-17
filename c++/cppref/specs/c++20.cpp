@@ -77,7 +77,13 @@ constexpr virtual functions
 
 
 explicit(bool)
+	apart from using it for bool, constr and conversion operators
 	make constr explcit for some static constexpr expression
+	struct foo {
+	  // Specify non-integral types (strings, floats, etc.) require explicit construction.
+	    template <typename T>
+		  explicit(!std::is_integral_v<T>) foo(T) {}
+	};
 
 consteval or immediate functions
 	must be evaluated at compile time
